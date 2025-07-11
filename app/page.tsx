@@ -19,7 +19,7 @@ export default async function Home() {
         {Object.keys(typesData).map((typeName, i) => (
           <FoodCard
             key={i}
-            thumbnail="/cake.png"
+            thumbnail={Object.entries(typesData[typeName])[0][1]["image"]}
             name={typeName[0].toUpperCase() + typeName.slice(1)}
           />
         ))}

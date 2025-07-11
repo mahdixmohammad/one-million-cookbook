@@ -7,6 +7,7 @@ type Props = {
   type: string;
   item: string;
   data: {
+    image: string,
     ingredients: string;
     instructions: string;
   };
@@ -48,7 +49,7 @@ export default function Item({ item, data }: Props) {
     <div className="px-4 md:px-10 pt-5 pb-20 flex flex-col items-center text-md md:text-lg lg:text-xl">
       <div>
         <Image className="absolute left-10" src="/1M-logo.png" width={60} height={60} alt="" />
-        <Image className="w-[200px] h-auto object-contain mb-3" src="/cake.png" width={60} height={60} alt="" />
+        <Image className="w-[200px] h-auto object-contain mb-3" src={data.image} width={60} height={60} alt="" />
       </div>
       <div className="w-full mb-10">
         <h1 className="text-2xl text-center mb-2">{item[0].toUpperCase() + item.slice(1)}</h1>

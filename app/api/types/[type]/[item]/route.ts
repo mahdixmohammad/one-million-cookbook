@@ -15,10 +15,7 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
 
     const data = snapshot.val();
 
-    return NextResponse.json({
-      ingredients: data.ingredients || "",
-      instructions: data.instructions || "",
-    });
+    return NextResponse.json(data);
   } catch (err) {
     console.error("Error fetching item:", err);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });

@@ -28,7 +28,7 @@ export default async function Type(props: Props) {
         {Object.keys(typeData).map((typeName, i) => (
           <FoodCard
             key={i}
-            thumbnail="/cake.png"
+            thumbnail={typeData[typeName]["image"]}
             name={typeName[0].toUpperCase() + typeName.slice(1)}
           />
         ))}

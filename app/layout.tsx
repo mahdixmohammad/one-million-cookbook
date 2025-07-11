@@ -8,7 +8,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "One Million Cookbook",
-  description: "The official one million cookbook.",
+  description: "The official One Million Cookbook.",
 };
 
 export default function RootLayout({
