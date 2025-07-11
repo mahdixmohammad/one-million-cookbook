@@ -1,4 +1,5 @@
 import AdminSideBar from "@/components/AdminSideBar";
+import NavBar from "@/components/NavBar";
 
 export default function AdminLayout({
   children,
@@ -8,7 +9,10 @@ export default function AdminLayout({
   return (
     <div className="flex">
       <AdminSideBar />
-      {children}
+      <div className="flex-1">
+        <NavBar />
+        {children}
+      </div>
     </div>
   );
 }
