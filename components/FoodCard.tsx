@@ -12,7 +12,7 @@ type Props = {
 export default function FoodCard({ thumbnail, name }: Props) {
   const pathname = usePathname(); // Get the current path (e.g. "/cakes")
 
-  const fullPath = `${pathname.endsWith("/") ? pathname : pathname + "/"}${name.toLowerCase()}`;
+  const fullPath = `${pathname.endsWith("/") ? pathname : pathname + "/"}${name}`;
 
   return (
     <Link

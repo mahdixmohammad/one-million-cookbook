@@ -20,7 +20,7 @@ export default async function Home() {
           <FoodCard
             key={i}
             thumbnail={Object.entries(typesData[typeName])[0][1]["image"]}
-            name={typeName[0].toUpperCase() + typeName.slice(1)}
+            name={typeName}
           />
         ))}
       </div>

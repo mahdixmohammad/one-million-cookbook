@@ -29,7 +29,7 @@ export default async function Type(props: Props) {
           <FoodCard
             key={i}
             thumbnail={typeData[typeName]["image"]}
-            name={typeName[0].toUpperCase() + typeName.slice(1)}
+            name={typeName}
           />
         ))}
       </div>

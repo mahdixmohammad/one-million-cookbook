@@ -52,7 +52,7 @@ export default function Item({ item, data }: Props) {
         <Image className="w-[200px] h-auto object-contain mb-3" src={data.image} width={60} height={60} alt="" />
       </div>
       <div className="w-full mb-10">
-        <h1 className="text-2xl text-center mb-2">{item[0].toUpperCase() + item.slice(1)}</h1>
+        <h1 className="text-2xl text-center mb-2">{item}</h1>
         <div className="w-full h-1 bg-yellow-500"></div>
       </div>
       <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
