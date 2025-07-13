@@ -25,11 +25,11 @@ export default async function Type(props: Props) {
         <div className="w-full h-1 bg-yellow-500"></div>
       </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-5 gap-y-10">
-        {Object.keys(typeData).map((typeName, i) => (
+        {Object.keys(typeData["items"]).map((itemName, i) => (
           <FoodCard
             key={i}
-            thumbnail={typeData[typeName]["image"]}
-            name={typeName}
+            thumbnail={Object.values(typeData["items"])[0]["image"]}
+            name={itemName}
           />
         ))}
       </div>

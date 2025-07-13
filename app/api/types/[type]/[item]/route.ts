@@ -6,7 +6,7 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
   const { type, item } = await context.params;
 
   try {
-    const dbRef = ref(rtdb, `types/${type}/${item}`);
+    const dbRef = ref(rtdb, `types/${type}/items/${item}`);
     const snapshot = await get(dbRef);
 
     if (!snapshot.exists()) {

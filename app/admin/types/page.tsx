@@ -24,9 +24,9 @@ export default async function Types() {
             <div className="w-full flex flex-col gap-2">
                 {Object.keys(typesData).map((typeName, i) => (
                     <Link href={`/admin/types/${typeName}`} key={i} className="grid-cols-[125px_100px_1fr_auto] xs:grid-cols-[190px_175px_1fr_auto] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 hover:bg-gray-200 transition-all duration-150">
-                        <Image className="" src={Object.entries(typesData[typeName])[0][1]["image"]} alt="" width={90} height={90}></Image>
+                        <Image className="" src={typesData[typeName]["image"]} alt="" width={90} height={90}></Image>
                         <h3>{typeName}</h3>
-                        <h3>{Object.keys(typesData[typeName]).length}</h3>
+                        <h3>{typesData[typeName]?.["items"] ? Object.keys(typesData[typeName]["items"]).length : 0}</h3>
                         <svg className="w-8 h-8 rounded-lg hover:bg-gray-100 transition-all duration-150" fill="none" strokeWidth={1.5} stroke="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>

@@ -15,7 +15,7 @@ export default function EditTypeModal(props: Props) {
     e.preventDefault();
 
     try {
-    const response = await fetch(`/api/types/${type}/delete`, {
+    const response = await fetch(`/api/types/${type}`, {
         method: "DELETE",
     });
 
@@ -41,7 +41,7 @@ export default function EditTypeModal(props: Props) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <p>Are you sure you want to delete this type? This will delete all of its items as well.</p>
           <div className="flex gap-2 justify-end">
-            <button type="button" onClick={() => router.back()} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">Cancel</button>
+            <button type="button" onClick={() => router.push(`/admin/types/${type}`)} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">Cancel</button>
             <button type="submit" className="px-4 py-2 rounded bg-red-800 text-white hover:bg-red-900 cursor-pointer transition-all duration-150">Delete</button>
           </div>
         </form>

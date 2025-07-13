@@ -1,5 +1,11 @@
-import TypeContent from "./TypeContent";
+import { redirect } from "next/navigation";
 
-export default function Default({ params }: { params: { type: string } }) {
-  return <TypeContent type={params.type} />;
+type Props = {
+  params: Promise<{ type: string; }>;
+};
+
+export default async function Default(props: Props) {
+  const { type } = await props.params
+
+  redirect(`/admin/types/${type}`);
 }
