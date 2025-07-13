@@ -53,7 +53,7 @@ export default function Item({ item, data }: Props) {
       </div>
       <div className="w-full mb-10">
         <h1 className="text-2xl text-center mb-2">{item}</h1>
-        <div className="w-full h-1 bg-yellow-500"></div>
+        <div className="w-full h-1 bg-gold"></div>
       </div>
       <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
         {/* Ingredients section */}

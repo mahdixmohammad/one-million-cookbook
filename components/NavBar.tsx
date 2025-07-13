@@ -1,13 +1,22 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+// import { usePathname } from "next/navigation"
 
-export default function NavBar() {
-    const path = usePathname().split("/")[2];
+type NavbarProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+};
+
+export default function NavBar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
+    // const path = usePathname().split("/")[2];
 
     return (
         <div className="h-[64px] px-5 border-b-[1px] bg-white border-gray-300 flex items-center justify-between">
-            <h2 className="text-xl ml-10">{path[0].toUpperCase() + path.slice(1)}</h2>
+            <div className={`rounded-full shadow cursor-pointer w-10 h-10 transition-all duration-300`}>
+                <svg onClick={() => setSidebarOpen(!sidebarOpen)}  fill="none" strokeWidth={1.5} stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </div>
             <div className="flex gap-4">
                 <svg className="w-8 h-8 cursor-pointer" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />

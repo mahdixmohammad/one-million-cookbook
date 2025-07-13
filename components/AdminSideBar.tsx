@@ -2,24 +2,19 @@
 
 import Image from "next/image"
 import Link from "next/link";
-import { useState } from "react"
 import { usePathname } from "next/navigation";
 
-export default function AdminSideBar() {
-    const [isOpen, setIsOpen] = useState(true)
-    const handleClick = () => setIsOpen((prev) => !prev)
+type SidebarProps = {
+  isOpen: boolean;
+};
 
+export default function AdminSideBar({ isOpen }: SidebarProps) {
     return (
-        <div className={`h-screen transition-all duration-300 ${isOpen ? 'left-0 absolute md:relative' : 'absolute -left-[100vw] md:-left-[250px]'} w-screen  md:w-[250px] h-screen bg-white border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
+        <div className={`h-screen transition-all duration-300 ${isOpen ? 'left-0 absolute md:relative' : 'absolute -left-[100vw] md:-left-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
             <div className="w-[100%] h-16 flex items-center justify-center">
                 <Image src="/1M-logo-black.png" alt="" width={50} height={50}></Image>
-                <div className={`z-50 absolute rounded-full shadow cursor-pointer w-10 h-10 transition-all duration-300 ${isOpen ? 'right-2' : '-right-[55px]'}`}>
-                    <svg onClick={handleClick}  fill="none" strokeWidth={1.5} stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </div>
             </div>
-            <ul className="flex flex-col w-full">
+            <ul className="flex flex-col w-full mt-4">
                 <li>
                     <SideBarLink name="Types" href="/types"/>
                 </li>
@@ -37,8 +32,11 @@ function SideBarLink({name, href}: SideBarLinkProps) {
     const active = (pathname === `/admin${href}`) ? true : false
     
     return (
-        <Link href={"/admin" + href} className={`text-xl flex justify-center items-center gap-2 h-15 rounded-xl transition-all duration-200
-        ${active ? "bg-gray-500 text-white" : "hover:bg-gray-200"}`}>
+        <Link href={"/admin" + href} className={`text-xl flex justify-center items-center gap-2 h-12 rounded-md transition-all duration-200
+        ${active ? "bg-gold text-white" : "hover:bg-gray-200"}`}>
+            <svg className="w-8 absolute left-15" fill="none" strokeWidth={1.5} stroke={active ? "white" : "black"} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+            </svg>
             <h3>{name}</h3>
             <div className="absolute right-2 flex flex-col justify-between h-3">
                 <div className={`w-[15px] h-1 rotate-45

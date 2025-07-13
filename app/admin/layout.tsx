@@ -1,3 +1,7 @@
+"use client"
+
+import { useState } from "react";
+
 import AdminSideBar from "@/components/AdminSideBar";
 import NavBar from "@/components/NavBar";
 
@@ -6,11 +10,13 @@ export default function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <div className="flex h-screen overflow-hidden">
-      <AdminSideBar />
+      <AdminSideBar isOpen={sidebarOpen} />
       <div className="flex-1 overflow-y-auto bg-gray-100">
-        <NavBar />
+        <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {children}
       </div>
     </div>
