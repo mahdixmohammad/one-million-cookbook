@@ -23,9 +23,6 @@ export default function AdminSideBar() {
                 <li>
                     <SideBarLink name="Types" href="/types"/>
                 </li>
-                <li>
-                    <SideBarLink name="Items" href="/items"/>
-                </li>
             </ul>
         </div>
     )

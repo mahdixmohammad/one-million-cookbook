@@ -6,7 +6,7 @@ export default function NavBar() {
     const path = usePathname().split("/")[2];
 
     return (
-        <div className="h-[64px] px-5 border-b-[1px] border-gray-300 flex items-center justify-between">
+        <div className="h-[64px] px-5 border-b-[1px] bg-white border-gray-300 flex items-center justify-between">
             <h2 className="text-xl ml-10">{path[0].toUpperCase() + path.slice(1)}</h2>
             <div className="flex gap-4">
                 <svg className="w-8 h-8 cursor-pointer" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
