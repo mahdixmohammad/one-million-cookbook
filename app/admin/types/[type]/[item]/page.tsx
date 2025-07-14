@@ -17,6 +17,9 @@ export default async function Type(props: Props) {
 
   if (itemData["error"]) notFound();
 
+  const ingredientsList = itemData.ingredients.split("#");
+  const instructionsList = itemData.instructions.split("#");
+
   return (
         <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg px-3 py-3">
                 <div className="px-2 flex gap-2 items-center">
@@ -34,14 +37,38 @@ export default async function Type(props: Props) {
                         Delete
                     </Link>
                 </div>
-                <div className="w-full items-center px-3 xs:px-6 mt-4 mb-2 grid grid-cols-[125px_100px_1fr] xs:grid-cols-[190px_175px_1fr] text-gray-600">
-                    <h3 className="ml-4">Image</h3>
-                    <h3 className="">Name</h3>
-                </div>
-                <div className="w-full flex flex-col gap-2">
-                    <div className="grid-cols-[125px_100px_1fr] xs:grid-cols-[190px_175px_1fr] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 transition-all duration-150">
-                        <Image className="" src={itemData["image"]} alt="" width={90} height={90}></Image>
-                        <h3>{item}</h3>
+                <div className="w-full mt-10">
+                    <div className="grid auto-rows-auto gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto_200px_1fr] w-full px-8 lg:px-6 py-5 lg:py-10 bg-gray-100 rounded-xl items-center transition-all duration-150">
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center gap-y-2">
+                            <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Image</h3>
+                            <Image className="" src={itemData["image"]} alt="" width={90} height={90}></Image>
+                        </div>
+                        <div className="relative h-full flex flex-col justify-between items-start  lg:justify-center gap-y-2">
+                            <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Name</h3>
+                            <h3>{item}</h3>
+                        </div>
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center lg:items-center gap-y-2">
+                            <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Ingredients</h3>
+                            <ul className="pl-5 lg:pl-0 list-disc">
+                                {ingredientsList.map((ingredient: string, i: number) => {
+                                    return (
+                                    <li key={i}>
+                                        <p>{ingredient}</p>
+                                    </li>)
+                                })}
+                            </ul>
+                        </div>
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center lg:items-center gap-y-2">
+                            <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Instructions</h3>
+                            <ul className="pl-5 lg:pl-0 list-disc">
+                                {instructionsList.map((instruction: string, i: number) => {
+                                    return (
+                                    <li key={i}>
+                                        <p>{instruction}</p>
+                                    </li>)
+                                })}
+                            </ul>
+                        </div>
                     </div>
                 </div>
         </div>
