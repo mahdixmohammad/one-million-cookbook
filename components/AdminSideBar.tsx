@@ -5,15 +5,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type SidebarProps = {
-  isOpen: boolean;
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
 };
 
-export default function AdminSideBar({ isOpen }: SidebarProps) {
+export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     return (
-        <div className={`h-screen transition-all duration-300 ${isOpen ? 'left-0 absolute md:relative' : 'absolute -left-[100vw] md:-left-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
+        <div className={`z-20 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'left-0 absolute md:relative' : 'absolute -left-[100vw] md:-left-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
             <div className="w-[100%] h-16 flex items-center justify-center">
                 <Image src="/1M-logo-black.png" alt="" width={50} height={50}></Image>
             </div>
+            {sidebarOpen &&
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="absolute top-4 right-2 w-6 h-6 cursor-pointer flex flex-col justify-center items-center">
+                <div className="absolute w-full h-[3px] bg-black rotate-45"></div>
+                <div className="absolute w-full h-[3px] bg-black rotate-135"></div>
+            </button>
+            }
             <ul className="flex flex-col w-full mt-4">
                 <li>
                     <SideBarLink name="Types" href="/types"/>

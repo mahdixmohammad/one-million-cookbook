@@ -1,6 +1,7 @@
 "use client"
 
-// import { usePathname } from "next/navigation"
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 type NavbarProps = {
   sidebarOpen: boolean;
@@ -8,14 +9,60 @@ type NavbarProps = {
 };
 
 export default function NavBar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
-    // const path = usePathname().split("/")[2];
+    const path = usePathname();
+    const router = useRouter()
+
+    const handleClick = () => {
+        const splitPath = path.split("/");
+        // we're at /admin/types/${type} so go back one level
+        if (splitPath.length === 4) return router.push("/admin/types");
+        // we're at /admin/types/${type}/${item} so go back one level
+        if (splitPath.length === 5) {
+            const type = splitPath[3];
+            return router.push(`/admin/types/${type}`)
+        }
+    }
 
     return (
         <div className="h-[64px] px-5 border-b-[1px] bg-white border-gray-300 flex items-center justify-between">
-            <div className={`rounded-full shadow cursor-pointer w-10 h-10 transition-all duration-300`}>
-                <svg onClick={() => setSidebarOpen(!sidebarOpen)}  fill="none" strokeWidth={1.5} stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+            <div className="flex gap-2 items-center">
+                <div onClick={() => setSidebarOpen(!sidebarOpen)}   className={`rounded-full shadow border-2 border-gray-100 cursor-pointer p-[2px] w-10 h-10`}>
+                    <svg fill="none" strokeWidth={1.5} stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </div>
+                {
+                    path === "/admin/types" 
+                    ?
+                    null
+                    :
+                    <button
+                    onClick={handleClick}
+                    className="text-center w-22 rounded-2xl h-[34px] relative text-sm group cursor-pointer shadow border-2 border-gray-100 overflow-hidden"
+                    type="button"
+                    >
+                        <div
+                            className="bg-white shadow rounded-2xl h-[34px] w-8 flex items-center justify-center absolute left-[-1px] top-[0px] group-hover:w-22 z-10 duration-400"
+                        >
+                            <svg
+                            className="w-[20px] h-[20px]"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 1024 1024"
+                            
+                            >
+                            <path
+                                d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
+                                fill="#000000"
+                            ></path>
+                            <path
+                                d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"
+                                fill="#000000"
+                            ></path>
+                            </svg>
+                        </div>
+                        <p className="translate-x-2">Back</p>
+                    </button>
+                }
             </div>
             <div className="flex gap-4">
                 <svg className="w-8 h-8 cursor-pointer" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

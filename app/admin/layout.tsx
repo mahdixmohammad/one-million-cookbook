@@ -14,7 +14,7 @@ export default function AdminLayout({
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <AdminSideBar isOpen={sidebarOpen} />
+      <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="flex-1 overflow-y-auto bg-gray-100">
         <NavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {children}
