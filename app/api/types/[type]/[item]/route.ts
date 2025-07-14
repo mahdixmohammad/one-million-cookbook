@@ -58,3 +58,22 @@ export async function PATCH(req: NextRequest, { params }: { params: { type: stri
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { type: string; item: string } }) {
+  const { type, item } = params;
+
+  const itemRef = ref(rtdb, `types/${type}/items/${item}`);
+
+  try {
+    const snapshot = await get(itemRef);
+    if (!snapshot.exists()) {
+      return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    }
+
+    await remove(itemRef);
+    return NextResponse.json({ message: "Item deleted successfully" });
+  } catch (error) {
+    console.error("Delete error:", error);
+    return NextResponse.json({ error: "Failed to delete item" }, { status: 500 });
+  }
+}
