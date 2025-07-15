@@ -6,7 +6,9 @@ type Props = {
 };
 
 export default async function Page(props: Props) {
-  const { type, item } = await props.params;
+  let { type, item } = await props.params;
+  type = decodeURIComponent(type);
+  item = decodeURIComponent(item);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}/${item}`,

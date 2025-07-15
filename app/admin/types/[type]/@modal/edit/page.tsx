@@ -10,7 +10,8 @@ type Props = {
 };
 
 export default function EditTypeModal(props: Props) {
-  const { type } = use(props.params);
+  let { type } = use(props.params);
+  type = decodeURIComponent(type);
 
   const router = useRouter();
 
@@ -95,18 +96,18 @@ export default function EditTypeModal(props: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">Edit Type</h2>
+        <h2 className="text-xl mb-4">تحرير النوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             className="border rounded px-3 py-2"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Type name"
+            placeholder="اسم النوع"
           />
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "Choose image (optional)..."}</span>
+            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
-              Browse
+              تصفح
             </span>
             <input
               type="file"
@@ -135,15 +136,15 @@ export default function EditTypeModal(props: Props) {
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}`)}
-              className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
             >
-              Cancel
+              الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700 cursor-pointer transition-all duration-150"
+              className="px-4 py-2 w-24 rounded bg-gray-600 text-white hover:bg-gray-700 cursor-pointer transition-all duration-150"
             >
-              Save
+              حفظ
             </button>
           </div>
         </form>

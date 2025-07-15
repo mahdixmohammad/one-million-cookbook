@@ -7,7 +7,8 @@ type Props = {
 };
 
 export default async function Type(props: Props) {
-  const { type } = await props.params;
+  let { type } = await props.params;
+  type = decodeURIComponent(type);
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}`, {
     cache: "no-store",
@@ -21,7 +22,7 @@ export default async function Type(props: Props) {
     <div className="px-10 pt-5 pb-20 flex flex-col">
       <Image className="mb-5" src="/1M-logo.png" width={60} height={60} alt="" />
       <div className="w-fit mb-10">
-        <h1 className="text-2xl">Select Item</h1>
+        <h1 className="text-2xl">اختار المنتج</h1>
         <div className="w-full h-1 bg-gold"></div>
       </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-5 gap-y-10">

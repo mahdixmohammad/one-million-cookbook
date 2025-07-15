@@ -1,5 +1,5 @@
 export default function Admin() {
     return (
-        <div className=""></div>
+        <div></div>
     )
 }

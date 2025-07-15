@@ -58,7 +58,7 @@ export default function Item({ item, data }: Props) {
       <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
         <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-500 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
-          <h3 className="mb-4 font-bold">Ingredients</h3>
+          <h3 className="mb-4 font-bold">المكونات</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
               <li className="flex gap-2" key={item.id}>
@@ -80,7 +80,7 @@ export default function Item({ item, data }: Props) {
             allIngredientsChecked ? "opacity-100" : "opacity-50 pointer-events-none select-none"
           }`}
         >
-          <h3 className="mb-4 font-bold">Instructions</h3>
+          <h3 className="mb-4 font-bold">التعليمات</h3>
           <ol className="w-full flex flex-col gap-2 lg:gap-4 list-decimal">
             {instructionList.map((item) => (
               <div className="flex justify-start items-start gap-6" key={item.id}>
@@ -105,7 +105,7 @@ export default function Item({ item, data }: Props) {
           className="w-1/2 h-full bg-gray-300 flex justify-center items-center rounded-xl font-bold"
           href="/"
         >
-          Go Back
+          العودة
         </Link>
         <button
           className={`w-1/2 h-full flex justify-center items-center rounded-xl font-bold transition-colors duration-200 ${
@@ -115,7 +115,7 @@ export default function Item({ item, data }: Props) {
           }`}
           disabled={!(allIngredientsChecked && allInstructionsChecked)}
         >
-          Complete
+          اكمال
         </button>
       </div>
     </div>

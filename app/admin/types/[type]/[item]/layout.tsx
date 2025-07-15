@@ -3,9 +3,7 @@ export default function TypeLayout({ children, modal }: {children: React.ReactNo
   return (
     <>
       {children}
-      <div className="h-screen">
-        {modal}
-      </div>
+      {modal}
     </>
   );
 }

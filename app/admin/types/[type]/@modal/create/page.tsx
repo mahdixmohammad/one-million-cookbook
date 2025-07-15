@@ -10,7 +10,9 @@ type Props = {
 };
 
 export default function CreateItemModal(props: Props) {
-  const { type } = use(props.params);
+  let { type } = use(props.params);
+  type = decodeURIComponent(type);
+
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -72,20 +74,20 @@ export default function CreateItemModal(props: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm overflow-y-auto p-4">
       <div className="bg-white rounded-lg px-8 py-6 shadow-lg w-full max-w-[550px] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl mb-4">Create New Item</h2>
+        <h2 className="text-xl mb-4">إنشاء منتج جديد</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             className="border rounded px-3 py-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Item name"
+            placeholder="اسم المنتج"
             required
           />
 
           {/* Image Upload */}
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "Choose image (optional)..."}</span>
-            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">Browse</span>
+            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
+            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">تصفح</span>
             <input
               type="file"
               accept="image/*"
@@ -110,7 +112,7 @@ export default function CreateItemModal(props: Props) {
 
           {/* Ingredients */}
           <div>
-            <label className="font-medium">Ingredients</label>
+            <label className="font-medium">المكونات</label>
             {ingredients.map((ing, idx) => (
               <div key={idx} className="flex items-center gap-2 mt-1">
                 <input
@@ -122,7 +124,7 @@ export default function CreateItemModal(props: Props) {
                     updated[idx] = e.target.value;
                     setIngredients(updated);
                   }}
-                  placeholder={`Ingredient ${idx + 1}`}
+                  placeholder={`مكون ${idx + 1}`}
                 />
                 <button
                   type="button"
@@ -138,13 +140,13 @@ export default function CreateItemModal(props: Props) {
               className="mt-2 text-sm text-blue-600 cursor-pointer"
               onClick={() => setIngredients([...ingredients, ""])}
             >
-              ➕ Add Ingredient
+              ➕ إضافة مكون
             </button>
           </div>
 
           {/* Instructions */}
           <div>
-            <label className="font-medium">Instructions</label>
+            <label className="font-medium">التعليمات</label>
             {instructions.map((ins, idx) => (
               <div key={idx} className="flex items-center gap-2 mt-1">
                 <input
@@ -156,7 +158,7 @@ export default function CreateItemModal(props: Props) {
                     updated[idx] = e.target.value;
                     setInstructions(updated);
                   }}
-                  placeholder={`Step ${idx + 1}`}
+                  placeholder={`خطوة ${idx + 1}`}
                 />
                 <button
                   type="button"
@@ -172,7 +174,7 @@ export default function CreateItemModal(props: Props) {
               className="mt-2 text-sm text-blue-600 cursor-pointer"
               onClick={() => setInstructions([...instructions, ""])}
             >
-              ➕ Add Step
+              ➕ إضافة خطوة
             </button>
           </div>
 
@@ -180,15 +182,15 @@ export default function CreateItemModal(props: Props) {
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}`)}
-              className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
             >
-              Cancel
+              الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150"
+              className="px-4 py-2 w-24 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150"
             >
-              Create
+              انشاء
             </button>
           </div>
         </form>

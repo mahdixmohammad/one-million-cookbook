@@ -20,7 +20,7 @@ export default function FoodCard({ thumbnail, name }: Props) {
       className="relative aspect-[1] w-full bg-gray-700 rounded-md flex flex-col gap-3 pt-4 items-center shadow shadow-black"
     >
       <Image
-        className="w-[80%] object-contain"
+        className="w-[80%] h-[80%] object-contain"
         src={thumbnail}
         width={200}
         height={200}

@@ -45,7 +45,7 @@ export default function NavBar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
                             className="bg-white shadow rounded-2xl h-[34px] w-8 flex items-center justify-center absolute left-[-1px] top-[0px] group-hover:w-22 z-10 duration-400"
                         >
                             <svg
-                            className="w-[20px] h-[20px]"
+                            className="rotate-180 w-[20px] h-[20px]"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 1024 1024"
                             
@@ -60,7 +60,7 @@ export default function NavBar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
                             ></path>
                             </svg>
                         </div>
-                        <p className="translate-x-2">Back</p>
+                        <p className="translate-x-2">العودة</p>
                     </button>
                 }
             </div>

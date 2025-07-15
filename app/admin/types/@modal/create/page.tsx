@@ -47,20 +47,20 @@ export default function EditTypeModal() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">Create Type</h2>
+        <h2 className="text-xl mb-4">إنشاء نوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
             className="border rounded px-3 py-2"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Type name"
+            placeholder="اسم النوع"
             required
           />
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "Choose image..."}</span>
+            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
-              Browse
+              تصفح
             </span>
             <input
               type="file"
@@ -79,8 +79,8 @@ export default function EditTypeModal() {
             />
           )}
           <div className="flex gap-2 justify-end">
-            <button type="button" onClick={() => router.push(`/admin/types`)} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150">Create</button>
+            <button type="button" onClick={() => router.push(`/admin/types`)} className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">الغاء</button>
+            <button type="submit" className="px-4 py-2 w-24 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150">انشاء</button>
           </div>
         </form>
       </div>

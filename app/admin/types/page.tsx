@@ -11,18 +11,18 @@ export default async function Types() {
     return (
         <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg px-3 py-3">
             <div className="px-2 flex gap-2 items-center">
-                <h3 className="font-bold text-lg">Types</h3>
+                <h3 className="font-bold text-lg">الأنواع</h3>
                 <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
                     <svg className="w-5 h-5" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
-                    Create
+                    انشاء
                 </Link>
             </div>
             <div className="w-full items-center px-3 xs:px-6 mt-4 mb-2 grid grid-cols-[125px_100px_1fr_auto] xs:grid-cols-[190px_175px_1fr_auto] text-gray-600">
-                <h3 className="ml-4">Image</h3>
-                <h3 className="">Name</h3>
-                <h3 className="-ml-4">Items</h3>
+                <h3 className="ml-4">الصورة</h3>
+                <h3 className="">الاسم</h3>
+                <h3 className="-ml-4">المنتجات</h3>
             </div>
             <div className="w-full flex flex-col gap-2">
                 {Object.keys(typesData).map((typeName, i) => (
@@ -37,7 +37,7 @@ export default async function Types() {
                 ))}
             </div>
             <div className="mt-5 ml-4 mb-2">
-                {Object.keys(typesData).length} results
+                {Object.keys(typesData).length} نتائج
             </div>
         </div>
     )

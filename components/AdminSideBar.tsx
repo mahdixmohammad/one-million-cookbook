@@ -11,7 +11,7 @@ type SidebarProps = {
 
 export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     return (
-        <div className={`z-20 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'left-0 absolute md:relative' : 'absolute -left-[100vw] md:-left-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
+        <div className={`z-20 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'right-0 absolute md:relative' : 'absolute -right-[100vw] md:-right-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
             <div className="w-[100%] h-16 flex items-center justify-center">
                 <Image src="/1M-logo-black.png" alt="" width={50} height={50}></Image>
             </div>
@@ -23,7 +23,7 @@ export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarPro
             }
             <ul className="flex flex-col w-full mt-4">
                 <li>
-                    <SideBarLink name="Types" href="/types"/>
+                    <SideBarLink name="الأنواع" href="/types"/>
                 </li>
             </ul>
         </div>

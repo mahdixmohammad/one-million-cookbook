@@ -7,7 +7,8 @@ type Props = {
 };
 
 export default function EditTypeModal(props: Props) {
-  const { type } = use(props.params);
+  let { type } = use(props.params);
+  type = decodeURIComponent(type);
 
   const router = useRouter();
 
@@ -37,12 +38,12 @@ export default function EditTypeModal(props: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">Delete Type</h2>
+        <h2 className="text-xl mb-4">حذف النوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <p>Are you sure you want to delete this type? This will delete all of its items as well.</p>
+          <p>هل أنت متأكد من رغبتك في حذف <strong>{type}</strong> و جميع منتجاته؟ لا يمكن التراجع عن هذا الإجراء.</p>
           <div className="flex gap-2 justify-end">
-            <button type="button" onClick={() => router.push(`/admin/types/${type}`)} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded bg-red-800 text-white hover:bg-red-900 cursor-pointer transition-all duration-150">Delete</button>
+            <button type="button" onClick={() => router.push(`/admin/types/${type}`)} className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">الغاء</button>
+            <button type="submit" className="px-4 py-2 w-24 rounded bg-red-800 text-white hover:bg-red-900 cursor-pointer transition-all duration-150">حذف</button>
           </div>
         </form>
       </div>
