@@ -12,7 +12,7 @@ export default async function Types() {
         <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg px-3 py-3">
             <div className="px-2 flex gap-2 items-center">
                 <h3 className="font-bold text-lg">Types</h3>
-                <Link href="/admin/types/create" className="border-[0px] bg-gray-500 text-white border-gray-600 w-21 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-gray-600 transition-all duration-150">
+                <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
                     <svg className="w-5 h-5" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>

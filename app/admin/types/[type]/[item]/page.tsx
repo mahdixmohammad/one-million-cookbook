@@ -38,33 +38,33 @@ export default async function Type(props: Props) {
                     </Link>
                 </div>
                 <div className="w-full mt-10">
-                    <div className="grid auto-rows-auto gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto_200px_1fr] w-full px-8 lg:px-6 py-5 lg:py-10 bg-gray-100 rounded-xl items-center transition-all duration-150">
-                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center gap-y-2">
+                    <div className="grid auto-rows-auto grid-cols-1 gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto_200px_1fr] w-full px-8 lg:px-6 py-5 lg:py-10 bg-gray-100 rounded-xl items-center transition-all duration-150">
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Image</h3>
-                            <Image className="" src={itemData["image"]} alt="" width={90} height={90}></Image>
+                            <Image src={itemData["image"]} alt="" width={90} height={90}></Image>
                         </div>
-                        <div className="relative h-full flex flex-col justify-between items-start  lg:justify-center gap-y-2">
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Name</h3>
                             <h3>{item}</h3>
                         </div>
-                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center lg:items-center gap-y-2">
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-start lg:items-center gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Ingredients</h3>
-                            <ul className="pl-5 lg:pl-0 list-disc">
+                            <ul className="max-w-full pl-5 list-disc">
                                 {ingredientsList.map((ingredient: string, i: number) => {
                                     return (
-                                    <li key={i}>
-                                        <p>{ingredient}</p>
+                                    <li key={i} className="break-words">
+                                        {ingredient}
                                     </li>)
                                 })}
                             </ul>
                         </div>
-                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-center lg:items-center gap-y-2">
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-start lg:items-center gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">Instructions</h3>
-                            <ul className="pl-5 lg:pl-0 list-disc">
+                            <ul className="max-w-full pl-5 list-disc break-words">
                                 {instructionsList.map((instruction: string, i: number) => {
                                     return (
-                                    <li key={i}>
-                                        <p>{instruction}</p>
+                                    <li key={i} className="break-words">
+                                        {instruction}
                                     </li>)
                                 })}
                             </ul>

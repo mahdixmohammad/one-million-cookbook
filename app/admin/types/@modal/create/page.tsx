@@ -80,7 +80,7 @@ export default function EditTypeModal() {
           )}
           <div className="flex gap-2 justify-end">
             <button type="button" onClick={() => router.push(`/admin/types`)} className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">Cancel</button>
-            <button type="submit" className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 cursor-pointer transition-all duration-150">Create</button>
+            <button type="submit" className="px-4 py-2 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150">Create</button>
           </div>
         </form>
       </div>

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { rtdb } from "@/lib/firebase";
 import { ref, get, set, remove } from "firebase/database";
 
@@ -19,6 +19,42 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
   } catch (err) {
     console.error("Error fetching type:", err);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  }
+}
+
+// create item under this type
+export async function POST(req: NextRequest, { params }: { params: { type: string } }) {
+  const { type } = params;
+  const body = await req.json();
+  const { name, image, ingredients, instructions } = body;
+
+  if (!name || typeof name !== "string") {
+    return NextResponse.json({ error: "Missing or invalid item name" }, { status: 400 });
+  }
+
+  if (!image || typeof image !== "string") {
+    return NextResponse.json({ error: "Image is required" }, { status: 400 });
+  }
+
+
+  const itemRef = ref(rtdb, `types/${type}/items/${name}`);
+
+  try {
+    const snapshot = await get(itemRef);
+    if (snapshot.exists()) {
+      return NextResponse.json({ error: "Item with this name already exists" }, { status: 400 });
+    }
+
+    await set(itemRef, {
+      image: image || "",
+      ingredients: ingredients || "",
+      instructions: instructions || "",
+    });
+
+    return NextResponse.json({ message: "Item created successfully" });
+  } catch (err) {
+    console.error("Create item error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 

@@ -57,19 +57,19 @@ export default function Item({ item, data }: Props) {
       </div>
       <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-500 text-white px-2 lg:px-6 py-4 flex flex-col items-center">
+        <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-500 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">Ingredients</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
               <li className="flex gap-2" key={item.id}>
                 <input
-                  className="scale-125"
+                  className="scale-125 self-start mt-2"
                   type="checkbox"
                   id={item.id}
                   checked={ingredientChecks[item.id]}
                   onChange={() => handleIngredientChange(item.id)}
                 />
-                <label htmlFor={item.id}>{item.label}</label>
+                <label className="w-full break-words" htmlFor={item.id}>{item.label}</label>
               </li>
             ))}
           </ul>
@@ -85,7 +85,7 @@ export default function Item({ item, data }: Props) {
             {instructionList.map((item) => (
               <div className="flex justify-start items-start gap-6" key={item.id}>
                 <input
-                  className="mt-2 scale-125"
+                  className="mt-2 scale-125 self-start"
                   type="checkbox"
                   id={item.id}
                   checked={instructionChecks[item.id]}
@@ -93,7 +93,7 @@ export default function Item({ item, data }: Props) {
                   disabled={!allIngredientsChecked}
                 />
                 <li className="flex-1">
-                  <label htmlFor={item.id}>{item.label}</label>
+                  <label className="w-full break-words" htmlFor={item.id}>{item.label}</label>
                 </li>
               </div>
             ))}
@@ -110,7 +110,7 @@ export default function Item({ item, data }: Props) {
         <button
           className={`w-1/2 h-full flex justify-center items-center rounded-xl font-bold transition-colors duration-200 ${
             allIngredientsChecked && allInstructionsChecked
-              ? "bg-yellow-400 text-black cursor-pointer"
+              ? "bg-gold text-black cursor-pointer"
               : "bg-red-200 opacity-50 cursor-not-allowed"
           }`}
           disabled={!(allIngredientsChecked && allInstructionsChecked)}
