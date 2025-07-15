@@ -46,18 +46,18 @@ export default function Item({ item, data }: Props) {
   };
 
   return (
-    <div className="px-4 md:px-10 pt-5 pb-20 flex flex-col items-center text-md md:text-lg lg:text-xl">
+    <div className="px-4 md:px-10 pt-5 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
       <div>
-        <Image className="absolute left-10" src="/1M-logo.png" width={60} height={60} alt="" />
-        <Image className="w-[200px] h-auto object-contain mb-3" src={data.image} width={60} height={60} alt="" />
+        <Image className="absolute right-10" src="/1M-logo.png" width={60} height={60} alt="" />
+        <Image className="w-[200px] h-auto object-contain mb-0" src={data.image} width={60} height={60} alt="" />
       </div>
-      <div className="w-full mb-10">
+      <div className="w-full mb-5">
         <h1 className="text-2xl text-center mb-2">{item}</h1>
         <div className="w-full h-1 bg-gold"></div>
       </div>
       <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-500 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
+        <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-700 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">المكونات</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
@@ -76,7 +76,7 @@ export default function Item({ item, data }: Props) {
         </div>
         {/* Instructions section */}
         <div
-          className={`w-full bg-gray-300 px-2 lg:px-4 py-4 flex flex-col items-center transition-opacity duration-200 ${
+          className={`w-full bg-gray-200 px-2 lg:px-4 py-4 flex flex-col items-center transition-opacity duration-200 ${
             allIngredientsChecked ? "opacity-100" : "opacity-50 pointer-events-none select-none"
           }`}
         >
@@ -100,18 +100,18 @@ export default function Item({ item, data }: Props) {
           </ol>
         </div>
       </div>
-      <div className="w-full h-16 flex mt-6 gap-3 lg:gap-6">
+      <div className="w-full h-16 flex mt-4 gap-2 md:gap-3 lg:gap-5">
         <Link
-          className="w-1/2 h-full bg-gray-300 flex justify-center items-center rounded-xl font-bold"
+          className="w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:bg-gray-300 transition-all duration-150"
           href="/"
         >
           العودة
         </Link>
         <button
-          className={`w-1/2 h-full flex justify-center items-center rounded-xl font-bold transition-colors duration-200 ${
+          className={`w-1/2 h-full bg-gold flex justify-center items-center rounded-lg font-bold transition-colors duration-200 ${
             allIngredientsChecked && allInstructionsChecked
-              ? "bg-gold text-black cursor-pointer"
-              : "bg-red-200 opacity-50 cursor-not-allowed"
+              ? " text-black cursor-pointer"
+              : "opacity-40 cursor-not-allowed"
           }`}
           disabled={!(allIngredientsChecked && allInstructionsChecked)}
         >
