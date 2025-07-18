@@ -1,5 +1,6 @@
 import FoodCard from "@/components/FoodCard";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -19,18 +20,17 @@ export default async function Type(props: Props) {
   if (typeData["error"]) notFound();
 
   return (
-    <div className="px-10 pt-5 pb-20 flex flex-col">
-      <Image className="mb-5" src="/1M-logo.png" width={60} height={60} alt="" />
+    <div className="px-10 pb-20 flex flex-col">
       <div className="w-fit mb-5">
         <h1 className="text-2xl">اختار المنتج</h1>
         <div className="w-full h-1 bg-gold"></div>
       </div>
-      <button
-        className="mb-5 text-center w-22 rounded-2xl h-[34px] relative text-sm group cursor-pointer shadow border-2 border-gray-50 overflow-hidden"
+      <Link href="/types"
+        className="flex items-center justify-center mb-5 text-center text-lg w-26 rounded-2xl h-10 relative group cursor-pointer shadow border-2 border-gray-50 overflow-hidden"
         type="button"
         >
             <div
-                className="bg-white shadow rounded-2xl h-[34px] w-8 flex items-center justify-center absolute left-[-1px] top-[0px] group-hover:w-22 z-10 duration-400"
+                className="bg-white shadow rounded-2xl h-10 w-8 flex items-center justify-center absolute left-[-1px] top-[0px] group-hover:w-26 z-10 duration-400"
             >
                 <svg
                 className="rotate-180 w-[20px] h-[20px]"
@@ -49,7 +49,7 @@ export default async function Type(props: Props) {
                 </svg>
             </div>
             <p className="translate-x-2">العودة</p>
-        </button>
+        </Link>
       {
         typeData["items"]
         ?

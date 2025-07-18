@@ -13,7 +13,7 @@ type Props = {
   };
 };
 
-export default function Item({ item, data }: Props) {
+export default function Item({ type, item, data }: Props) {
   const ingredientList = (data.ingredients || "")
     .split("#")
     .map((s) => s.trim())
@@ -46,16 +46,15 @@ export default function Item({ item, data }: Props) {
   };
 
   return (
-    <div className="px-4 md:px-10 pt-5 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
+    <div className="px-4 md:px-10 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
       <div>
-        <Image className="absolute right-10" src="/1M-logo.png" width={60} height={60} alt="" />
         <Image className="w-[200px] h-auto object-contain mb-0" src={data.image} width={60} height={60} alt="" />
       </div>
       <div className="w-full mb-5">
         <h1 className="text-2xl text-center mb-2">{item}</h1>
         <div className="w-full h-1 bg-gold"></div>
       </div>
-      <div className="w-full min-h-[600px] flex flex-col sm:flex-row">
+      <div className="w-full sm:min-h-[500px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
         <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-700 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">المكونات</h3>
@@ -103,7 +102,7 @@ export default function Item({ item, data }: Props) {
       <div className="w-full h-16 flex mt-4 gap-2 md:gap-3 lg:gap-5">
         <Link
           className="w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:bg-gray-300 transition-all duration-150"
-          href="/"
+          href={`/types/${type}/${item}`}
         >
           العودة
         </Link>

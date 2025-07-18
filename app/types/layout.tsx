@@ -5,16 +5,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
-import AdminSideBar from "@/components/AdminSideBar";
-import AdminNavBar from "@/components/AdminNavBar";
 import Loading from "@/components/Loading";
+import NavBar from "@/components/NavBar";
 
-export default function AdminLayout({
+export default function TypesLayout({
   children,
 }: Readonly<{
   children: ReactNode
 }>) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -30,7 +28,7 @@ export default function AdminLayout({
       const snap = await get(roleRef);
       const role = snap.val();
 
-      if (role !== "admin") {
+      if (role !== "employee" && role !== "admin") {
         router.push("/not-authorized");
       } else {
         setLoading(false);
@@ -43,12 +41,9 @@ export default function AdminLayout({
   if (loading) return <div className="w-screen h-screen flex items-center justify-center"><Loading /></div>;
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className="flex-1 overflow-y-auto bg-gray-100">
-        <AdminNavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {children}
-      </div>
-    </div>
+    <>
+      <NavBar />
+      {children}
+    </>
   );
 }

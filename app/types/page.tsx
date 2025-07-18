@@ -1,5 +1,4 @@
 import FoodCard from "@/components/FoodCard";
-import Image from "next/image";
 
 export default async function Home() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`, {
@@ -9,8 +8,7 @@ export default async function Home() {
   const typesData = await res.json();
 
   return (
-    <div className="px-10 pt-5 pb-20 flex flex-col">
-      <Image className="mb-5" src="/1M-logo.png" width={60} height={60} alt="" />
+    <div className="px-10 pb-20 flex flex-col">
       <div className="w-fit mb-10">
         <h1 className="text-2xl">اختار النوع</h1>
         <div className="w-full h-1 bg-gold"></div>

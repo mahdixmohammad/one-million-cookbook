@@ -5,7 +5,7 @@ import { getDatabase } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-// export const auth = getAuth(app);
+export const auth = getAuth(app);
 export const rtdb = getDatabase(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
