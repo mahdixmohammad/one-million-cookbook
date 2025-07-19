@@ -15,7 +15,7 @@ export default function NotAuthorizedPage() {
             <p className="text-xl mb-1">للوصول الى هذه الصفحة، قم بتسجيل الدخول باستخدام حساب معتمد.</p>
             <button
             onClick={handleClick}
-            className="bg-black text-white text-xl px-8 py-1 cursor-pointer rounded-md"
+            className="bg-black text-white text-xl px-8 py-1 cursor-pointer rounded-md hover:opacity-85 transition-all duration-150"
             >
             تسجيل الخروج
             </button>
