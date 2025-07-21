@@ -32,6 +32,9 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ type:
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
 
+    const existingData = snapshot.val();
+    const previousImage: string | undefined = existingData?.image;
+
     const body = await req.json();
     const { newItem, image, ingredients, instructions } = body;
 
@@ -41,17 +44,42 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ type:
     if (ingredients !== undefined) updates["ingredients"] = ingredients;
     if (instructions !== undefined) updates["instructions"] = instructions;
 
+    // Rename item
     if (newItem && newItem !== item) {
       const newRef = dbRef(rtdb, `types/${type}/items/${newItem}`);
-      await set(newRef, { ...(snapshot.val()), ...updates });
+
+      // Delete old image if new one provided and it's different
+      if (image && previousImage && image !== previousImage) {
+        try {
+          const oldImagePath = extractStoragePathFromUrl(previousImage);
+          const oldImageRef = storageRef(storage, oldImagePath);
+          await deleteObject(oldImageRef);
+        } catch (err) {
+          console.warn("Failed to delete old image during rename:", err);
+        }
+      }
+
+      await set(newRef, { ...existingData, ...updates });
       await remove(itemRef);
       return NextResponse.json({ message: "Item renamed and updated" });
     }
 
+    // Just update in place
+    if (image && previousImage && image !== previousImage) {
+      try {
+        const oldImagePath = extractStoragePathFromUrl(previousImage);
+        const oldImageRef = storageRef(storage, oldImagePath);
+        await deleteObject(oldImageRef);
+      } catch (err) {
+        console.warn("Failed to delete old image during update:", err);
+      }
+    }
+
     await update(itemRef, updates);
     return NextResponse.json({ message: "Item updated" });
+
   } catch (err) {
-    console.error(err);
+    console.error("Error updating item:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

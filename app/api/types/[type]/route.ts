@@ -85,7 +85,9 @@ export async function PATCH(request: Request, context: { params: Promise<{ type:
     }
 
     const data = oldSnapshot.val();
+    const previousImage: string | undefined = data.image;
 
+    // If renaming
     if (newType && newType !== oldType) {
       const newRef = dbRef(rtdb, `types/${newType}`);
       const newSnapshot = await get(newRef);
@@ -93,15 +95,40 @@ export async function PATCH(request: Request, context: { params: Promise<{ type:
         return NextResponse.json({ error: "A type with the new name already exists" }, { status: 409 });
       }
 
-      if (image) data.image = image;
+      if (image) {
+        // Delete old image if new image is different
+        if (previousImage && previousImage !== image) {
+          try {
+            const oldImagePath = extractStoragePathFromUrl(previousImage);
+            const oldImageRef = storageRef(storage, oldImagePath);
+            await deleteObject(oldImageRef);
+          } catch (err) {
+            console.warn("Failed to delete previous image during rename:", err);
+          }
+        }
+        data.image = image;
+      }
+
       await set(newRef, data);
       await remove(oldRef);
 
       return NextResponse.json({ success: true, message: `Renamed ${oldType} to ${newType}` });
     } else {
-      if (image) data.image = image;
-      await set(oldRef, data);
+      // Just update image (and delete old one if necessary)
+      if (image) {
+        if (previousImage && previousImage !== image) {
+          try {
+            const oldImagePath = extractStoragePathFromUrl(previousImage);
+            const oldImageRef = storageRef(storage, oldImagePath);
+            await deleteObject(oldImageRef);
+          } catch (err) {
+            console.warn("Failed to delete previous image during update:", err);
+          }
+        }
+        data.image = image;
+      }
 
+      await set(oldRef, data);
       return NextResponse.json({ success: true, message: `Updated type ${oldType}` });
     }
   } catch (err) {
