@@ -102,7 +102,7 @@ export default function Item({ type, item, data }: Props) {
       <div className="w-full h-16 flex mt-4 gap-2 md:gap-3 lg:gap-5">
         <Link
           className="w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:bg-gray-300 transition-all duration-150"
-          href={`/types/${type}/${item}`}
+          href={`/types/${type}/`}
         >
           العودة
         </Link>

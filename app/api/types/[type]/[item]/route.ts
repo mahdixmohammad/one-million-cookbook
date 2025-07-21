@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { rtdb } from "@/lib/firebase";
-import { ref, get, update, set, remove } from "firebase/database";
+import { rtdb, storage } from "@/lib/firebase";
+import { ref as dbRef, get, update, set, remove } from "firebase/database";
+import { ref as storageRef, deleteObject } from "firebase/storage";
 
 export async function GET(_: Request, context: { params: Promise<{ type: string; item: string }> }) {
   const { type, item } = await context.params;
 
   try {
-    const dbRef = ref(rtdb, `types/${type}/items/${item}`);
-    const snapshot = await get(dbRef);
+    const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
+    const snapshot = await get(itemRef);
 
     if (!snapshot.exists()) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
 
     const data = snapshot.val();
-
     return NextResponse.json(data);
   } catch (err) {
     console.error("Error fetching item:", err);
@@ -22,9 +22,9 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { type: string; item: string } }) {
-  const { type, item } = params;
-  const itemRef = ref(rtdb, `types/${type}/items/${item}`);
+export async function PATCH(req: NextRequest, context: { params: Promise<{ type: string, item: string }> }) {
+  const { type, item } = await context.params;
+  const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
 
   try {
     const snapshot = await get(itemRef);
@@ -35,34 +35,30 @@ export async function PATCH(req: NextRequest, { params }: { params: { type: stri
     const body = await req.json();
     const { newItem, image, ingredients, instructions } = body;
 
-    const updates: Record<string, any> = {};
+    const updates: Record<string, string> = {};
 
     if (image) updates["image"] = image;
     if (ingredients !== undefined) updates["ingredients"] = ingredients;
     if (instructions !== undefined) updates["instructions"] = instructions;
 
-    // If the name has changed, we must move data to a new key and delete the old
     if (newItem && newItem !== item) {
-      const newRef = ref(rtdb, `types/${type}/items/${newItem}`);
+      const newRef = dbRef(rtdb, `types/${type}/items/${newItem}`);
       await set(newRef, { ...(snapshot.val()), ...updates });
       await remove(itemRef);
       return NextResponse.json({ message: "Item renamed and updated" });
     }
 
-    // Otherwise, just update fields in-place
     await update(itemRef, updates);
     return NextResponse.json({ message: "Item updated" });
-
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { type: string; item: string } }) {
-  const { type, item } = params;
-
-  const itemRef = ref(rtdb, `types/${type}/items/${item}`);
+export async function DELETE(_: NextRequest, context: { params: Promise<{ type: string, item: string }> }) {
+  const { type, item } = await context.params;
+  const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
 
   try {
     const snapshot = await get(itemRef);
@@ -70,10 +66,31 @@ export async function DELETE(req: NextRequest, { params }: { params: { type: str
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
 
+    const itemData = snapshot.val();
+    const imageUrl: string | undefined = itemData?.image;
+
+    // Delete the image from Firebase Storage
+    if (imageUrl) {
+      try {
+        const storagePath = extractStoragePathFromUrl(imageUrl);
+        const imgRef = storageRef(storage, storagePath);
+        await deleteObject(imgRef);
+      } catch (error) {
+        console.warn("Image deletion failed:", error);
+      }
+    }
+
     await remove(itemRef);
-    return NextResponse.json({ message: "Item deleted successfully" });
+    return NextResponse.json({ message: "Item and its image deleted successfully" });
   } catch (error) {
     console.error("Delete error:", error);
     return NextResponse.json({ error: "Failed to delete item" }, { status: 500 });
   }
+}
+
+// Utility function to extract Firebase Storage path from download URL
+function extractStoragePathFromUrl(url: string): string {
+  const match = decodeURIComponent(url).match(/\/o\/(.+?)\?alt=media/);
+  if (!match || !match[1]) throw new Error("Failed to extract image path from URL");
+  return match[1]; // like "item-images/some-image.jpg"
 }

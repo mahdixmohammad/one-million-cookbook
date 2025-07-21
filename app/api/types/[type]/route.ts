@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { rtdb } from "@/lib/firebase";
-import { ref, get, set, remove } from "firebase/database";
+import { rtdb, storage } from "@/lib/firebase";
+import { ref as dbRef, get, set, remove } from "firebase/database";
+import { ref as storageRef, deleteObject } from "firebase/storage";
 
-export async function GET(_: Request, context: { params: Promise<{ type: string; }> }) {
+export async function GET(_: Request, context: { params: Promise<{ type: string }> }) {
   const { type } = await context.params;
 
   try {
-    const dbRef = ref(rtdb, `types/${type}`);
-    const snapshot = await get(dbRef);
+    const typeRef = dbRef(rtdb, `types/${type}`);
+    const snapshot = await get(typeRef);
 
     if (!snapshot.exists()) {
       return NextResponse.json({ error: "Type not found" }, { status: 404 });
     }
 
     const data = snapshot.val();
-
     return NextResponse.json(data);
   } catch (err) {
     console.error("Error fetching type:", err);
@@ -22,9 +22,8 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
   }
 }
 
-// create item under this type
-export async function POST(req: NextRequest, { params }: { params: { type: string } }) {
-  const { type } = params;
+export async function POST(req: NextRequest, context: { params: Promise<{ type: string }> }) {
+  const { type } = await context.params;
   const body = await req.json();
   const { name, image, ingredients, instructions } = body;
 
@@ -36,8 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: { type: strin
     return NextResponse.json({ error: "Image is required" }, { status: 400 });
   }
 
-
-  const itemRef = ref(rtdb, `types/${type}/items/${name}`);
+  const itemRef = dbRef(rtdb, `types/${type}/items/${name}`);
 
   try {
     const snapshot = await get(itemRef);
@@ -46,7 +44,7 @@ export async function POST(req: NextRequest, { params }: { params: { type: strin
     }
 
     await set(itemRef, {
-      image: image || "",
+      image,
       ingredients: ingredients || "",
       instructions: instructions || "",
     });
@@ -71,48 +69,36 @@ export async function PATCH(request: Request, context: { params: Promise<{ type:
   }
 
   if (newType && typeof newType !== "string") {
-    return NextResponse.json(
-      { error: "newType must be a string" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "newType must be a string" }, { status: 400 });
   }
 
   if (image && typeof image !== "string") {
-    return NextResponse.json(
-      { error: "image must be a string" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "image must be a string" }, { status: 400 });
   }
 
   try {
-    const oldRef = ref(rtdb, `types/${oldType}`);
-
-    // Check if the old type exists
+    const oldRef = dbRef(rtdb, `types/${oldType}`);
     const oldSnapshot = await get(oldRef);
+
     if (!oldSnapshot.exists()) {
       return NextResponse.json({ error: "Original type not found" }, { status: 404 });
     }
 
     const data = oldSnapshot.val();
 
-    // If renaming, check if newType already exists
     if (newType && newType !== oldType) {
-      const newRef = ref(rtdb, `types/${newType}`);
+      const newRef = dbRef(rtdb, `types/${newType}`);
       const newSnapshot = await get(newRef);
       if (newSnapshot.exists()) {
-        return NextResponse.json(
-          { error: "A type with the new name already exists" },
-          { status: 409 }
-        );
+        return NextResponse.json({ error: "A type with the new name already exists" }, { status: 409 });
       }
-      // Set new data path
+
       if (image) data.image = image;
       await set(newRef, data);
       await remove(oldRef);
 
       return NextResponse.json({ success: true, message: `Renamed ${oldType} to ${newType}` });
     } else {
-      // Just update data in place
       if (image) data.image = image;
       await set(oldRef, data);
 
@@ -128,20 +114,44 @@ export async function DELETE(_: Request, context: { params: Promise<{ type: stri
   const { type } = await context.params;
 
   try {
-    const typeRef = ref(rtdb, `types/${type}`);
+    const typePath = `types/${type}`;
+    const typeRef = dbRef(rtdb, typePath);
 
-    // Check if type exists
     const snapshot = await get(typeRef);
     if (!snapshot.exists()) {
       return NextResponse.json({ error: "Type not found" }, { status: 404 });
     }
 
-    // Delete the type
+    const typeData = snapshot.val();
+    const imageUrl: string | undefined = typeData?.image;
+
+    // Delete image from Firebase Storage if it exists
+    if (imageUrl) {
+      try {
+        const storagePath = extractStoragePathFromUrl(imageUrl);
+        const imgRef = storageRef(storage, storagePath);
+        await deleteObject(imgRef);
+      } catch (error) {
+        console.warn("Image deletion failed:", error);
+      }
+    }
+
+    // Delete the type from Realtime Database
     await remove(typeRef);
 
-    return NextResponse.json({ success: true, message: `Type '${type}' has been deleted.` });
+    return NextResponse.json({
+      success: true,
+      message: `Type '${type}' and its image (if any) have been deleted.`,
+    });
   } catch (err) {
     console.error("Error deleting type:", err);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
+}
+
+// Utility to extract storage path from Firebase image URL
+function extractStoragePathFromUrl(url: string): string {
+  const match = decodeURIComponent(url).match(/\/o\/(.+?)\?alt=media/);
+  if (!match || !match[1]) throw new Error("Failed to extract image path from URL");
+  return match[1]; // like "type-images/my-image.jpg"
 }

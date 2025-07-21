@@ -38,7 +38,7 @@ export default function DeleteItemModal(props: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">Delete Item</h2>
+        <h2 className="text-xl mb-4">حذف المنتج</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <p>هل أنت متأكد أنك تريد حذف <strong>{item}</strong> من <strong>{type}</strong>؟ لا يمكن التراجع عن هذا الإجراء.</p>
           <div className="flex gap-2 justify-end">

@@ -45,7 +45,7 @@ export default function CreateItemModal(props: Props) {
       await uploadBytes(fileRef, file);
       imageUrl = await getDownloadURL(fileRef);
 
-      const payload: any = {
+      const payload: { name: string, image: string, ingredients: string, instructions: string } = {
         name: trimmedName,
         image: imageUrl || "",
         ingredients: clean(ingredients).join("#"),

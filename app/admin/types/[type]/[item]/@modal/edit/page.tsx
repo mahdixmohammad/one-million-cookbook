@@ -89,7 +89,14 @@ export default function EditItemModal(props: Props) {
         imageUrl = await getDownloadURL(fileRef);
       }
 
-      const payload: any = {};
+      type payloadType = {
+        newItem?: string, 
+        image?: string, 
+        ingredients?: string, 
+        instructions?: string 
+      }
+
+      const payload: payloadType = {};
       if (isNameChanged) payload.newItem = name;
       if (isImageChanged && imageUrl) payload.image = imageUrl;
       if (isIngredientsChanged)
