@@ -19,7 +19,7 @@ export default function TypesLayout({
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        router.push("/login");
+        router.push("/login?from=types");
         return;
       }
 

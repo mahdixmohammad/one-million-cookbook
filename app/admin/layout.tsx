@@ -21,7 +21,7 @@ export default function AdminLayout({
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        router.push("/login");
+        router.push("/login?from=admin");
         return;
       }
 

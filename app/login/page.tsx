@@ -1,11 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function LoginPage() {
+type searchParams = {
+    searchParams: Promise<{ from: "types" | "admin" }>
+}
+
+export default function LoginPage( {searchParams} : searchParams) {
+  const { from = "types" } = use(searchParams);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -13,7 +18,7 @@ export default function LoginPage() {
   useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (user) => {
         if (user) {
-            router.push("/types");
+            router.push(`/${from}`);
             return;
         }});
 
@@ -24,7 +29,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/types"); // Redirect to main app
+      router.push(`/${from}`);
     } catch (err: any) {
       alert(err.message);
     }
