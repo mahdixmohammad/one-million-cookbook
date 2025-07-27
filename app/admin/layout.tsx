@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref, get, update } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 import AdminSideBar from "@/components/AdminSideBar";
@@ -26,6 +26,9 @@ export default function AdminLayout({
       }
 
       const db = getDatabase();
+      const userRef = ref(db, `users/${user.uid}`);
+      await update(userRef, { active: true }).catch(console.error);
+      
       const roleRef = ref(db, `users/${user.uid}/role`);
       const snap = await get(roleRef);
       const role = snap.val();
