@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import UserIcon from "./UserIcon";
 import NotificationIcon from "./NotificationIcon";
+import HomeIcon from "./HomeIcon";
 
 type AdminNavbarProps = {
   sidebarOpen: boolean;
@@ -15,6 +16,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
 
   const handleClick = () => {
     const splitPath = path.split("/");
+    if (splitPath.length === 3) return router.push("/admin");
     if (splitPath.length === 4) return router.push("/admin/types");
     if (splitPath.length === 5) {
       const type = splitPath[3];
@@ -37,7 +39,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
             />
           </svg>
         </div>
-        {path !== "/admin/types" && (
+        {path !== "/admin" && (
           <button
             onClick={handleClick}
             className="text-center w-22 rounded-2xl h-[34px] relative text-sm group cursor-pointer shadow border-2 border-gray-100 overflow-hidden"
@@ -59,10 +61,10 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
           </button>
         )}
       </div>
-
       <div className="flex gap-4 items-center">
         <NotificationIcon />
         <UserIcon />
+        <HomeIcon />
       </div>
     </div>
   );
