@@ -41,7 +41,7 @@ function SideBarLink({name, href}: SideBarLinkProps) {
     return (
         <Link href={"/admin" + href} className={`text-xl flex justify-center items-center gap-2 h-12 rounded-md transition-all duration-200
         ${active ? "bg-gold text-white" : "hover:bg-gray-200"}`}>
-            <svg className="w-8 absolute right-15" fill="none" strokeWidth={1.5} stroke={active ? "white" : "black"} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <svg className="w-7 absolute right-15" fill="none" strokeWidth={1.5} stroke={active ? "white" : "black"} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
             </svg>
             <h3>{name}</h3>

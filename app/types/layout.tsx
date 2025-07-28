@@ -67,7 +67,7 @@ export default function TypesLayout({
     return () => unsub();
   }, [router]);
 
-  const { timeLeft } = useInactivityLogout(uid);
+  useInactivityLogout(uid);
 
   if (loading)
     return (
@@ -76,20 +76,10 @@ export default function TypesLayout({
       </div>
     );
 
-  const formatTime = (ms: number) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const mins = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-    const secs = String(totalSeconds % 60).padStart(2, "0");
-    return `${mins}:${secs}`;
-  };
-
   return (
     <>
       <NavBar />
       {children}
-      <div className="fixed bottom-2 right-2 bg-black text-white text-xs px-2 py-1 rounded shadow">
-        Inactivity logout in: {formatTime(timeLeft)}
-      </div>
     </>
   );
 }

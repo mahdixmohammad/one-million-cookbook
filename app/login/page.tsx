@@ -68,7 +68,6 @@ export default function LoginPage({ searchParams }: searchParams) {
   return (
     <form
       onSubmit={handleSubmit}
-      dir="ltr"
       className="p-4 max-w-md mx-auto h-screen flex flex-col justify-center space-y-4"
     >
       <Image
@@ -79,17 +78,19 @@ export default function LoginPage({ searchParams }: searchParams) {
         height={75}
       />
       <input
-        className="w-full border p-2"
+        className={`w-full border p-2 ${identifier ? "text-left" : "text-right"}`}
         type="text"
-        placeholder="Email or Username"
+        placeholder="البريد الإلكتروني أو اسم المستخدم"
+        dir={identifier ? "ltr" : "rtl"} // RTL for placeholder, LTR when typing
         value={identifier}
         onChange={(e) => setIdentifier(e.target.value)}
         required
       />
       <input
-        className="w-full border p-2"
+        className={`w-full border p-2 ${password ? "text-left" : "text-right"}`}
         type="password"
-        placeholder="Password"
+        placeholder="كلمة المرور"
+        dir={password ? "ltr" : "rtl"}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -98,7 +99,7 @@ export default function LoginPage({ searchParams }: searchParams) {
         type="submit"
         className="w-full font-bold bg-gold text-white p-3 cursor-pointer hover:opacity-85 transition-all duration-150"
       >
-        Login
+        تسجيل الدخول
       </button>
     </form>
   );
