@@ -5,7 +5,7 @@ export default function UserDropdown() {
   const handleClick = async () => {
     if (!auth.currentUser) return;
 
-    // Call logout API to set active = false
+    // Call logout API to set active = false, disconnected = false
     await fetch("/api/auth/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

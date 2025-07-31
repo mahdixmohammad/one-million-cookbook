@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import LoadingImage from "./LoadingImage";
 
 type Props = {
   type: string;
@@ -46,17 +46,15 @@ export default function Item({ type, item, data }: Props) {
   };
 
   return (
-    <div className="px-4 md:px-10 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
-      <div>
-        <Image className="w-[200px] h-auto object-contain mb-0" src={data.image} width={60} height={60} alt="" />
-      </div>
-      <div className="w-full mb-5">
+    <div className="px-4 -mt-4 md:px-10 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
+      <LoadingImage className="w-[200px]" position="center" src={data.image} width={60} height={60} alt="" />
+      <div className="w-full mb-2">
         <h1 className="text-2xl text-center mb-2">{item}</h1>
         <div className="w-full h-1 bg-gold"></div>
       </div>
       <div className="w-full sm:min-h-[500px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-gray-700 text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
+        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">المكونات</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
@@ -101,20 +99,27 @@ export default function Item({ type, item, data }: Props) {
       </div>
       <div className="w-full h-16 flex mt-4 gap-2 md:gap-3 lg:gap-5">
         <Link
-          className="w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:bg-gray-300 transition-all duration-150"
+          className="w-1/2 h-full bg-gray-300 flex justify-center items-center rounded-lg font-bold hover:opacity-85 transition-all duration-150"
           href={`/types/${type}/`}
         >
           العودة
+          <svg width={40} height={40} fill="none" strokeWidth={1.5} stroke="rgb(205, 2, 2)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
         </Link>
         <button
-          className={`w-1/2 h-full bg-gold flex justify-center items-center rounded-lg font-bold transition-colors duration-200 ${
+          className={`w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 ${
             allIngredientsChecked && allInstructionsChecked
-              ? " text-black cursor-pointer"
+              ? " cursor-pointer hover:opacity-85 "
               : "opacity-40 cursor-not-allowed"
           }`}
           disabled={!(allIngredientsChecked && allInstructionsChecked)}
         >
+          
           اكمال
+          <svg width={40} height={40} fill="none" strokeWidth={1.5} stroke="rgb(2, 205, 63)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg>
         </button>
       </div>
     </div>

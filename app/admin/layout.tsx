@@ -27,7 +27,7 @@ export default function AdminLayout({
 
       const db = getDatabase();
       const userRef = ref(db, `users/${user.uid}`);
-      await update(userRef, { active: true }).catch(console.error);
+      await update(userRef, { active: true, disconnected: false }).catch(console.error);
       
       const roleRef = ref(db, `users/${user.uid}/role`);
       const snap = await get(roleRef);

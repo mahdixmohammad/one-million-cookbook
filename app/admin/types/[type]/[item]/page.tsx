@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LoadingImage from "@/components/LoadingImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -43,7 +43,7 @@ export default async function Type(props: Props) {
                     <div className="grid auto-rows-auto grid-cols-1 gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto_200px_1fr] w-full px-8 lg:px-6 py-5 lg:py-10 bg-gray-100 rounded-xl items-center transition-all duration-150">
                         <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">الصورة</h3>
-                            <Image src={itemData["image"]} alt="" width={90} height={90}></Image>
+                            <LoadingImage position="start" src={itemData["image"]} alt="" width={90} height={90}></LoadingImage>
                         </div>
                         <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-2">
                             <h3 className="lg:w-full lg:absolute lg:-top-[66px] text-gray-600 text-center">الاسم</h3>

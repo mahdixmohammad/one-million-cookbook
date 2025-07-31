@@ -68,19 +68,19 @@ export default function LoginPage({ searchParams }: searchParams) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 max-w-md mx-auto h-screen flex flex-col justify-center space-y-4"
+      className="p-4 max-w-md mx-auto h-[90vh] flex flex-col justify-center space-y-4"
     >
       <Image
         className="mx-auto"
-        src="/1M-logo.png"
+        src="/one-million-logo.jpg"
         alt=""
-        width={75}
-        height={75}
+        width={200}
+        height={200}
       />
       <input
         className={`w-full border p-2 ${identifier ? "text-left" : "text-right"}`}
         type="text"
-        placeholder="البريد الإلكتروني أو اسم المستخدم"
+        placeholder="اسم المستخدم"
         dir={identifier ? "ltr" : "rtl"} // RTL for placeholder, LTR when typing
         value={identifier}
         onChange={(e) => setIdentifier(e.target.value)}
@@ -97,7 +97,7 @@ export default function LoginPage({ searchParams }: searchParams) {
       />
       <button
         type="submit"
-        className="w-full font-bold bg-gold text-white p-3 cursor-pointer hover:opacity-85 transition-all duration-150"
+        className="w-full font-bold bg-black text-white p-3 cursor-pointer hover:opacity-85 transition-all duration-150"
       >
         تسجيل الدخول
       </button>

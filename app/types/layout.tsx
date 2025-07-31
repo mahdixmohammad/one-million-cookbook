@@ -39,8 +39,12 @@ export default function TypesLayout({
 
         const userData = userSnap.val();
 
-        // Check active flag
-        if (userData.active === false) {
+        if (userData.disconnected === true) {
+          await fetch("/api/auth/logout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ uid: user.uid }),
+          });
           await signOut(auth);
           router.push("/login?from=types");
           return;
@@ -55,7 +59,7 @@ export default function TypesLayout({
         setUid(user.uid);
         setLoading(false);
 
-        onDisconnect(ref(db, `users/${user.uid}`)).update({ active: false });
+        onDisconnect(ref(db, `users/${user.uid}`)).update({ disconnected: true });
 
       } catch (error) {
         console.error("Error checking user active status:", error);

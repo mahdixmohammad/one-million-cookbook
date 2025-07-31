@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     // Update active status to false
     const userRef = ref(rtdb, `users/${uid}`);
-    await update(userRef, { active: false });
+    await update(userRef, { active: false, disconnected: false });
 
     return NextResponse.json({ success: true });
   } catch (err: any) {

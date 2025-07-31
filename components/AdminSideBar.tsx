@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BookOpenIcon, HomeIcon } from "@heroicons/react/24/outline";
 
 type SidebarProps = {
   sidebarOpen: boolean;
@@ -12,20 +13,19 @@ type SidebarProps = {
 export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
     return (
         <div className={`z-20 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'right-0 absolute md:relative' : 'absolute -right-[100vw] md:-right-[250px]'} w-screen  md:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
-            <div className="w-[100%] h-16 flex items-center justify-center">
-                <Image src="/1M-logo-black.png" alt="" width={50} height={50}></Image>
-            </div>
+            <Link href="/admin" className="w-[100%] py-2 flex items-center justify-center">
+                <Image src="/one-million-logo.jpg" alt="" width={150} height={50}></Image>
+            </Link>
             {sidebarOpen &&
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="absolute top-4 right-2 w-6 h-6 cursor-pointer flex flex-col justify-center items-center">
-                <div className="absolute w-full h-[3px] bg-black rotate-45"></div>
-                <div className="absolute w-full h-[3px] bg-black rotate-135"></div>
+                <div className="absolute w-full h-[3px] bg-[rgb(50,50,50)] rotate-45"></div>
+                <div className="absolute w-full h-[3px] bg-[rgb(50,50,50)] rotate-135"></div>
             </button>
             }
-            <ul className="flex flex-col w-full mt-4">
-                <li>
-                    <SideBarLink name="الأنواع" href="/types"/>
-                </li>
-            </ul>
+            <div className="w-full mt-4 flex flex-col gap-0">
+                <SideBarLink name="القائمة الرئيسية" href="" icon={<HomeIcon />} setSidebarOpen={setSidebarOpen}/>
+                <SideBarLink name="الأنواع" href="/types" icon={<BookOpenIcon />} setSidebarOpen={setSidebarOpen}/>
+            </div>
         </div>
     )
 }
@@ -33,23 +33,26 @@ export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarPro
 type SideBarLinkProps = {
     name: string,
     href: string,
+    icon: React.ReactNode,
+    setSidebarOpen: (open: boolean) => void;
 }
-function SideBarLink({name, href}: SideBarLinkProps) {
+
+function SideBarLink({name, href, icon, setSidebarOpen}: SideBarLinkProps) {
     const pathname = usePathname();
     const active = (pathname === `/admin${href}`) ? true : false
-    
+
     return (
-        <Link href={"/admin" + href} className={`text-xl flex justify-center items-center gap-2 h-12 rounded-md transition-all duration-200
-        ${active ? "bg-gold text-white" : "hover:bg-gray-200"}`}>
-            <svg className="w-7 absolute right-15" fill="none" strokeWidth={1.5} stroke={active ? "white" : "black"} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-            </svg>
+        <Link onClick={() => setSidebarOpen(false)} href={"/admin" + href} className={`text-xl text-[rgb(50,50,50)] flex items-center gap-4 h-10 rounded-xl transition-all duration-200 pr-2 
+        ${active ? "bg-[rgb(50,50,50)] text-white" : "hover:bg-gray-200"}`}>
+            <div className="w-7">
+                {icon}
+            </div>
             <h3>{name}</h3>
             <div className="absolute left-2 flex flex-col justify-between h-3">
                 <div className={`w-[15px] h-1 rotate-135
-                ${active ? "bg-white" : "bg-black"}`}></div>
+                ${active ? "bg-white" : "bg-[rgb(50,50,50)]"}`}></div>
                 <div className={`w-[15px] h-1 rotate-45
-                ${active ? "bg-white" : "bg-black"}`}></div>
+                ${active ? "bg-white" : "bg-[rgb(50,50,50)]"}`}></div>
             </div>
         </Link>
     )

@@ -3,7 +3,8 @@
 import { useRouter, usePathname } from "next/navigation";
 import UserIcon from "./UserIcon";
 import NotificationIcon from "./NotificationIcon";
-import HomeIcon from "./HomeIcon";
+import HomeButton from "./HomeButton";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 type AdminNavbarProps = {
   sidebarOpen: boolean;
@@ -31,13 +32,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="rounded-full shadow border-2 border-gray-100 cursor-pointer p-[2px] w-10 h-10"
         >
-          <svg fill="none" strokeWidth={1.5} stroke="black" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
+          <Bars3Icon />
         </div>
         {path !== "/admin" && (
           <button
@@ -64,7 +59,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
       <div className="flex gap-4 items-center">
         <NotificationIcon />
         <UserIcon />
-        <HomeIcon />
+        <HomeButton />
       </div>
     </div>
   );

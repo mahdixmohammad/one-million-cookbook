@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LoadingImage from "@/components/LoadingImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -43,7 +43,7 @@ export default async function TypePage(props: Props) {
         </div>
         <div className="w-full flex flex-col gap-2">
           <div className="grid-cols-[125px_100px_1fr] xs:grid-cols-[190px_175px_1fr] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 transition-all duration-150">
-            <Image className="" src={typeData["image"]} alt="" width={90} height={90}></Image>
+            <LoadingImage position="start" src={typeData["image"]} alt="" width={90} height={90}></LoadingImage>
             <h3>{type}</h3>
             <h3>{typeData?.["items"] ? Object.keys(typeData["items"]).length : 0}</h3>
           </div>
@@ -66,7 +66,7 @@ export default async function TypePage(props: Props) {
         <div className="w-full flex flex-col gap-2">
           {typeData["items"] && Object.keys(typeData["items"]).map((itemName, i) => (
             <Link href={`/admin/types/${type}/${itemName}`} key={i} className="grid-cols-[125px_1fr_auto] xs:grid-cols-[190px_1fr_auto] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 hover:bg-gray-200 transition-all duration-150">
-              <Image className="" src={typeData.items[itemName].image} alt="" width={90} height={90}></Image>
+              <LoadingImage position="start" src={typeData.items[itemName].image} alt="" width={90} height={90}></LoadingImage>
               <h3>{itemName}</h3>
               <svg className="w-8 h-8 rounded-lg hover:bg-gray-100 transition-all duration-150" fill="none" strokeWidth={1.5} stroke="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />

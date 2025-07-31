@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LoadingImage from "@/components/LoadingImage";
 import Link from "next/link";
 
 export default async function Types() {
@@ -9,7 +9,7 @@ export default async function Types() {
   const typesData = await res.json();
 
     return (
-        <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg px-3 py-3">
+        <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg p-3">
             <div className="px-2 flex gap-2 items-center">
                 <h3 className="font-bold text-lg">الأنواع</h3>
                 <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
@@ -27,7 +27,7 @@ export default async function Types() {
             <div className="w-full flex flex-col gap-2">
                 {Object.keys(typesData).map((typeName, i) => (
                     <Link href={`/admin/types/${typeName}`} key={i} className="grid-cols-[125px_100px_1fr_auto] xs:grid-cols-[190px_175px_1fr_auto] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 hover:bg-gray-200 transition-all duration-150">
-                        <Image className="" src={typesData[typeName]["image"]} alt="" width={90} height={90}></Image>
+                        <LoadingImage position="start" src={typesData[typeName]["image"]} alt="" width={90} height={90}></LoadingImage>
                         <h3>{typeName}</h3>
                         <h3>{typesData[typeName]?.["items"] ? Object.keys(typesData[typeName]["items"]).length : 0}</h3>
                         <svg className="w-8 h-8 rounded-lg hover:bg-gray-100 transition-all duration-150" fill="none" strokeWidth={1.5} stroke="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
