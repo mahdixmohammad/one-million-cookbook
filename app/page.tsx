@@ -9,7 +9,7 @@ export default function HomePage() {
                 <Link href="/types">
                     <button className="bg-gray-300 w-60 py-2 rounded-md cursor-pointer hover:opacity-85 transition-all duration-150">دخول الموظف</button>
                 </Link>
-                <Link href="/admin/types">
+                <Link href="/admin/">
                     <button className="bg-[rgb(50,50,50)] text-white w-60 py-2 rounded-md cursor-pointer hover:opacity-85 transition-all duration-150">دخول المسؤول</button>
                 </Link>
             </div>

@@ -1,43 +1,67 @@
 import LoadingImage from "@/components/LoadingImage";
+import { EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default async function Types() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`, {
-    cache: "no-store",
-  });
+        cache: "no-store",
+    });
 
-  const typesData = await res.json();
+    const typesData = await res.json();
 
     return (
-        <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg p-3">
-            <div className="px-2 flex gap-2 items-center">
-                <h3 className="font-bold text-lg">الأنواع</h3>
-                <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
-                    <svg className="w-5 h-5" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                    انشاء
-                </Link>
-            </div>
-            <div className="w-full items-center px-3 xs:px-6 mt-4 mb-2 grid grid-cols-[125px_100px_1fr_auto] xs:grid-cols-[190px_175px_1fr_auto] text-gray-600">
-                <h3 className="ml-4">الصورة</h3>
-                <h3 className="">الاسم</h3>
-                <h3 className="-ml-4">المنتجات</h3>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-                {Object.keys(typesData).map((typeName, i) => (
-                    <Link href={`/admin/types/${typeName}`} key={i} className="grid-cols-[125px_100px_1fr_auto] xs:grid-cols-[190px_175px_1fr_auto] w-full h-24 bg-gray-100 rounded-xl grid grid-rows-1 items-center px-3 xs:px-6 hover:bg-gray-200 transition-all duration-150">
-                        <LoadingImage position="start" src={typesData[typeName]["image"]} alt="" width={90} height={90}></LoadingImage>
-                        <h3>{typeName}</h3>
-                        <h3>{typesData[typeName]?.["items"] ? Object.keys(typesData[typeName]["items"]).length : 0}</h3>
-                        <svg className="w-8 h-8 rounded-lg hover:bg-gray-100 transition-all duration-150" fill="none" strokeWidth={1.5} stroke="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
+        <div className="flex flex-col gap-10">
+            <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg xs:px-3 py-3">
+                <div className="flex gap-2 items-center px-3">
+                    <h3 className="font-bold text-lg">الأنواع</h3>
+                    <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-7 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
+                        <PlusIcon className="w-5" />
+                        انشاء
                     </Link>
-                ))}
-            </div>
-            <div className="mt-5 ml-4 mb-2">
-                {Object.keys(typesData).length} نتائج
+                </div>
+                <div className="overflow-x-auto mt-3 rounded-xl">
+                    <table className="w-full min-w-[300px] border-separate border-spacing-y-2">
+                        <thead className="text-right text-gray-600 bg-white">
+                            <tr>
+                                <th className="pr-5 font-normal">الصورة</th>
+                                <th className="font-normal">الاسم</th>
+                                <th className="font-normal">المنتجات</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(typesData).map((typeName, i) => (
+                            <tr key={i} className="bg-gray-100 h-24 hover:bg-gray-200 transition-all duration-150">
+                                <td className="rounded-r-xl sm:min-w-[150px]">
+                                    <Link className=" w-full h-full" href={`/admin/types/${typeName}`}>
+                                        <LoadingImage className="h-24 object-contain" position="start" src={typesData[typeName]["image"]} alt="" width={90} height={90}></LoadingImage>
+                                    </Link>
+                                </td>
+                                <td className="sm:min-w-[150px]">
+                                    <Link href={`/admin/types/${typeName}`}>
+                                        <h3 className="h-24 flex items-center">{typeName}</h3>
+                                    </Link>
+                                </td>
+                                <td className="sm:min-w-[150px]">
+                                    <Link href={`/admin/types/${typeName}`}>
+                                        <h3 className="h-24 flex items-center">{typesData[typeName]?.["items"] ? Object.keys(typesData[typeName]["items"]).length : 0}</h3>
+                                    </Link>
+                                </td>
+                                <td className="rounded-l-xl pl-5">
+                                    <Link href={`/admin/types/${typeName}`}>
+                                        <div className="h-24 flex justify-end items-center">
+                                            <EllipsisHorizontalIcon className="w-8 h-8 text-gray-500 rounded-lg hover:bg-gray-50 transition-all duration-150" />
+                                        </div>
+                                    </Link>
+                                </td>
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="px-3">
+                    {Object.keys(typesData).length} نتائج
+                </div>
             </div>
         </div>
     )
