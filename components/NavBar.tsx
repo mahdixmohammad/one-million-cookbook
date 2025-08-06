@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import UserIcon from "./UserIcon";
+import UserButton from "./UserButton";
 import HomeIcon from "./HomeButton";
 
 export default function NavBar() {
@@ -10,7 +10,7 @@ export default function NavBar() {
                 <Image src="/one-million-logo.jpg" width={140} height={50} alt="" />
             </Link>
             <div className="flex gap-4">
-                <UserIcon />
+                <UserButton />
                 <HomeIcon />
             </div>
         </nav>

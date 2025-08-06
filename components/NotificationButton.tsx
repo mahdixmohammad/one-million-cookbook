@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import NotificationDropdown from "./NotificationDropdown";
 import { BellIcon } from "@heroicons/react/24/outline";
 
-export default function NotificationIcon() {
+export default function NotificationButton() {
     const [dropdown, setDropDown] = useState(false);
     const dropdownTimeout = useRef<NodeJS.Timeout | null>(null);
     

@@ -3,7 +3,7 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import UserDropdown from "./UserDropdown";
 import { useState, useRef } from "react";
 
-export default function UserIcon() {
+export default function UserButton() {
     const [userDropdown, setUserDropDown] = useState(false);
     const dropdownTimeout = useRef<NodeJS.Timeout | null>(null);
     

@@ -77,7 +77,7 @@ export default async function TypePage(props: Props) {
             </thead>
             <tbody>
             {typeData["items"] && Object.keys(typeData["items"]).map((itemName, i) => (
-              <tr key={i} className="bg-gray-100 h-24">
+              <tr key={i} className="bg-gray-100 h-24 hover:bg-gray-200 transition-all duration-150">
                 <td className="rounded-r-xl sm:min-w-[150px]">
                   <Link href={`/admin/types/${type}/${itemName}`}>
                     <LoadingImage className="h-24 object-contain" position="start" src={typeData.items[itemName].image} alt="" width={90} height={90}></LoadingImage>
