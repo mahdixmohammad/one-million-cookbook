@@ -12,7 +12,6 @@ export default function NotificationDropdown() {
 
     onValue(usersRef, (snapshot) => {
       const usersData = snapshot.val() || {};
-      // Count how many users have active === true
       const count = Object.values(usersData).filter(
         (user: any) => user.active === true
       ).length;

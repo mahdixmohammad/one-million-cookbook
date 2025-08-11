@@ -16,10 +16,10 @@ export default function AdminSideBar({ sidebarOpen, setSidebarOpen }: SidebarPro
             {sidebarOpen && (
             <div
                 onClick={() => setSidebarOpen(false)}
-                className="fixed inset-0 bg-black/20 backdrop-blur-xs z-10 block lg:hidden"
+                className="fixed inset-0 bg-black/20 backdrop-blur-xs z-20 block lg:hidden"
             />
             )}
-            <div className={`z-20 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'right-0 absolute lg:relative' : 'absolute -right-[100vw] xs:-right-[250px]'} w-screen  xs:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
+            <div className={`z-30 h-screen bg-white transition-all duration-300 ${sidebarOpen ? 'right-0 absolute lg:relative' : 'absolute -right-[100vw] xs:-right-[250px]'} w-screen  xs:w-[250px] h-screen border-r-[1px] shadow-[0px_0px_5px_0.5px_rgba(0,0,0,0.15)] border-gray-300 text-black flex flex-col items-center`}>
                 <Link href="/admin" className="w-[100%] py-2 flex items-center justify-center">
                     <Image src="/one-million-logo.jpg" alt="" width={150} height={50}></Image>
                 </Link>
