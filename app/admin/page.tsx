@@ -55,7 +55,7 @@ function ActiveUsersCard() {
 
     return (
         <div className="sm:col-span-3 col-span-1 bg-white w-full h-full shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg xs:px-3 py-3">
-            <div className="flex gap-2">
+            <div className="flex gap-2 px-3 xs:px-0">
                 <UsersIcon className="w-6" />
                 <h3 className="font-bold text-lg">المستخدمون النشطون</h3>
             </div>
@@ -130,11 +130,11 @@ function NumberOfCompletionsCard() {
 
 function CompletionsCard() {
   const [completions, setCompletions] = useState<
-    { image: string; type: string; item: string; date: string; userId: string, username: string }[]
+    { image: string; type: string; item: string; date: string; uid: string, username: string }[]
   >([]);
 
-  const getUsername = async (userId: string) => {
-    const usernameRef = ref(rtdb, `/users/${userId}/username`);
+  const getUsername = async (uid: string) => {
+    const usernameRef = ref(rtdb, `/users/${uid}/username`);
     const snapshot = await get(usernameRef);
     return snapshot.val();
   };
@@ -155,7 +155,7 @@ function CompletionsCard() {
       const completionsWithImages = await Promise.all(
         completionsArray.map(async (completion: any) => {
           const image = await getImage(completion.type, completion.item);
-          const username = await getUsername(completion.userId)
+          const username = await getUsername(completion.uid)
           return { ...completion, image, username };
         })
       );
@@ -168,7 +168,7 @@ function CompletionsCard() {
 
   return (
     <div className="col-span-1 sm:col-span-5 bg-white shadow rounded-lg xs:px-3 py-3">
-      <div className="flex gap-2">
+      <div className="flex gap-2 px-3 xs:px-0">
         <ClockIcon className="w-6" />
         <h3 className="font-bold text-lg">العمليات الأخيرة</h3>
       </div>

@@ -2,6 +2,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import LoadingImage from "./LoadingImage";
+import { ArrowLeftIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { getAuth } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 type Props = {
   type: string;
@@ -14,6 +17,8 @@ type Props = {
 };
 
 export default function Item({ type, item, data }: Props) {
+  const router = useRouter();
+
   const ingredientList = (data.ingredients || "")
     .split("#")
     .map((s) => s.trim())
@@ -29,6 +34,7 @@ export default function Item({ type, item, data }: Props) {
   const [ingredientChecks, setIngredientChecks] = useState(
     Object.fromEntries(ingredientList.map((i) => [i.id, false]))
   );
+
   const [instructionChecks, setInstructionChecks] = useState(
     Object.fromEntries(instructionList.map((i) => [i.id, false]))
   );
@@ -45,8 +51,43 @@ export default function Item({ type, item, data }: Props) {
     setInstructionChecks((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const completeAllIngredients = () => {
+    setIngredientChecks(
+      Object.fromEntries(
+        ingredientList.map((i) => [i.id, true])
+      )
+    );
+  };
+
+  const completeAllInstructions = () => {
+    setInstructionChecks(
+      Object.fromEntries(
+        instructionList.map((i) => [i.id, true])
+      )
+    );
+  };
+
+  const completeItem = async () => {
+    try {
+      const auth = getAuth();
+      const uid = auth.currentUser!.uid;
+
+      const res = await fetch("/api/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({ type, item, uid })
+      })
+
+      if (!res.ok) throw new Error("Failed to complete");
+
+      router.push("/types")
+    } catch (e: any) {
+      alert(e.message);
+    }
+  }
+
   return (
-    <div className="px-4 -mt-4 md:px-10 pb-8 flex flex-col items-center text-md md:text-lg lg:text-xl">
+    <div className="px-4 -mt-4 md:px-10 pb-6 flex flex-col items-center text-md md:text-lg lg:text-xl">
       <LoadingImage className="w-[200px]" position="center" src={data.image} width={60} height={60} alt="" />
       <div className="w-full mb-2">
         <h1 className="text-2xl text-center mb-2">{item}</h1>
@@ -54,7 +95,7 @@ export default function Item({ type, item, data }: Props) {
       </div>
       <div className="w-full sm:min-h-[500px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] text-white px-2 pr-8 lg:px-6 py-4 flex flex-col items-center">
+        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] text-white px-2 lg:px-4 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">المكونات</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
@@ -97,30 +138,44 @@ export default function Item({ type, item, data }: Props) {
           </ol>
         </div>
       </div>
-      <div className="w-full h-16 flex mt-4 gap-2 md:gap-3 lg:gap-5">
+      <div className="w-full h-30 xs:h-16 flex flex-col xs:flex-row mt-4 gap-3 xs:gap-2 md:gap-3 lg:gap-4">
         <Link
-          className="w-1/2 h-full bg-gray-300 flex justify-center items-center rounded-lg font-bold hover:opacity-85 transition-all duration-150"
+          className="w-full xs:w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:opacity-85 transition-all duration-150"
           href={`/types/${type}/`}
         >
-          العودة
-          <svg width={40} height={40} fill="none" strokeWidth={1.5} stroke="rgb(205, 2, 2)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+          إلغاء
+          <XMarkIcon className="w-10 text-[rgb(205,2,2)]" />
         </Link>
-        <button
-          className={`w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 ${
-            allIngredientsChecked && allInstructionsChecked
-              ? " cursor-pointer hover:opacity-85 "
-              : "opacity-40 cursor-not-allowed"
-          }`}
-          disabled={!(allIngredientsChecked && allInstructionsChecked)}
+        {
+          !allIngredientsChecked && 
+          <button
+          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
+          onClick={completeAllIngredients}
         >
-          
+          التالي
+          <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
+          </button>
+        }
+        {
+          allIngredientsChecked && !allInstructionsChecked && 
+          <button
+          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
+          onClick={completeAllInstructions}
+        >
+          التالي
+          <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
+          </button>
+        }
+        {
+          allIngredientsChecked && allInstructionsChecked &&
+        <button
+          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
+          onClick={completeItem}
+        >
           اكمال
-          <svg width={40} height={40} fill="none" strokeWidth={1.5} stroke="rgb(2, 205, 63)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-          </svg>
+          <CheckIcon className="w-10 text-[rgb(2,205,63)]" />
         </button>
+        }
       </div>
     </div>
   );
