@@ -24,7 +24,7 @@ export default async function Type(props: Props) {
   const instructionsList = itemData.instructions.split("#");
 
   return (
-        <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg px-3 py-3">
+        <div className="w-[98%] mx-auto mt-4 bg-white shadow rounded-lg px-3 py-3">
                 <div className="px-2 flex gap-2 items-center">
                     <h3 className="font-bold text-lg">المنتج</h3>
                     <Link href={`/admin/types/${type}/${item}/edit`} className="border-[0px] bg-gray-500 text-white border-gray-600 w-22 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-gray-600 transition-all duration-150">

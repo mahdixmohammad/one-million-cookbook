@@ -11,7 +11,7 @@ export default async function Types() {
 
     return (
         <div className="flex flex-col gap-10">
-            <div className="w-[98%] mx-auto mt-4 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg xs:px-3 py-3">
+            <div className="w-[98%] mx-auto mt-4 bg-white shadow rounded-lg xs:px-3 py-3">
                 <div className="flex gap-2 items-center px-3">
                     <h3 className="font-bold text-lg">الأنواع</h3>
                     <Link href="/admin/types/create" className="bg-green-700 text-white w-21 h-7 flex justify-center items-center rounded-xl text-sm hover:bg-green-800 transition-all duration-150">
@@ -31,7 +31,7 @@ export default async function Types() {
                         </thead>
                         <tbody>
                             {Object.keys(typesData).map((typeName, i) => (
-                            <tr key={i} className="bg-gray-100 h-24 hover:bg-gray-200 transition-all duration-150">
+                            <tr key={i} className="bg-gray-100 h-24 hover:opacity-80 transition-all duration-150">
                                 <td className="rounded-r-xl sm:min-w-[150px]">
                                     <Link className=" w-full h-full" href={`/admin/types/${typeName}`}>
                                         <LoadingImage className="h-24 object-contain" position="start" src={typesData[typeName]["image"]} alt="" width={90} height={90}></LoadingImage>

@@ -26,7 +26,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
   };
 
   return (
-    <div className="h-[64px] px-5 border-b bg-white border-gray-300 flex items-center justify-between">
+    <div className="h-[64px] px-5 shadow-xs bg-white border-gray-300 flex items-center justify-between">
       <div className="flex gap-2 items-center">
         <div
           onClick={() => setSidebarOpen(!sidebarOpen)}

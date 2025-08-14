@@ -54,7 +54,7 @@ function ActiveUsersCard() {
     }, [])
 
     return (
-        <div className="sm:col-span-3 col-span-1 bg-white w-full h-full shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg xs:px-3 py-3">
+        <div className="sm:col-span-3 col-span-1 shadow bg-white w-full h-full  rounded-lg xs:px-3 py-3">
             <div className="flex gap-2 px-3 xs:px-0">
                 <UsersIcon className="w-6" />
                 <h3 className="font-bold text-lg">المستخدمون النشطون</h3>
@@ -71,7 +71,7 @@ function ActiveUsersCard() {
                     </thead>
                     <tbody>
                         {users.map((user, i) => (
-                        <tr key={i} className="bg-gray-100 h-11 hover:bg-gray-200 transition-all duration-150">
+                        <tr key={i} className="bg-gray-100 h-11 hover:opacity-80 transition-all duration-150">
                             <td className="rounded-r-lg pr-2">
                                 <h3>{user.username}</h3>
                             </td>
@@ -116,7 +116,7 @@ function NumberOfCompletionsCard() {
     }, []);
 
     return (
-        <div className="sm:col-span-2 col-span-1 bg-white shadow-[0px_0px_10px_0.5px_rgba(0,0,0,0.15)] rounded-lg p-3">
+        <div className="sm:col-span-2 col-span-1 bg-white shadow rounded-lg p-3">
             <div className="flex gap-2">
                 <CheckIcon className="w-6" />
                 <h3 className="font-bold text-lg">إجمالي العمليات اليوم</h3>
@@ -187,7 +187,7 @@ function CompletionsCard() {
             {completions.map((completion, i) => (
               <tr
                 key={i}
-                className="bg-gray-100 h-15 hover:bg-gray-200 transition-all duration-150"
+                className="bg-gray-100 h-15 hover:opacity-80 transition-all duration-150"
               >
                 <td className="rounded-r-lg pr-2">
                   {completion.image ? (

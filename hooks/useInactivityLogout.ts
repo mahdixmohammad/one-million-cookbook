@@ -33,7 +33,6 @@ export default function useInactivityLogout(uid: string | null) {
         const db = getDatabase();
         await update(ref(db, `users/${uid}`), { active: false });
         await signOut(auth);
-        location.reload();
         }
     }, INACTIVITY_LIMIT);
   }, [uid]);

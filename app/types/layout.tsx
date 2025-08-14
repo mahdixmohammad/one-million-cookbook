@@ -63,6 +63,11 @@ export default function TypesLayout({
 
       } catch (error) {
         console.error("Error checking user active status:", error);
+        await fetch("/api/auth/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ uid: user.uid }),
+        });
         await signOut(auth);
         router.push("/login?from=types");
       }

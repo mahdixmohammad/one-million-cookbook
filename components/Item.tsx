@@ -95,7 +95,7 @@ export default function Item({ type, item, data }: Props) {
       </div>
       <div className="w-full sm:min-h-[500px] flex flex-col sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] text-white px-2 lg:px-4 py-4 flex flex-col items-center">
+        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] rounded-r-xl text-white px-2 lg:px-4 py-4 flex flex-col items-center">
           <h3 className="mb-4 font-bold">المكونات</h3>
           <ul className="w-full flex flex-col gap-4">
             {ingredientList.map((item) => (
@@ -114,7 +114,7 @@ export default function Item({ type, item, data }: Props) {
         </div>
         {/* Instructions section */}
         <div
-          className={`w-full bg-gray-200 px-2 lg:px-4 py-4 flex flex-col items-center transition-opacity duration-200 ${
+          className={`w-full bg-gray-200 rounded-l-xl px-2 lg:px-4 py-4 flex flex-col items-center transition-opacity duration-200 ${
             allIngredientsChecked ? "opacity-100" : "opacity-50 pointer-events-none select-none"
           }`}
         >
