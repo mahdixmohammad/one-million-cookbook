@@ -43,14 +43,20 @@ export default function LoadingImage({
         <Loading />
         </span>
     )}
+    {!src &&
+    <div style={{width: width, height: height}}></div>
+    }
+    {src && 
     <Image
-        src={src}
-        width={width}
-        height={height}
-        alt={alt}
-        onLoad={() => setLoaded(true)}
-        className={className}
+      src={src}
+      style={{width: width, height: height}}
+      width={0}
+      height={0}
+      alt={alt}
+      onLoad={() => setLoaded(true)}
+      className={className}
     />
+    }
     </div>
   );
 }
