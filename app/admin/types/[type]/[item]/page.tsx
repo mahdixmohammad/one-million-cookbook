@@ -27,17 +27,17 @@ export default async function Type(props: Props) {
         <div className="w-[98%] mx-auto mt-4 bg-white shadow rounded-lg px-3 py-3">
                 <div className="px-2 flex gap-2 items-center">
                     <h3 className="font-bold text-lg">المنتج</h3>
-                    <Link href={`/admin/types/${type}/${item}/edit`} className="border-[0px] bg-gray-500 text-white border-gray-600 w-22 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-gray-600 transition-all duration-150">
+                    <Link href={`/admin/types/${type}/${item}/edit`} className="border-[0px] bg-gray-500 text-white border-gray-600 w-22 h-7 flex justify-center items-center rounded-xl text-sm hover:bg-gray-600 transition-all duration-150">
                         <PencilSquareIcon className="w-5" />
                         تحرير
                     </Link>
-                    <Link href={`/admin/types/${type}/${item}/delete`} className="border-[0px] bg-red-800 text-white border-gray-600 w-22 h-8 flex justify-center items-center rounded-xl text-sm hover:bg-red-900 transition-all duration-150">
+                    <Link href={`/admin/types/${type}/${item}/delete`} className="border-[0px] bg-red-800 text-white border-gray-600 w-22 h-7 flex justify-center items-center rounded-xl text-sm hover:bg-red-900 transition-all duration-150">
                         <TrashIcon className="w-5" />
                         حذف
                     </Link>
                 </div>
                 <div className="w-full mt-4 lg:mt-10">
-                    <div className="grid auto-rows-auto grid-cols-1 gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto_200px_1fr] w-full px-7 lg:px-6 py-3 lg:py-8 bg-gray-100 rounded-xl items-center transition-all duration-150">
+                    <div className="grid auto-rows-auto grid-cols-1 gap-y-5 gap-x-10 lg:grid-rows-1 lg:grid-cols-[auto_auto__auto_200px_1fr] w-full px-7 lg:px-6 py-3 lg:py-8 bg-gray-100 rounded-xl items-center transition-all duration-150">
                         <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-1">
                             <h3 className="lg:w-full lg:absolute lg:-top-[58px] text-gray-600 text-center">الصورة</h3>
                             <LoadingImage position="start" src={itemData["image"]} alt="" width={90} height={90}></LoadingImage>
@@ -45,6 +45,10 @@ export default async function Type(props: Props) {
                         <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-1">
                             <h3 className="lg:w-full lg:absolute lg:-top-[58px] text-gray-600 text-center">الاسم</h3>
                             <h3>{item}</h3>
+                        </div>
+                        <div className="relative h-full flex flex-col justify-between items-start lg:justify-start gap-y-1">
+                            <h3 className="lg:w-full lg:absolute lg:-top-[58px] text-gray-600 text-center">العمليات</h3>
+                            <h3>{itemData["completions"]}</h3>
                         </div>
                         <div className="relative h-full flex flex-col justify-between items-start lg:justify-start lg:items-center gap-y-1">
                             <h3 className="lg:w-full lg:absolute lg:-top-[58px] text-gray-600 text-center">المكونات</h3>

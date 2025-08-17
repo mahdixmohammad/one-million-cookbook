@@ -56,24 +56,37 @@ export async function POST(req: NextRequest, context: { params: Promise<{ type: 
   }
 }
 
-export async function PATCH(request: Request, context: { params: Promise<{ type: string }> }) {
+export async function PATCH(
+  request: NextRequest,
+  context: { params: Promise<{ type: string }> }
+) {
   const { type: oldType } = await context.params;
   const body = await request.json();
-  const { newType, image } = body;
+  const { newType, image, completions } = body;
 
-  if (!newType && !image) {
+  // Check at least one update field is provided
+  if (!newType && !image && completions === undefined) {
     return NextResponse.json(
-      { error: "At least newType or image must be provided" },
+      { error: "At least newType, image, or completions must be provided" },
       { status: 400 }
     );
   }
 
-  if (newType && typeof newType !== "string") {
-    return NextResponse.json({ error: "newType must be a string" }, { status: 400 });
-  }
-
-  if (image && typeof image !== "string") {
-    return NextResponse.json({ error: "image must be a string" }, { status: 400 });
+  // Validation rules
+  const validators: Record<string, (v: any) => boolean> = {
+    newType: (v) => typeof v === "string",
+    image: (v) => typeof v === "string",
+    completions: (v) => typeof v === "number",
+  };
+  
+  // Validate field types
+  for (const [key, validate] of Object.entries(validators)) {
+    if (body[key] !== undefined && !validate(body[key])) {
+      return NextResponse.json(
+        { error: `${key} must be a ${typeof body[key]}` },
+        { status: 400 }
+      );
+    }
   }
 
   try {
@@ -87,50 +100,55 @@ export async function PATCH(request: Request, context: { params: Promise<{ type:
     const data = oldSnapshot.val();
     const previousImage: string | undefined = data.image;
 
-    // If renaming
+    // Common helper to update image & delete old one if needed
+    const updateImage = async (newImg?: string) => {
+      if (!newImg) return;
+      if (previousImage && previousImage !== newImg) {
+        try {
+          const oldImagePath = extractStoragePathFromUrl(previousImage);
+          await deleteObject(storageRef(storage, oldImagePath));
+        } catch (err) {
+          console.warn("Failed to delete previous image:", err);
+        }
+      }
+      data.image = newImg;
+    };
+
+    // Update completions if provided
+    if (completions !== undefined) {
+      data.completions = completions;
+    }
+
+    // Renaming
     if (newType && newType !== oldType) {
       const newRef = dbRef(rtdb, `types/${newType}`);
       const newSnapshot = await get(newRef);
+
       if (newSnapshot.exists()) {
-        return NextResponse.json({ error: "A type with the new name already exists" }, { status: 409 });
+        return NextResponse.json(
+          { error: "A type with the new name already exists" },
+          { status: 409 }
+        );
       }
 
-      if (image) {
-        // Delete old image if new image is different
-        if (previousImage && previousImage !== image) {
-          try {
-            const oldImagePath = extractStoragePathFromUrl(previousImage);
-            const oldImageRef = storageRef(storage, oldImagePath);
-            await deleteObject(oldImageRef);
-          } catch (err) {
-            console.warn("Failed to delete previous image during rename:", err);
-          }
-        }
-        data.image = image;
-      }
-
+      await updateImage(image);
       await set(newRef, data);
       await remove(oldRef);
 
-      return NextResponse.json({ success: true, message: `Renamed ${oldType} to ${newType}` });
-    } else {
-      // Just update image (and delete old one if necessary)
-      if (image) {
-        if (previousImage && previousImage !== image) {
-          try {
-            const oldImagePath = extractStoragePathFromUrl(previousImage);
-            const oldImageRef = storageRef(storage, oldImagePath);
-            await deleteObject(oldImageRef);
-          } catch (err) {
-            console.warn("Failed to delete previous image during update:", err);
-          }
-        }
-        data.image = image;
-      }
-
-      await set(oldRef, data);
-      return NextResponse.json({ success: true, message: `Updated type ${oldType}` });
+      return NextResponse.json({
+        success: true,
+        message: `Renamed ${oldType} to ${newType}`,
+      });
     }
+
+    // Just update same entry
+    await updateImage(image);
+    await set(oldRef, data);
+
+    return NextResponse.json({
+      success: true,
+      message: `Updated type ${oldType}`,
+    });
   } catch (err) {
     console.error("Error updating type:", err);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });

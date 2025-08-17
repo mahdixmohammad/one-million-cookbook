@@ -20,31 +20,37 @@ export default async function Types() {
                     </Link>
                 </div>
                 <div className="overflow-x-auto mt-3 rounded-xl">
-                    <table className="w-full min-w-[300px] border-separate border-spacing-y-2">
+                    <table className="w-full min-w-[380px] border-separate border-spacing-y-2">
                         <thead className="text-right text-gray-600 bg-white">
                             <tr>
                                 <th className="pr-5 font-normal">الصورة</th>
                                 <th className="font-normal">الاسم</th>
                                 <th className="font-normal">المنتجات</th>
+                                <th className="font-normal">العمليات</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {Object.keys(typesData).map((typeName, i) => (
                             <tr key={i} className="bg-gray-100 h-24 hover:opacity-80 transition-all duration-150">
-                                <td className="rounded-r-xl sm:min-w-[150px]">
+                                <td className="rounded-r-xl md:min-w-[150px]">
                                     <Link className=" w-full h-full" href={`/admin/types/${typeName}`}>
                                         <LoadingImage className="h-24 object-contain" position="start" src={typesData[typeName]["image"]} alt="" width={90} height={90}></LoadingImage>
                                     </Link>
                                 </td>
-                                <td className="sm:min-w-[150px]">
+                                <td className="md:min-w-[150px]">
                                     <Link href={`/admin/types/${typeName}`}>
                                         <h3 className="h-24 flex items-center">{typeName}</h3>
                                     </Link>
                                 </td>
-                                <td className="sm:min-w-[150px]">
+                                <td className="md:min-w-[150px]">
                                     <Link href={`/admin/types/${typeName}`}>
                                         <h3 className="h-24 flex items-center">{typesData[typeName]?.["items"] ? Object.keys(typesData[typeName]["items"]).length : 0}</h3>
+                                    </Link>
+                                </td>
+                                <td className="md:min-w-[150px]">
+                                    <Link href={`/admin/types/${typeName}`}>
+                                        <h3 className="h-24 flex items-center">{typesData[typeName]["completions"]}</h3>
                                     </Link>
                                 </td>
                                 <td className="rounded-l-xl pl-5">

@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Type already exists" }, { status: 409 });
     }
 
-    await set(typeRef, { image });
+    await set(typeRef, { image, completions: 0 });
 
     return NextResponse.json({ success: true, message: `Type '${type}' created.` });
   } catch (err) {

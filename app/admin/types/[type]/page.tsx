@@ -40,6 +40,7 @@ export default async function TypePage(props: Props) {
                 <th className="pr-5 font-normal">الصورة</th>
                 <th className="font-normal">الاسم</th>
                 <th className="font-normal">المنتجات</th>
+                <th className="font-normal">العمليات</th>
               </tr>
             </thead>
             <tbody>
@@ -52,6 +53,9 @@ export default async function TypePage(props: Props) {
                 </td>
                 <td className="sm:min-w-[150px]">
                   <h3>{typeData?.["items"] ? Object.keys(typeData["items"]).length : 0}</h3>
+                </td>
+                <td className="sm:min-w-[150px]">
+                  <h3>{typeData["completions"]}</h3>
                 </td>
               </tr>
             </tbody>
@@ -67,11 +71,12 @@ export default async function TypePage(props: Props) {
           </Link>
         </div>
         <div className="overflow-x-auto mt-3 rounded-xl">
-          <table className="w-full min-w-[300px] border-separate border-spacing-y-2">
+          <table className="w-full min-w-[380px] border-separate border-spacing-y-2">
             <thead className="text-right text-gray-600 bg-white">
               <tr>
                 <th className="pr-5 font-normal">الصورة</th>
                 <th className="font-normal">الاسم</th>
+                <th className="font-normal">العمليات</th>
                 <th></th>
               </tr>
             </thead>
@@ -87,6 +92,9 @@ export default async function TypePage(props: Props) {
                   <Link href={`/admin/types/${type}/${itemName}`}>
                     <h3 className="h-24 flex items-center">{itemName}</h3>
                   </Link>
+                </td>
+                <td className="sm:min-w-[150px]">
+                  <h3>{typeData.items[itemName]["completions"]}</h3>
                 </td>
                 <td className="rounded-l-xl pl-5">
                     <Link href={`/admin/types/${type}/${itemName}`}>

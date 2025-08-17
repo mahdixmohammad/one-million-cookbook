@@ -22,9 +22,22 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
   }
 }
 
-export async function PATCH(req: NextRequest, context: { params: Promise<{ type: string, item: string }> }) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ type: string; item: string }> }
+) {
   const { type, item } = await context.params;
   const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
+
+  const deleteOldImage = async (oldUrl?: string, newUrl?: string) => {
+    if (!oldUrl || !newUrl || oldUrl === newUrl) return;
+    try {
+      const oldImagePath = extractStoragePathFromUrl(oldUrl);
+      await deleteObject(storageRef(storage, oldImagePath));
+    } catch (err) {
+      console.warn("Failed to delete old image:", err);
+    }
+  };
 
   try {
     const snapshot = await get(itemRef);
@@ -36,48 +49,31 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ type:
     const previousImage: string | undefined = existingData?.image;
 
     const body = await req.json();
-    const { newItem, image, ingredients, instructions } = body;
+    const { newItem, image, ingredients, instructions, completions } = body;
 
-    const updates: Record<string, string> = {};
+    const updates: Record<string, any> = {};
 
-    if (image) updates["image"] = image;
-    if (ingredients !== undefined) updates["ingredients"] = ingredients;
-    if (instructions !== undefined) updates["instructions"] = instructions;
+    if (image) updates.image = image;
+    if (ingredients !== undefined) updates.ingredients = ingredients;
+    if (instructions !== undefined) updates.instructions = instructions;
+    if (completions !== undefined) updates.completions = completions;
 
     // Rename item
     if (newItem && newItem !== item) {
       const newRef = dbRef(rtdb, `types/${type}/items/${newItem}`);
 
-      // Delete old image if new one provided and it's different
-      if (image && previousImage && image !== previousImage) {
-        try {
-          const oldImagePath = extractStoragePathFromUrl(previousImage);
-          const oldImageRef = storageRef(storage, oldImagePath);
-          await deleteObject(oldImageRef);
-        } catch (err) {
-          console.warn("Failed to delete old image during rename:", err);
-        }
-      }
-
+      await deleteOldImage(previousImage, image);
       await set(newRef, { ...existingData, ...updates });
       await remove(itemRef);
+
       return NextResponse.json({ message: "Item renamed and updated" });
     }
 
-    // Just update in place
-    if (image && previousImage && image !== previousImage) {
-      try {
-        const oldImagePath = extractStoragePathFromUrl(previousImage);
-        const oldImageRef = storageRef(storage, oldImagePath);
-        await deleteObject(oldImageRef);
-      } catch (err) {
-        console.warn("Failed to delete old image during update:", err);
-      }
-    }
-
+    // Update in place
+    await deleteOldImage(previousImage, image);
     await update(itemRef, updates);
-    return NextResponse.json({ message: "Item updated" });
 
+    return NextResponse.json({ message: "Item updated" });
   } catch (err) {
     console.error("Error updating item:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

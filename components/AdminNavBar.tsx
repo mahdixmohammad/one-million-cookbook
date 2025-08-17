@@ -56,7 +56,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
           </button>
         )}
       </div>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-2 xs:gap-4 items-center">
         <NotificationButton />
         <UserButton />
         <HomeButton />

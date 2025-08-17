@@ -49,14 +49,24 @@ export default function EditTypeModal() {
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
         <h2 className="text-xl mb-4">إنشاء نوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="text"
-            className="border rounded px-3 py-2"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="اسم النوع"
-            required
-          />
+          <div className="relative">
+            <input
+              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder=" "
+              required
+            />
+            <span
+              className={`
+                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
+                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
+                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
+              `}
+            >
+              اسم النوع
+            </span>
+          </div>
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
             <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">

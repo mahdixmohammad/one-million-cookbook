@@ -17,6 +17,8 @@ export default function EditItemModal(props: Props) {
   const router = useRouter();
 
   const [name, setName] = useState(item);
+  const [initialCompletions, setInitialCompletions] = useState(0);
+  const [completions, setCompletions] = useState(0);
   const [originalIngredients, setOriginalIngredients] = useState<string[]>([]);
   const [originalInstructions, setOriginalInstructions] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([""]);
@@ -31,6 +33,11 @@ export default function EditItemModal(props: Props) {
         const res = await fetch(`/api/types/${type}/${item}`);
         if (!res.ok) throw new Error("Failed to load item data");
         const data = await res.json();
+
+        if (data.completions) {
+          setInitialCompletions(data.completions);
+          setCompletions(data.completions);
+        }
 
         if (data.image) {
           setInitialImage(data.image);
@@ -66,6 +73,7 @@ export default function EditItemModal(props: Props) {
     e.preventDefault();
 
     const isNameChanged = name !== item && name.trim() !== "";
+    const isCompletionsChanged = completions !== initialCompletions;
     const isImageChanged = !!file;
 
     const isIngredientsChanged =
@@ -74,7 +82,7 @@ export default function EditItemModal(props: Props) {
     const isInstructionsChanged =
       JSON.stringify(clean(instructions)) !== JSON.stringify(clean(originalInstructions));
 
-    if (!isNameChanged && !isImageChanged && !isIngredientsChanged && !isInstructionsChanged) {
+    if (!isNameChanged && !isCompletionsChanged &&  !isImageChanged && !isIngredientsChanged && !isInstructionsChanged) {
       alert("Please update something before saving.");
       return;
     }
@@ -91,6 +99,7 @@ export default function EditItemModal(props: Props) {
 
       type payloadType = {
         newItem?: string, 
+        completions?: number,
         image?: string, 
         ingredients?: string, 
         instructions?: string 
@@ -98,6 +107,7 @@ export default function EditItemModal(props: Props) {
 
       const payload: payloadType = {};
       if (isNameChanged) payload.newItem = name;
+      if (isCompletionsChanged) payload.completions = completions;
       if (isImageChanged && imageUrl) payload.image = imageUrl;
       if (isIngredientsChanged)
         payload.ingredients = clean(ingredients).join("#");
@@ -130,13 +140,42 @@ export default function EditItemModal(props: Props) {
       <div className="bg-white rounded-lg px-8 py-6 shadow-lg w-full max-w-[550px] max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl mb-4">تحرير المنتج</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            className="border rounded px-3 py-2"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="اسم المنتج"
-          />
-
+          <div className="relative">
+            <input
+              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder=" "
+            />
+            <span
+              className={`
+                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
+                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
+                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
+              `}
+            >
+              اسم المنتج
+            </span>
+          </div>
+          <div className="relative">
+            <input
+              type="number"
+              min={0}
+              value={completions}
+              onChange={(e) => setCompletions(Number(e.target.value))}
+              placeholder=" "
+              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+            />
+            <span
+              className={`
+                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
+                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
+                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
+              `}
+            >
+              العمليات            
+            </span>
+          </div>
           {/* Image Upload */}
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
             <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
@@ -162,7 +201,6 @@ export default function EditItemModal(props: Props) {
               height={50}
             />
           )}
-
           {/* Ingredients List */}
           <div>
             <label className="font-medium">المكونات</label>

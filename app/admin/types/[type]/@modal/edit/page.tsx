@@ -16,6 +16,8 @@ export default function EditTypeModal(props: Props) {
   const router = useRouter();
 
   const [name, setName] = useState(type);
+  const [initialCompletions, setInitialCompletions] = useState(0);
+  const [completions, setCompletions] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [initialImage, setInitialImage] = useState<string | null>(null);
@@ -27,6 +29,12 @@ export default function EditTypeModal(props: Props) {
         const res = await fetch(`/api/types/${type}`);
         if (!res.ok) throw new Error("Failed to load type data");
         const data = await res.json();
+
+        if (data.completions) {
+          setInitialCompletions(data.completions);
+          setCompletions(data.completions);
+        }
+
         if (data.image) setInitialImage(data.image);
         setPreview(data.image || null);
       } catch (e) {
@@ -50,10 +58,12 @@ export default function EditTypeModal(props: Props) {
 
     // Check if something changed
     const isNameChanged = name !== type && name.trim() !== "";
+    const isCompletionsChanged = completions !== initialCompletions;
     const isImageChanged = !!file;
+    console.log(!isNameChanged && !isImageChanged && !isCompletionsChanged)
 
-    if (!isNameChanged && !isImageChanged) {
-      alert("Please change the name or select a new image.");
+    if (!isNameChanged && !isImageChanged && !isCompletionsChanged) {
+      alert("Please change the name, select a new image or update completions.");
       return;
     }
 
@@ -67,8 +77,9 @@ export default function EditTypeModal(props: Props) {
         imageUrl = await getDownloadURL(fileRef);
       }
 
-      const payload: { newType?: string; image?: string } = {};
+      const payload: { newType?: string; completions?: number; image?: string } = {};
       if (isNameChanged) payload.newType = name;
+      if (isCompletionsChanged) payload.completions = completions;
       if (imageUrl) payload.image = imageUrl;
 
       const response = await fetch(`/api/types/${type}`, {
@@ -98,12 +109,42 @@ export default function EditTypeModal(props: Props) {
       <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
         <h2 className="text-xl mb-4">تحرير النوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            className="border rounded px-3 py-2"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            placeholder="اسم النوع"
-          />
+          <div className="relative">
+            <input
+              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder=" "
+            />
+            <span
+              className={`
+                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
+                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
+                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
+              `}
+            >
+              اسم النوع
+            </span>
+          </div>
+          <div className="relative">
+            <input
+              type="number"
+              min={0}
+              value={completions}
+              onChange={e => setCompletions(Number(e.target.value))}
+              placeholder="العمليات"
+              className="border w-full rounded px-3 py-2"
+            />
+            <span
+              className={`
+                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
+                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
+                ${completions !== undefined ? "-translate-y-4 text-sm text-gray-700" : ""}
+              `}
+            >
+              العمليات
+            </span>
+          </div>
           <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
             <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
