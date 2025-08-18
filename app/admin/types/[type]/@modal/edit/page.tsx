@@ -1,7 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { use, useState, useEffect } from "react";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 
@@ -60,10 +65,12 @@ export default function EditTypeModal(props: Props) {
     const isNameChanged = name !== type && name.trim() !== "";
     const isCompletionsChanged = completions !== initialCompletions;
     const isImageChanged = !!file;
-    console.log(!isNameChanged && !isImageChanged && !isCompletionsChanged)
+    console.log(!isNameChanged && !isImageChanged && !isCompletionsChanged);
 
     if (!isNameChanged && !isImageChanged && !isCompletionsChanged) {
-      alert("Please change the name, select a new image or update completions.");
+      alert(
+        "Please change the name, select a new image or update completions.",
+      );
       return;
     }
 
@@ -77,7 +84,11 @@ export default function EditTypeModal(props: Props) {
         imageUrl = await getDownloadURL(fileRef);
       }
 
-      const payload: { newType?: string; completions?: number; image?: string } = {};
+      const payload: {
+        newType?: string;
+        completions?: number;
+        image?: string;
+      } = {};
       if (isNameChanged) payload.newType = name;
       if (isCompletionsChanged) payload.completions = completions;
       if (imageUrl) payload.image = imageUrl;
@@ -106,22 +117,18 @@ export default function EditTypeModal(props: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">تحرير النوع</h2>
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="mb-4 text-xl">تحرير النوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="relative">
             <input
-              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              className="peer w-full rounded border px-3 py-2 focus:outline-none"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder=" "
             />
             <span
-              className={`
-                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
-                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
-                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
-              `}
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
             >
               اسم النوع
             </span>
@@ -131,32 +138,32 @@ export default function EditTypeModal(props: Props) {
               type="number"
               min={0}
               value={completions}
-              onChange={e => setCompletions(Number(e.target.value))}
+              onChange={(e) => setCompletions(Number(e.target.value))}
               placeholder="العمليات"
-              className="border w-full rounded px-3 py-2"
+              className="w-full rounded border px-3 py-2"
             />
             <span
-              className={`
-                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
-                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
-                ${completions !== undefined ? "-translate-y-4 text-sm text-gray-700" : ""}
-              `}
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${completions !== undefined ? "-translate-y-4 text-sm text-gray-700" : ""} `}
             >
               العمليات
             </span>
           </div>
-          <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
-            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
+          <label className="flex cursor-pointer items-center justify-between rounded border bg-gray-50 px-3 py-2 transition-all hover:bg-gray-100">
+            <span className="text-gray-500">
+              {file?.name || "اختار الصورة..."}
+            </span>
+            <span className="rounded bg-gray-200 px-2 py-1 text-sm text-gray-500 hover:bg-gray-300">
               تصفح
             </span>
             <input
               type="file"
               accept="image/*"
-              onChange={e => {
+              onChange={(e) => {
                 const selected = e.target.files?.[0] || null;
                 setFile(selected);
-                setPreview(selected ? URL.createObjectURL(selected) : initialImage);
+                setPreview(
+                  selected ? URL.createObjectURL(selected) : initialImage,
+                );
               }}
               className="hidden"
             />
@@ -167,23 +174,23 @@ export default function EditTypeModal(props: Props) {
             <Image
               src={preview}
               alt="Preview"
-              className="w-full h-auto max-h-48 object-contain rounded border"
+              className="h-auto max-h-48 w-full rounded border object-contain"
               width={50}
               height={50}
             />
           )}
 
-          <div className="flex gap-2 justify-end">
+          <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}`)}
-              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
             >
               الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 w-24 rounded bg-gray-600 text-white hover:bg-gray-700 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-600 px-4 py-2 text-white transition-all duration-150 hover:bg-gray-700"
             >
               حفظ
             </button>

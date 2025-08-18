@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { use } from "react";
 
 type Props = {
-  params: Promise<{ type: string; }>;
+  params: Promise<{ type: string }>;
 };
 
 export default function EditTypeModal(props: Props) {
@@ -16,34 +16,47 @@ export default function EditTypeModal(props: Props) {
     e.preventDefault();
 
     try {
-    const response = await fetch(`/api/types/${type}`, {
+      const response = await fetch(`/api/types/${type}`, {
         method: "DELETE",
-    });
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      alert(data.error || "Failed to delete type");
-      return;
-    }
+      if (!response.ok) {
+        alert(data.error || "Failed to delete type");
+        return;
+      }
 
-    router.push(`/admin/types/`)
-
+      router.push(`/admin/types/`);
     } catch (err) {
-        console.error("Error:", err);
-        alert("Something went wrong");
+      console.error("Error:", err);
+      alert("Something went wrong");
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">حذف النوع</h2>
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="mb-4 text-xl">حذف النوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <p>هل أنت متأكد من رغبتك في حذف <strong>{type}</strong> و جميع منتجاته؟ لا يمكن التراجع عن هذا الإجراء.</p>
-          <div className="flex gap-2 justify-end">
-            <button type="button" onClick={() => router.push(`/admin/types/${type}`)} className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">الغاء</button>
-            <button type="submit" className="px-4 py-2 w-24 rounded bg-red-800 text-white hover:bg-red-900 cursor-pointer transition-all duration-150">حذف</button>
+          <p>
+            هل أنت متأكد من رغبتك في حذف <strong>{type}</strong> و جميع منتجاته؟
+            لا يمكن التراجع عن هذا الإجراء.
+          </p>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => router.push(`/admin/types/${type}`)}
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
+            >
+              الغاء
+            </button>
+            <button
+              type="submit"
+              className="w-24 cursor-pointer rounded bg-red-800 px-4 py-2 text-white transition-all duration-150 hover:bg-red-900"
+            >
+              حذف
+            </button>
           </div>
         </form>
       </div>

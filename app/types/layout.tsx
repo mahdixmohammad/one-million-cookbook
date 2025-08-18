@@ -9,11 +9,7 @@ import Loading from "@/components/Loading";
 import NavBar from "@/components/NavBar";
 import useInactivityLogout from "@/hooks/useInactivityLogout";
 
-export default function TypesLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function TypesLayout({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState<string | null>(null);
   const router = useRouter();
@@ -59,8 +55,9 @@ export default function TypesLayout({
         setUid(user.uid);
         setLoading(false);
 
-        onDisconnect(ref(db, `users/${user.uid}`)).update({ disconnected: true });
-
+        onDisconnect(ref(db, `users/${user.uid}`)).update({
+          disconnected: true,
+        });
       } catch (error) {
         console.error("Error checking user active status:", error);
         await fetch("/api/auth/logout", {
@@ -80,7 +77,7 @@ export default function TypesLayout({
 
   if (loading)
     return (
-      <div className="w-screen h-screen flex items-center justify-center">
+      <div className="flex h-screen w-screen items-center justify-center">
         <Loading />
       </div>
     );

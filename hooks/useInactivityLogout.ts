@@ -19,21 +19,21 @@ export default function useInactivityLogout(uid: string | null) {
 
     // Countdown tick
     intervalRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
+      setTimeLeft((prev) => {
         if (prev <= 1000) {
-            clearInterval(intervalRef.current!);
-            return 0;
+          clearInterval(intervalRef.current!);
+          return 0;
         }
         return prev - 1000;
-        });
+      });
     }, 1000);
 
     timeoutRef.current = setTimeout(async () => {
-        if (uid) {
+      if (uid) {
         const db = getDatabase();
         await update(ref(db, `users/${uid}`), { active: false });
         await signOut(auth);
-        }
+      }
     }, INACTIVITY_LIMIT);
   }, [uid]);
 
@@ -47,7 +47,9 @@ export default function useInactivityLogout(uid: string | null) {
     resetTimer();
 
     return () => {
-      events.forEach((event) => window.removeEventListener(event, handleActivity));
+      events.forEach((event) =>
+        window.removeEventListener(event, handleActivity),
+      );
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (intervalRef.current) clearInterval(intervalRef.current);
     };

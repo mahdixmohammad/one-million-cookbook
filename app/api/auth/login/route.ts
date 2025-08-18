@@ -7,7 +7,10 @@ export async function POST(req: NextRequest) {
     const { identifier } = await req.json();
 
     if (!identifier) {
-      return NextResponse.json({ error: "Missing identifier" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing identifier" },
+        { status: 400 },
+      );
     }
 
     // Treat as username and look it up
@@ -15,12 +18,18 @@ export async function POST(req: NextRequest) {
     const usernameSnap = await get(usernameRef);
 
     if (!usernameSnap.exists()) {
-        return NextResponse.json({ error: "Username not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Username not found" },
+        { status: 404 },
+      );
     }
 
     const email = usernameSnap.val();
     if (!email) {
-        return NextResponse.json({ error: "Email is missing from database" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Email is missing from database" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({ email });

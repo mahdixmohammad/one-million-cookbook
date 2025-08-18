@@ -3,7 +3,10 @@ import { rtdb, storage } from "@/lib/firebase";
 import { ref as dbRef, get, set, remove } from "firebase/database";
 import { ref as storageRef, deleteObject } from "firebase/storage";
 
-export async function GET(_: Request, context: { params: Promise<{ type: string }> }) {
+export async function GET(
+  _: Request,
+  context: { params: Promise<{ type: string }> },
+) {
   const { type } = await context.params;
 
   try {
@@ -18,17 +21,26 @@ export async function GET(_: Request, context: { params: Promise<{ type: string 
     return NextResponse.json(data);
   } catch (err) {
     console.error("Error fetching type:", err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
 
-export async function POST(req: NextRequest, context: { params: Promise<{ type: string }> }) {
+export async function POST(
+  req: NextRequest,
+  context: { params: Promise<{ type: string }> },
+) {
   const { type } = await context.params;
   const body = await req.json();
   const { name, image, ingredients, instructions } = body;
 
   if (!name || typeof name !== "string") {
-    return NextResponse.json({ error: "Missing or invalid item name" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing or invalid item name" },
+      { status: 400 },
+    );
   }
 
   if (!image || typeof image !== "string") {
@@ -40,7 +52,10 @@ export async function POST(req: NextRequest, context: { params: Promise<{ type: 
   try {
     const snapshot = await get(itemRef);
     if (snapshot.exists()) {
-      return NextResponse.json({ error: "Item with this name already exists" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Item with this name already exists" },
+        { status: 400 },
+      );
     }
 
     await set(itemRef, {
@@ -52,13 +67,16 @@ export async function POST(req: NextRequest, context: { params: Promise<{ type: 
     return NextResponse.json({ message: "Item created successfully" });
   } catch (err) {
     console.error("Create item error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: Promise<{ type: string }> }
+  context: { params: Promise<{ type: string }> },
 ) {
   const { type: oldType } = await context.params;
   const body = await request.json();
@@ -68,7 +86,7 @@ export async function PATCH(
   if (!newType && !image && completions === undefined) {
     return NextResponse.json(
       { error: "At least newType, image, or completions must be provided" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -78,13 +96,13 @@ export async function PATCH(
     image: (v) => typeof v === "string",
     completions: (v) => typeof v === "number",
   };
-  
+
   // Validate field types
   for (const [key, validate] of Object.entries(validators)) {
     if (body[key] !== undefined && !validate(body[key])) {
       return NextResponse.json(
         { error: `${key} must be a ${typeof body[key]}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
   }
@@ -94,7 +112,10 @@ export async function PATCH(
     const oldSnapshot = await get(oldRef);
 
     if (!oldSnapshot.exists()) {
-      return NextResponse.json({ error: "Original type not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Original type not found" },
+        { status: 404 },
+      );
     }
 
     const data = oldSnapshot.val();
@@ -127,7 +148,7 @@ export async function PATCH(
       if (newSnapshot.exists()) {
         return NextResponse.json(
           { error: "A type with the new name already exists" },
-          { status: 409 }
+          { status: 409 },
         );
       }
 
@@ -151,11 +172,17 @@ export async function PATCH(
     });
   } catch (err) {
     console.error("Error updating type:", err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
 
-export async function DELETE(_: Request, context: { params: Promise<{ type: string }> }) {
+export async function DELETE(
+  _: Request,
+  context: { params: Promise<{ type: string }> },
+) {
   const { type } = await context.params;
 
   try {
@@ -190,13 +217,17 @@ export async function DELETE(_: Request, context: { params: Promise<{ type: stri
     });
   } catch (err) {
     console.error("Error deleting type:", err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
 
 // Utility to extract storage path from Firebase image URL
 function extractStoragePathFromUrl(url: string): string {
   const match = decodeURIComponent(url).match(/\/o\/(.+?)\?alt=media/);
-  if (!match || !match[1]) throw new Error("Failed to extract image path from URL");
+  if (!match || !match[1])
+    throw new Error("Failed to extract image path from URL");
   return match[1]; // like "type-images/my-image.jpg"
 }

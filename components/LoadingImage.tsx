@@ -6,7 +6,7 @@ import Loading from "./Loading";
 
 type LoadingImageProps = {
   className?: string;
-  position: "start" | "center",
+  position: "start" | "center";
   width: number;
   height: number;
   src: string;
@@ -37,26 +37,26 @@ export default function LoadingImage({
   else if (position === "center") positionClass = "items-center justify-center";
 
   return (
-    <div className={`relative w-[80%] h-[80%] flex ${positionClass}`}>
-    {!loaded && showSpinner && (
-        <span className={`absolute inset-0 z-10 flex pointer-events-none ${positionClass}`}>
-        <Loading />
+    <div className={`relative flex h-[80%] w-[80%] ${positionClass}`}>
+      {!loaded && showSpinner && (
+        <span
+          className={`pointer-events-none absolute inset-0 z-10 flex ${positionClass}`}
+        >
+          <Loading />
         </span>
-    )}
-    {!src &&
-    <div style={{width: width, height: height}}></div>
-    }
-    {src && 
-    <Image
-      src={src}
-      style={{width: width, height: height}}
-      width={0}
-      height={0}
-      alt={alt}
-      onLoad={() => setLoaded(true)}
-      className={className}
-    />
-    }
+      )}
+      {!src && <div style={{ width: width, height: height }}></div>}
+      {src && (
+        <Image
+          src={src}
+          style={{ width: width, height: height }}
+          width={0}
+          height={0}
+          alt={alt}
+          onLoad={() => setLoaded(true)}
+          className={className}
+        />
+      )}
     </div>
   );
 }

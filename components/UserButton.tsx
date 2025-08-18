@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import UserDropdown from "./UserDropdown";
 import { useState, useEffect, useRef } from "react";
@@ -41,10 +41,10 @@ export default function UserButton() {
     >
       <UserCircleIcon className="w-8 cursor-pointer" />
       <div
-        className={`absolute -left-3 -top-4 z-50 transition-all duration-200 ease-out ${
+        className={`absolute -top-4 -left-3 z-50 transition-all duration-200 ease-out ${
           userDropdown
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-2 pointer-events-none"
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
         }`}
       >
         <UserDropdown username={username} />

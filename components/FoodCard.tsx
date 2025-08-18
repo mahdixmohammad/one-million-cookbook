@@ -16,17 +16,17 @@ export default function FoodCard({ thumbnail, name }: Props) {
   return (
     <Link
       href={fullPath}
-      className="relative aspect-[1] w-full bg-[rgb(50,50,50)] rounded-md flex flex-col gap-3 pt-4 items-center shadow shadow-black"
+      className="relative flex aspect-[1] w-full flex-col items-center gap-3 rounded-md bg-[rgb(50,50,50)] pt-4 shadow shadow-black"
     >
       <LoadingImage
-        className="w-[100%] h-[100%] object-contain"
+        className="h-[100%] w-[100%] object-contain"
         position="center"
         src={thumbnail}
         width={200}
         height={200}
         alt=""
       />
-      <h2 className="absolute bottom-5 mt-2 w-[90%] text-center text-4xl xs:text-2xl sm:text-xl lg:text-2xl xl:text-3xl font-bold text-black bg-gold py-0.5 rounded-lg">
+      <h2 className="xs:text-2xl bg-gold absolute bottom-5 mt-2 w-[90%] rounded-lg py-0.5 text-center text-4xl font-bold text-black sm:text-xl lg:text-2xl xl:text-3xl">
         {name}
       </h2>
     </Link>

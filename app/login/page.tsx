@@ -27,16 +27,19 @@ export default function LoginPage({ searchParams }: searchParams) {
 
     try {
       if (identifier.includes("@")) {
-        const userData = await signInWithEmailAndPassword(auth, identifier, password);
+        const userData = await signInWithEmailAndPassword(
+          auth,
+          identifier,
+          password,
+        );
         const { uid } = userData.user;
-        
+
         // Track login info in DB
         await fetch("/api/auth/track", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ uid }),
         });
-        
       } else {
         // Call API to resolve identifier → email
         const res = await fetch("/api/auth/login", {
@@ -49,7 +52,11 @@ export default function LoginPage({ searchParams }: searchParams) {
         if (!res.ok) throw new Error(data.error || "Failed to find user");
 
         const { email } = data;
-        const userData = await signInWithEmailAndPassword(auth, email, password);
+        const userData = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
         const { uid } = userData.user;
 
         // Track login info in DB
@@ -68,7 +75,7 @@ export default function LoginPage({ searchParams }: searchParams) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 max-w-md mx-auto h-[90vh] flex flex-col justify-center space-y-4"
+      className="mx-auto flex h-[90vh] max-w-md flex-col justify-center space-y-4 p-4"
     >
       <Image
         className="mx-auto"
@@ -97,7 +104,7 @@ export default function LoginPage({ searchParams }: searchParams) {
       />
       <button
         type="submit"
-        className="w-full font-bold bg-black text-white p-3 cursor-pointer hover:opacity-85 transition-all duration-150"
+        className="w-full cursor-pointer bg-black p-3 font-bold text-white transition-all duration-150 hover:opacity-85"
       >
         تسجيل الدخول
       </button>

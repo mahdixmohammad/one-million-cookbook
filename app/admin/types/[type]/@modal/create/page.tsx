@@ -1,7 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 
@@ -45,7 +50,12 @@ export default function CreateItemModal(props: Props) {
       await uploadBytes(fileRef, file);
       imageUrl = await getDownloadURL(fileRef);
 
-      const payload: { name: string, image: string, ingredients: string, instructions: string } = {
+      const payload: {
+        name: string;
+        image: string;
+        ingredients: string;
+        instructions: string;
+      } = {
         name: trimmedName,
         image: imageUrl || "",
         ingredients: clean(ingredients).join("#"),
@@ -72,12 +82,12 @@ export default function CreateItemModal(props: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm overflow-y-auto p-4">
-      <div className="bg-white rounded-lg px-8 py-6 shadow-lg w-full max-w-[550px] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl mb-4">إنشاء منتج جديد</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/30 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-[550px] overflow-y-auto rounded-lg bg-white px-8 py-6 shadow-lg">
+        <h2 className="mb-4 text-xl">إنشاء منتج جديد</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
-            className="border rounded px-3 py-2"
+            className="rounded border px-3 py-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="اسم المنتج"
@@ -85,9 +95,13 @@ export default function CreateItemModal(props: Props) {
           />
 
           {/* Image Upload */}
-          <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
-            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">تصفح</span>
+          <label className="flex cursor-pointer items-center justify-between rounded border bg-gray-50 px-3 py-2 transition-all hover:bg-gray-100">
+            <span className="text-gray-500">
+              {file?.name || "اختار الصورة..."}
+            </span>
+            <span className="rounded bg-gray-200 px-2 py-1 text-sm text-gray-500 hover:bg-gray-300">
+              تصفح
+            </span>
             <input
               type="file"
               accept="image/*"
@@ -104,7 +118,7 @@ export default function CreateItemModal(props: Props) {
             <Image
               src={preview}
               alt="Preview"
-              className="w-full h-auto max-h-48 object-contain rounded border"
+              className="h-auto max-h-48 w-full rounded border object-contain"
               width={50}
               height={50}
             />
@@ -114,10 +128,10 @@ export default function CreateItemModal(props: Props) {
           <div>
             <label className="font-medium">المكونات</label>
             {ingredients.map((ing, idx) => (
-              <div key={idx} className="flex items-center gap-2 mt-1">
+              <div key={idx} className="mt-1 flex items-center gap-2">
                 <input
                   type="text"
-                  className="border rounded px-3 py-2 w-full"
+                  className="w-full rounded border px-3 py-2"
                   value={ing}
                   onChange={(e) => {
                     const updated = [...ingredients];
@@ -128,8 +142,10 @@ export default function CreateItemModal(props: Props) {
                 />
                 <button
                   type="button"
-                  className="text-red-500 cursor-pointer"
-                  onClick={() => setIngredients(ingredients.filter((_, i) => i !== idx))}
+                  className="cursor-pointer text-red-500"
+                  onClick={() =>
+                    setIngredients(ingredients.filter((_, i) => i !== idx))
+                  }
                 >
                   🗑
                 </button>
@@ -137,7 +153,7 @@ export default function CreateItemModal(props: Props) {
             ))}
             <button
               type="button"
-              className="mt-2 text-sm text-blue-600 cursor-pointer"
+              className="mt-2 cursor-pointer text-sm text-blue-600"
               onClick={() => setIngredients([...ingredients, ""])}
             >
               ➕ إضافة مكون
@@ -148,10 +164,10 @@ export default function CreateItemModal(props: Props) {
           <div>
             <label className="font-medium">التعليمات</label>
             {instructions.map((ins, idx) => (
-              <div key={idx} className="flex items-center gap-2 mt-1">
+              <div key={idx} className="mt-1 flex items-center gap-2">
                 <input
                   type="text"
-                  className="border rounded px-3 py-2 w-full"
+                  className="w-full rounded border px-3 py-2"
                   value={ins}
                   onChange={(e) => {
                     const updated = [...instructions];
@@ -162,8 +178,10 @@ export default function CreateItemModal(props: Props) {
                 />
                 <button
                   type="button"
-                  className="text-red-500 cursor-pointer"
-                  onClick={() => setInstructions(instructions.filter((_, i) => i !== idx))}
+                  className="cursor-pointer text-red-500"
+                  onClick={() =>
+                    setInstructions(instructions.filter((_, i) => i !== idx))
+                  }
                 >
                   🗑
                 </button>
@@ -171,24 +189,24 @@ export default function CreateItemModal(props: Props) {
             ))}
             <button
               type="button"
-              className="mt-2 text-sm text-blue-600 cursor-pointer"
+              className="mt-2 cursor-pointer text-sm text-blue-600"
               onClick={() => setInstructions([...instructions, ""])}
             >
               ➕ إضافة خطوة
             </button>
           </div>
 
-          <div className="flex gap-2 justify-end mt-4">
+          <div className="mt-4 flex justify-end gap-2">
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}`)}
-              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
             >
               الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 w-24 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-green-700 px-4 py-2 text-white transition-all duration-150 hover:bg-green-800"
             >
               انشاء
             </button>

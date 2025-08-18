@@ -11,7 +11,10 @@ type AdminNavbarProps = {
   setSidebarOpen: (open: boolean) => void;
 };
 
-export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbarProps) {
+export default function AdminNavBar({
+  sidebarOpen,
+  setSidebarOpen,
+}: AdminNavbarProps) {
   const path = usePathname();
   const router = useRouter();
 
@@ -26,22 +29,25 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
   };
 
   return (
-    <div className="h-[64px] px-5 shadow-xs bg-white border-gray-300 flex items-center justify-between">
-      <div className="flex gap-2 items-center">
+    <div className="flex h-[64px] items-center justify-between border-gray-300 bg-white px-5 shadow-xs">
+      <div className="flex items-center gap-2">
         <div
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="rounded-full shadow border-2 border-gray-100 cursor-pointer p-[2px] w-10 h-10"
+          className="h-10 w-10 cursor-pointer rounded-full border-2 border-gray-100 p-[2px] shadow"
         >
           <Bars3Icon />
         </div>
         {path !== "/admin" && (
           <button
             onClick={handleClick}
-            className="text-center w-22 rounded-2xl h-[34px] relative text-sm group cursor-pointer shadow border-2 border-gray-100 overflow-hidden"
+            className="group relative h-[34px] w-22 cursor-pointer overflow-hidden rounded-2xl border-2 border-gray-100 text-center text-sm shadow"
             type="button"
           >
-            <div className="bg-white shadow rounded-2xl h-[34px] w-8 flex items-center justify-center absolute left-[-1px] top-[0px] group-hover:w-22 z-10 duration-400">
-              <svg className="rotate-180 w-[20px] h-[20px]" viewBox="0 0 1024 1024">
+            <div className="absolute top-[0px] left-[-1px] z-10 flex h-[34px] w-8 items-center justify-center rounded-2xl bg-white shadow duration-400 group-hover:w-22">
+              <svg
+                className="h-[20px] w-[20px] rotate-180"
+                viewBox="0 0 1024 1024"
+              >
                 <path
                   d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
                   fill="#000000"
@@ -56,7 +62,7 @@ export default function AdminNavBar({ sidebarOpen, setSidebarOpen }: AdminNavbar
           </button>
         )}
       </div>
-      <div className="flex gap-2 xs:gap-4 items-center">
+      <div className="xs:gap-4 flex items-center gap-2">
         <NotificationButton />
         <UserButton />
         <HomeButton />

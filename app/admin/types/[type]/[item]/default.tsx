@@ -5,7 +5,7 @@ type Props = {
 };
 
 export default async function Default(props: Props) {
-  const { type, item } = await props.params
+  const { type, item } = await props.params;
 
   redirect(`/admin/types/${type}/${item}`);
 }

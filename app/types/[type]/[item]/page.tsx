@@ -2,7 +2,11 @@
 import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import LoadingImage from "@/components/LoadingImage";
-import { ArrowLeftIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { notFound } from "next/navigation";
@@ -19,26 +23,25 @@ export default function Page(props: Props) {
   const [data, setData] = useState({
     image: "",
     ingredients: "",
-    instructions: ""
-  })
+    instructions: "",
+  });
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}/${item}`,
-        { cache: "no-store" }
+        { cache: "no-store" },
       );
       const itemData = await res.json();
 
       if (itemData["error"]) notFound();
 
-      setData(itemData)
-    }
+      setData(itemData);
+    };
 
     fetchData();
-
-  }, [item, type])
+  }, [item, type]);
 
   const ingredientList = (data.ingredients || "")
     .split("#")
@@ -53,15 +56,16 @@ export default function Page(props: Props) {
     .map((label, i) => ({ id: `step-${i}`, label }));
 
   const [ingredientChecks, setIngredientChecks] = useState(
-    Object.fromEntries(ingredientList.map((i) => [i.id, false]))
+    Object.fromEntries(ingredientList.map((i) => [i.id, false])),
   );
 
   const [instructionChecks, setInstructionChecks] = useState(
-    Object.fromEntries(instructionList.map((i) => [i.id, false]))
+    Object.fromEntries(instructionList.map((i) => [i.id, false])),
   );
 
   const allIngredientsChecked = Object.values(ingredientChecks).every(Boolean);
-  const allInstructionsChecked = Object.values(instructionChecks).every(Boolean);
+  const allInstructionsChecked =
+    Object.values(instructionChecks).every(Boolean);
 
   const handleIngredientChange = (id: string) => {
     setIngredientChecks((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -74,17 +78,13 @@ export default function Page(props: Props) {
 
   const completeAllIngredients = () => {
     setIngredientChecks(
-      Object.fromEntries(
-        ingredientList.map((i) => [i.id, true])
-      )
+      Object.fromEntries(ingredientList.map((i) => [i.id, true])),
     );
   };
 
   const completeAllInstructions = () => {
     setInstructionChecks(
-      Object.fromEntries(
-        instructionList.map((i) => [i.id, true])
-      )
+      Object.fromEntries(instructionList.map((i) => [i.id, true])),
     );
   };
 
@@ -95,54 +95,68 @@ export default function Page(props: Props) {
 
       const res = await fetch("/api/completions", {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify({ type, item, uid })
-      })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, item, uid }),
+      });
 
       if (!res.ok) throw new Error("Failed to complete");
 
-      router.push("/types")
+      router.push("/types");
     } catch (e: any) {
       alert(e.message);
     }
-  }
+  };
 
   return (
-    <div className="px-4 -mt-4 md:px-10 pb-6 flex flex-col items-center text-md md:text-lg lg:text-xl">
-      <LoadingImage className="w-[200px]" position="center" src={data.image} width={200} height={200} alt="" />
-      <div className="w-full mb-2">
-        <h1 className="text-2xl text-center mb-2">{item}</h1>
-        <div className="w-full h-1 bg-gold"></div>
+    <div className="text-md -mt-4 flex flex-col items-center px-4 pb-6 md:px-10 md:text-lg lg:text-xl">
+      <LoadingImage
+        className="w-[200px]"
+        position="center"
+        src={data.image}
+        width={200}
+        height={200}
+        alt=""
+      />
+      <div className="mb-2 w-full">
+        <h1 className="mb-2 text-center text-2xl">{item}</h1>
+        <div className="bg-gold h-1 w-full"></div>
       </div>
-      <div className="w-full sm:min-h-[500px] flex flex-col sm:flex-row">
+      <div className="flex w-full flex-col sm:min-h-[500px] sm:flex-row">
         {/* Ingredients section */}
-        <div className="sm:w-[50%] sm:max-w-[300px] bg-[rgb(50,50,50)] rounded-t-xl sm:rounded-t-none sm:rounded-r-xl text-white px-2 lg:px-4 py-4 flex flex-col items-center">
+        <div className="flex flex-col items-center rounded-t-xl bg-[rgb(50,50,50)] px-2 py-4 text-white sm:w-[50%] sm:max-w-[300px] sm:rounded-t-none sm:rounded-r-xl lg:px-4">
           <h3 className="mb-4 font-bold">المكونات</h3>
-          <ul className="w-full flex flex-col gap-4">
+          <ul className="flex w-full flex-col gap-4">
             {ingredientList.map((item) => (
               <li className="flex gap-2" key={item.id}>
                 <input
-                  className="scale-125 self-start mt-2"
+                  className="mt-2 scale-125 self-start"
                   type="checkbox"
                   id={item.id}
                   checked={ingredientChecks[item.id]}
                   onChange={() => handleIngredientChange(item.id)}
                 />
-                <label className="w-full break-words" htmlFor={item.id}>{item.label}</label>
+                <label className="w-full break-words" htmlFor={item.id}>
+                  {item.label}
+                </label>
               </li>
             ))}
           </ul>
         </div>
         {/* Instructions section */}
         <div
-          className={`w-full bg-gray-200 rounded-b-xl sm:rounded-br-none sm:rounded-l-xl px-2 lg:px-4 py-4 flex flex-col items-center transition-opacity duration-200 ${
-            allIngredientsChecked ? "opacity-100" : "opacity-50 pointer-events-none select-none"
+          className={`flex w-full flex-col items-center rounded-b-xl bg-gray-200 px-2 py-4 transition-opacity duration-200 sm:rounded-l-xl sm:rounded-br-none lg:px-4 ${
+            allIngredientsChecked
+              ? "opacity-100"
+              : "pointer-events-none opacity-50 select-none"
           }`}
         >
           <h3 className="mb-4 font-bold">التعليمات</h3>
-          <ol className="w-full flex flex-col gap-2 lg:gap-4 list-decimal">
+          <ol className="flex w-full list-decimal flex-col gap-2 lg:gap-4">
             {instructionList.map((item) => (
-              <div className="flex justify-start items-start gap-6" key={item.id}>
+              <div
+                className="flex items-start justify-start gap-6"
+                key={item.id}
+              >
                 <input
                   className="mt-2 scale-125 self-start"
                   type="checkbox"
@@ -152,51 +166,50 @@ export default function Page(props: Props) {
                   disabled={!allIngredientsChecked}
                 />
                 <li className="flex-1">
-                  <label className="w-full break-words" htmlFor={item.id}>{item.label}</label>
+                  <label className="w-full break-words" htmlFor={item.id}>
+                    {item.label}
+                  </label>
                 </li>
               </div>
             ))}
           </ol>
         </div>
       </div>
-      <div className="w-full h-30 xs:h-16 flex flex-col xs:flex-row mt-4 gap-3 xs:gap-2 md:gap-3 lg:gap-4">
+      <div className="xs:h-16 xs:flex-row xs:gap-2 mt-4 flex h-30 w-full flex-col gap-3 md:gap-3 lg:gap-4">
         <Link
-          className="w-full xs:w-1/2 h-full bg-gray-200 flex justify-center items-center rounded-lg font-bold hover:opacity-85 transition-all duration-150"
+          className="xs:w-1/2 flex h-full w-full items-center justify-center rounded-lg bg-gray-200 font-bold transition-all duration-150 hover:opacity-85"
           href={`/types/${type}/`}
         >
           إلغاء
           <XMarkIcon className="w-10 text-[rgb(205,2,2)]" />
         </Link>
-        {
-          !allIngredientsChecked && 
+        {!allIngredientsChecked && (
           <button
-          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
-          onClick={completeAllIngredients}
-        >
-          التالي
-          <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
+            className="xs:w-1/2 flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-black font-bold text-white transition-all duration-150 hover:opacity-85"
+            onClick={completeAllIngredients}
+          >
+            التالي
+            <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
           </button>
-        }
-        {
-          allIngredientsChecked && !allInstructionsChecked && 
+        )}
+        {allIngredientsChecked && !allInstructionsChecked && (
           <button
-          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
-          onClick={completeAllInstructions}
-        >
-          التالي
-          <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
+            className="xs:w-1/2 flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-black font-bold text-white transition-all duration-150 hover:opacity-85"
+            onClick={completeAllInstructions}
+          >
+            التالي
+            <ArrowLeftIcon className="w-10 text-[rgb(2,205,63)]" />
           </button>
-        }
-        {
-          allIngredientsChecked && allInstructionsChecked &&
-        <button
-          className="w-full xs:w-1/2 h-full bg-black flex text-white justify-center items-center rounded-lg font-bold transition-all duration-150 cursor-pointer hover:opacity-85"
-          onClick={completeItem}
-        >
-          اكمال
-          <CheckIcon className="w-10 text-[rgb(2,205,63)]" />
-        </button>
-        }
+        )}
+        {allIngredientsChecked && allInstructionsChecked && (
+          <button
+            className="xs:w-1/2 flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-black font-bold text-white transition-all duration-150 hover:opacity-85"
+            onClick={completeItem}
+          >
+            اكمال
+            <CheckIcon className="w-10 text-[rgb(2,205,63)]" />
+          </button>
+        )}
       </div>
     </div>
   );

@@ -3,7 +3,10 @@ import { rtdb, storage } from "@/lib/firebase";
 import { ref as dbRef, get, update, set, remove } from "firebase/database";
 import { ref as storageRef, deleteObject } from "firebase/storage";
 
-export async function GET(_: Request, context: { params: Promise<{ type: string; item: string }> }) {
+export async function GET(
+  _: Request,
+  context: { params: Promise<{ type: string; item: string }> },
+) {
   const { type, item } = await context.params;
 
   try {
@@ -18,13 +21,16 @@ export async function GET(_: Request, context: { params: Promise<{ type: string;
     return NextResponse.json(data);
   } catch (err) {
     console.error("Error fetching item:", err);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: Promise<{ type: string; item: string }> }
+  context: { params: Promise<{ type: string; item: string }> },
 ) {
   const { type, item } = await context.params;
   const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
@@ -76,11 +82,17 @@ export async function PATCH(
     return NextResponse.json({ message: "Item updated" });
   } catch (err) {
     console.error("Error updating item:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
 
-export async function DELETE(_: NextRequest, context: { params: Promise<{ type: string, item: string }> }) {
+export async function DELETE(
+  _: NextRequest,
+  context: { params: Promise<{ type: string; item: string }> },
+) {
   const { type, item } = await context.params;
   const itemRef = dbRef(rtdb, `types/${type}/items/${item}`);
 
@@ -105,16 +117,22 @@ export async function DELETE(_: NextRequest, context: { params: Promise<{ type: 
     }
 
     await remove(itemRef);
-    return NextResponse.json({ message: "Item and its image deleted successfully" });
+    return NextResponse.json({
+      message: "Item and its image deleted successfully",
+    });
   } catch (error) {
     console.error("Delete error:", error);
-    return NextResponse.json({ error: "Failed to delete item" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete item" },
+      { status: 500 },
+    );
   }
 }
 
 // Utility function to extract Firebase Storage path from download URL
 function extractStoragePathFromUrl(url: string): string {
   const match = decodeURIComponent(url).match(/\/o\/(.+?)\?alt=media/);
-  if (!match || !match[1]) throw new Error("Failed to extract image path from URL");
+  if (!match || !match[1])
+    throw new Error("Failed to extract image path from URL");
   return match[1]; // like "item-images/some-image.jpg"
 }

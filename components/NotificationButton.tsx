@@ -26,7 +26,7 @@ export default function NotificationButton() {
     onValue(usersRef, (snapshot) => {
       const usersData = snapshot.val() || {};
       const count = Object.values(usersData).filter(
-        (user: any) => user.active === true
+        (user: any) => user.active === true,
       ).length;
       setActiveUsersCount(count);
     });
@@ -38,17 +38,17 @@ export default function NotificationButton() {
       onMouseLeave={handleCloseDropdown}
       className="relative"
     >
-      <BellIcon className="w-8 h-8 cursor-pointer" />
+      <BellIcon className="h-8 w-8 cursor-pointer" />
       {activeUsersCount > 0 && (
-        <div className="absolute top-[1px] right-[2px] font-bold text-xs flex justify-center items-center text-center bg-red-700 text-white w-[14px] h-[14px] rounded-full">
+        <div className="absolute top-[1px] right-[2px] flex h-[14px] w-[14px] items-center justify-center rounded-full bg-red-700 text-center text-xs font-bold text-white">
           {activeUsersCount}
         </div>
       )}
       <div
-        className={`absolute left-0 -top-2 mt-2 z-50 transition-all duration-200 ease-out ${
+        className={`absolute -top-2 left-0 z-50 mt-2 transition-all duration-200 ease-out ${
           dropdown
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-2 pointer-events-none"
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
         }`}
       >
         <NotificationDropdown activeUsersCount={activeUsersCount} />

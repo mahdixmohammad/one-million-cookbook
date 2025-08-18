@@ -1,7 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { use, useState, useEffect } from "react";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 
@@ -20,7 +25,9 @@ export default function EditItemModal(props: Props) {
   const [initialCompletions, setInitialCompletions] = useState(0);
   const [completions, setCompletions] = useState(0);
   const [originalIngredients, setOriginalIngredients] = useState<string[]>([]);
-  const [originalInstructions, setOriginalInstructions] = useState<string[]>([]);
+  const [originalInstructions, setOriginalInstructions] = useState<string[]>(
+    [],
+  );
   const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState<string[]>([""]);
   const [file, setFile] = useState<File | null>(null);
@@ -67,7 +74,7 @@ export default function EditItemModal(props: Props) {
     };
   }, [preview]);
 
-  const clean = (arr: string[]) => arr.map(s => s.trim()).filter(Boolean);
+  const clean = (arr: string[]) => arr.map((s) => s.trim()).filter(Boolean);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,12 +84,20 @@ export default function EditItemModal(props: Props) {
     const isImageChanged = !!file;
 
     const isIngredientsChanged =
-      JSON.stringify(clean(ingredients)) !== JSON.stringify(clean(originalIngredients));
+      JSON.stringify(clean(ingredients)) !==
+      JSON.stringify(clean(originalIngredients));
 
     const isInstructionsChanged =
-      JSON.stringify(clean(instructions)) !== JSON.stringify(clean(originalInstructions));
+      JSON.stringify(clean(instructions)) !==
+      JSON.stringify(clean(originalInstructions));
 
-    if (!isNameChanged && !isCompletionsChanged &&  !isImageChanged && !isIngredientsChanged && !isInstructionsChanged) {
+    if (
+      !isNameChanged &&
+      !isCompletionsChanged &&
+      !isImageChanged &&
+      !isIngredientsChanged &&
+      !isInstructionsChanged
+    ) {
       alert("Please update something before saving.");
       return;
     }
@@ -98,12 +113,12 @@ export default function EditItemModal(props: Props) {
       }
 
       type payloadType = {
-        newItem?: string, 
-        completions?: number,
-        image?: string, 
-        ingredients?: string, 
-        instructions?: string 
-      }
+        newItem?: string;
+        completions?: number;
+        image?: string;
+        ingredients?: string;
+        instructions?: string;
+      };
 
       const payload: payloadType = {};
       if (isNameChanged) payload.newItem = name;
@@ -136,23 +151,19 @@ export default function EditItemModal(props: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm overflow-y-auto p-4">
-      <div className="bg-white rounded-lg px-8 py-6 shadow-lg w-full max-w-[550px] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl mb-4">تحرير المنتج</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/30 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-[550px] overflow-y-auto rounded-lg bg-white px-8 py-6 shadow-lg">
+        <h2 className="mb-4 text-xl">تحرير المنتج</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="relative">
             <input
-              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              className="peer w-full rounded border px-3 py-2 focus:outline-none"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder=" "
             />
             <span
-              className={`
-                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
-                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
-                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
-              `}
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
             >
               اسم المنتج
             </span>
@@ -164,29 +175,31 @@ export default function EditItemModal(props: Props) {
               value={completions}
               onChange={(e) => setCompletions(Number(e.target.value))}
               placeholder=" "
-              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              className="peer w-full rounded border px-3 py-2 focus:outline-none"
             />
             <span
-              className={`
-                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
-                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
-                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
-              `}
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
             >
-              العمليات            
+              العمليات
             </span>
           </div>
           {/* Image Upload */}
-          <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
-            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">تصفح</span>
+          <label className="flex cursor-pointer items-center justify-between rounded border bg-gray-50 px-3 py-2 transition-all hover:bg-gray-100">
+            <span className="text-gray-500">
+              {file?.name || "اختار الصورة..."}
+            </span>
+            <span className="rounded bg-gray-200 px-2 py-1 text-sm text-gray-500 hover:bg-gray-300">
+              تصفح
+            </span>
             <input
               type="file"
               accept="image/*"
               onChange={(e) => {
                 const selected = e.target.files?.[0] || null;
                 setFile(selected);
-                setPreview(selected ? URL.createObjectURL(selected) : initialImage);
+                setPreview(
+                  selected ? URL.createObjectURL(selected) : initialImage,
+                );
               }}
               className="hidden"
             />
@@ -196,7 +209,7 @@ export default function EditItemModal(props: Props) {
             <Image
               src={preview}
               alt="Preview"
-              className="w-full h-auto max-h-48 object-contain rounded border"
+              className="h-auto max-h-48 w-full rounded border object-contain"
               width={50}
               height={50}
             />
@@ -205,10 +218,10 @@ export default function EditItemModal(props: Props) {
           <div>
             <label className="font-medium">المكونات</label>
             {ingredients.map((ing, idx) => (
-              <div key={idx} className="flex items-center gap-2 mt-1">
+              <div key={idx} className="mt-1 flex items-center gap-2">
                 <input
                   type="text"
-                  className="border rounded px-3 py-2 w-full"
+                  className="w-full rounded border px-3 py-2"
                   value={ing}
                   onChange={(e) => {
                     const updated = [...ingredients];
@@ -219,8 +232,10 @@ export default function EditItemModal(props: Props) {
                 />
                 <button
                   type="button"
-                  className="text-red-500 cursor-pointer"
-                  onClick={() => setIngredients(ingredients.filter((_, i) => i !== idx))}
+                  className="cursor-pointer text-red-500"
+                  onClick={() =>
+                    setIngredients(ingredients.filter((_, i) => i !== idx))
+                  }
                 >
                   🗑
                 </button>
@@ -228,7 +243,7 @@ export default function EditItemModal(props: Props) {
             ))}
             <button
               type="button"
-              className="mt-2 text-sm text-blue-600 cursor-pointer"
+              className="mt-2 cursor-pointer text-sm text-blue-600"
               onClick={() => setIngredients([...ingredients, ""])}
             >
               ➕ إضافة مكون
@@ -239,10 +254,10 @@ export default function EditItemModal(props: Props) {
           <div>
             <label className="font-medium">التعليمات</label>
             {instructions.map((ins, idx) => (
-              <div key={idx} className="flex items-center gap-2 mt-1">
+              <div key={idx} className="mt-1 flex items-center gap-2">
                 <input
                   type="text"
-                  className="border rounded px-3 py-2 w-full"
+                  className="w-full rounded border px-3 py-2"
                   value={ins}
                   onChange={(e) => {
                     const updated = [...instructions];
@@ -253,8 +268,10 @@ export default function EditItemModal(props: Props) {
                 />
                 <button
                   type="button"
-                  className="text-red-500 cursor-pointer"
-                  onClick={() => setInstructions(instructions.filter((_, i) => i !== idx))}
+                  className="cursor-pointer text-red-500"
+                  onClick={() =>
+                    setInstructions(instructions.filter((_, i) => i !== idx))
+                  }
                 >
                   🗑
                 </button>
@@ -262,24 +279,24 @@ export default function EditItemModal(props: Props) {
             ))}
             <button
               type="button"
-              className="mt-2 text-sm text-blue-600 cursor-pointer"
+              className="mt-2 cursor-pointer text-sm text-blue-600"
               onClick={() => setInstructions([...instructions, ""])}
             >
               ➕ إضافة خطوة
             </button>
           </div>
 
-          <div className="flex gap-2 justify-end mt-4">
+          <div className="mt-4 flex justify-end gap-2">
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}/${item}`)}
-              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
             >
               الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 w-24 rounded bg-gray-600 text-white hover:bg-gray-700 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-600 px-4 py-2 text-white transition-all duration-150 hover:bg-gray-700"
             >
               حفظ
             </button>

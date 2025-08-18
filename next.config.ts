@@ -4,12 +4,13 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-          {
-            protocol: "https",
-            hostname: "firebasestorage.googleapis.com",
-            pathname: "/v0/b/one-million-cookbook.firebasestorage.app/o/**",
-    }, ] 
-  }, 
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/v0/b/one-million-cookbook.firebasestorage.app/o/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -8,12 +8,12 @@ export default async function Home() {
   const typesData = await res.json();
 
   return (
-    <div className="px-10 pb-20 flex flex-col">
-      <div className="w-fit my-5">
+    <div className="flex flex-col px-10 pb-20">
+      <div className="my-5 w-fit">
         <h1 className="text-2xl text-black">اختار النوع</h1>
-        <div className="w-full h-1 bg-gold"></div>
+        <div className="bg-gold h-1 w-full"></div>
       </div>
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-5 gap-y-10">
+      <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
         {Object.keys(typesData).map((typeName, i) => (
           <FoodCard
             key={i}

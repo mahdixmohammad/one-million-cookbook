@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ReactNode, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -12,7 +12,7 @@ import Loading from "@/components/Loading";
 export default function AdminLayout({
   children,
 }: Readonly<{
-  children: ReactNode
+  children: ReactNode;
 }>) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -27,8 +27,10 @@ export default function AdminLayout({
 
       const db = getDatabase();
       const userRef = ref(db, `users/${user.uid}`);
-      await update(userRef, { active: true, disconnected: false }).catch(console.error);
-      
+      await update(userRef, { active: true, disconnected: false }).catch(
+        console.error,
+      );
+
       const roleRef = ref(db, `users/${user.uid}/role`);
       const snap = await get(roleRef);
       const role = snap.val();
@@ -43,13 +45,21 @@ export default function AdminLayout({
     return () => unsub();
   }, [router]);
 
-  if (loading) return <div className="w-screen h-screen flex items-center justify-center"><Loading /></div>;
+  if (loading)
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="flex h-screen overflow-hidden">
       <AdminSideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="flex-1 overflow-y-auto bg-gray-100">
-        <AdminNavBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <AdminNavBar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
         {children}
       </div>
     </div>

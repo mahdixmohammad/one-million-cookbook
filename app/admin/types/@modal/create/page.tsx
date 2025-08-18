@@ -1,7 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 
@@ -46,36 +51,38 @@ export default function EditTypeModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">إنشاء نوع</h2>
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="mb-4 text-xl">إنشاء نوع</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="relative">
             <input
-              className="w-full peer border rounded px-3 py-2 focus:outline-none"
+              className="peer w-full rounded border px-3 py-2 focus:outline-none"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               placeholder=" "
               required
             />
             <span
-              className={`
-                absolute right-2 top-2 text-gray-500 bg-white px-1 transition-all duration-200
-                peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 pointer-events-none
-                ${name ? "-translate-y-4 text-sm text-gray-700" : ""}
-              `}
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
             >
               اسم النوع
             </span>
           </div>
-          <label className="flex items-center justify-between border rounded px-3 py-2 cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
-            <span className="text-gray-500">{file?.name || "اختار الصورة..."}</span>
-            <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded hover:bg-gray-300">
+          <label className="flex cursor-pointer items-center justify-between rounded border bg-gray-50 px-3 py-2 transition-all hover:bg-gray-100">
+            <span className="text-gray-500">
+              {file?.name || "اختار الصورة..."}
+            </span>
+            <span className="rounded bg-gray-200 px-2 py-1 text-sm text-gray-500 hover:bg-gray-300">
               تصفح
             </span>
             <input
               type="file"
               accept="image/*"
-              onChange={e => {const selected = e.target.files?.[0] || null; setFile(selected); setPreview(selected ? URL.createObjectURL(selected) : null);}}
+              onChange={(e) => {
+                const selected = e.target.files?.[0] || null;
+                setFile(selected);
+                setPreview(selected ? URL.createObjectURL(selected) : null);
+              }}
               className="hidden"
               required
             />
@@ -84,13 +91,25 @@ export default function EditTypeModal() {
             <Image
               src={preview}
               alt="Preview"
-              className="w-full h-auto max-h-48 object-contain rounded border"
-              width={50} height={50}
+              className="h-auto max-h-48 w-full rounded border object-contain"
+              width={50}
+              height={50}
             />
           )}
-          <div className="flex gap-2 justify-end">
-            <button type="button" onClick={() => router.push(`/admin/types`)} className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150">الغاء</button>
-            <button type="submit" className="px-4 py-2 w-24 rounded bg-green-700 text-white hover:bg-green-800 cursor-pointer transition-all duration-150">انشاء</button>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => router.push(`/admin/types`)}
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
+            >
+              الغاء
+            </button>
+            <button
+              type="submit"
+              className="w-24 cursor-pointer rounded bg-green-700 px-4 py-2 text-white transition-all duration-150 hover:bg-green-800"
+            >
+              انشاء
+            </button>
           </div>
         </form>
       </div>

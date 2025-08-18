@@ -10,7 +10,7 @@ export default function DeleteItemModal(props: Props) {
   let { type, item } = use(props.params);
   type = decodeURIComponent(type);
   item = decodeURIComponent(item);
-  
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,21 +37,24 @@ export default function DeleteItemModal(props: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
-        <h2 className="text-xl mb-4">حذف المنتج</h2>
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="mb-4 text-xl">حذف المنتج</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <p>هل أنت متأكد أنك تريد حذف <strong>{item}</strong> من <strong>{type}</strong>؟ لا يمكن التراجع عن هذا الإجراء.</p>
-          <div className="flex gap-2 justify-end">
+          <p>
+            هل أنت متأكد أنك تريد حذف <strong>{item}</strong> من{" "}
+            <strong>{type}</strong>؟ لا يمكن التراجع عن هذا الإجراء.
+          </p>
+          <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => router.push(`/admin/types/${type}/${item}`)}
-              className="px-4 py-2 w-24 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-gray-200 px-4 py-2 transition-all duration-150 hover:bg-gray-300"
             >
               الغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 w-24 rounded bg-red-800 text-white hover:bg-red-900 cursor-pointer transition-all duration-150"
+              className="w-24 cursor-pointer rounded bg-red-800 px-4 py-2 text-white transition-all duration-150 hover:bg-red-900"
             >
               حذف
             </button>
