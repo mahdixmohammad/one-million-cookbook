@@ -177,6 +177,8 @@ function CompletionsCard() {
         }),
       );
 
+      completionsWithImages.reverse();
+
       setCompletions(completionsWithImages);
     });
 
