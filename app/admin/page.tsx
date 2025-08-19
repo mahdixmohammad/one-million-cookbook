@@ -32,24 +32,22 @@ function ActiveUsersCard() {
   const [users, setUsers] = useState<Array<any>>([]);
 
   useEffect(() => {
-    const unsub = () => {
-      const usersRef = ref(rtdb, "users");
+    const usersRef = ref(rtdb, "users");
 
-      onValue(usersRef, (snapshot) => {
-        const usersData = snapshot.val() || {};
-        const filteredUsers = Object.values(usersData).filter(
-          (user: any) => user.active === true,
+    const unsub = onValue(usersRef, (snapshot) => {
+      const usersData = snapshot.val() || {};
+      const filteredUsers = Object.values(usersData).filter(
+        (user: any) => user.active === true,
+      );
+
+      filteredUsers.sort((a: any, b: any) => {
+        return (
+          new Date(b.lastLogin).getTime() - new Date(a.lastLogin).getTime()
         );
-
-        filteredUsers.sort((a: any, b: any) => {
-          return (
-            new Date(b.lastLogin).getTime() - new Date(a.lastLogin).getTime()
-          );
-        });
-
-        setUsers(filteredUsers);
       });
-    };
+
+      setUsers(filteredUsers);
+    });
 
     return () => unsub();
   }, []);
