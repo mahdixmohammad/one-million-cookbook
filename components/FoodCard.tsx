@@ -22,8 +22,8 @@ export default function FoodCard({ thumbnail, name }: Props) {
         className="h-[100%] w-[100%] object-contain"
         position="center"
         src={thumbnail}
-        width={200}
-        height={200}
+        width={1000}
+        height={1000}
         alt=""
       />
       <h2 className="xs:text-2xl bg-gold absolute bottom-5 mt-2 w-[90%] rounded-lg py-0.5 text-center text-4xl font-bold text-black sm:text-xl lg:text-2xl xl:text-3xl">

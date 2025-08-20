@@ -84,24 +84,36 @@ export default function LoginPage({ searchParams }: searchParams) {
         width={200}
         height={200}
       />
-      <input
-        className={`w-full border p-2 ${identifier ? "text-left" : "text-right"}`}
-        type="text"
-        placeholder="اسم المستخدم"
-        dir={identifier ? "ltr" : "rtl"} // RTL for placeholder, LTR when typing
-        value={identifier}
-        onChange={(e) => setIdentifier(e.target.value)}
-        required
-      />
-      <input
-        className={`w-full border p-2 ${password ? "text-left" : "text-right"}`}
-        type="password"
-        placeholder="كلمة المرور"
-        dir={password ? "ltr" : "rtl"}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <div className="relative">
+        <input
+          className={`peer w-full rounded border px-3 py-2 focus:outline-none ${identifier ? "text-left" : "text-right"}`}
+          type="text"
+          dir={identifier ? "ltr" : "rtl"} // RTL for placeholder, LTR when typing
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
+          required
+        />
+        <span
+          className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${identifier ? "-translate-y-4 text-sm text-gray-700" : ""} `}
+        >
+          اسم المستخدم
+        </span>
+      </div>
+      <div className="relative">
+        <input
+          className={`peer w-full rounded border px-3 py-2 focus:outline-none ${password ? "text-left" : "text-right"}`}
+          type="password"
+          dir={password ? "ltr" : "rtl"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <span
+          className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${password ? "-translate-y-4 text-sm text-gray-700" : ""} `}
+        >
+          كلمة المرور
+        </span>
+      </div>
       <button
         type="submit"
         className="w-full cursor-pointer bg-black p-3 font-bold text-white transition-all duration-150 hover:opacity-85"

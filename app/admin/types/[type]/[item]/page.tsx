@@ -53,6 +53,7 @@ export default async function Type(props: Props) {
             </h3>
             <LoadingImage
               position="start"
+              className="object-contain"
               src={itemData["image"]}
               alt=""
               width={90}

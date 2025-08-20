@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   params: Promise<{ type: string }>;
@@ -86,14 +87,18 @@ export default function CreateItemModal(props: Props) {
       <div className="max-h-[90vh] w-full max-w-[550px] overflow-y-auto rounded-lg bg-white px-8 py-6 shadow-lg">
         <h2 className="mb-4 text-xl">إنشاء منتج جديد</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            className="rounded border px-3 py-2"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="اسم المنتج"
-            required
-          />
-
+          <div className="relative">
+            <input
+              className="peer w-full rounded border px-3 py-2 focus:outline-none"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <span
+              className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
+            >
+              اسم المنتج
+            </span>
+          </div>
           {/* Image Upload */}
           <label className="flex cursor-pointer items-center justify-between rounded border bg-gray-50 px-3 py-2 transition-all hover:bg-gray-100">
             <span className="text-gray-500">
@@ -128,18 +133,22 @@ export default function CreateItemModal(props: Props) {
           <div>
             <label className="font-medium">المكونات</label>
             {ingredients.map((ing, idx) => (
-              <div key={idx} className="mt-1 flex items-center gap-2">
+              <div key={idx} className="relative mt-3 flex items-center gap-1">
                 <input
                   type="text"
-                  className="w-full rounded border px-3 py-2"
+                  className="peer w-full rounded border px-3 py-2 focus:outline-none"
                   value={ing}
                   onChange={(e) => {
                     const updated = [...ingredients];
                     updated[idx] = e.target.value;
                     setIngredients(updated);
                   }}
-                  placeholder={`مكون ${idx + 1}`}
                 />
+                <span
+                  className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${ing ? "-translate-y-4 text-sm text-gray-700" : ""} `}
+                >
+                  {`مكون ${idx + 1}`}
+                </span>
                 <button
                   type="button"
                   className="cursor-pointer text-red-500"
@@ -147,16 +156,16 @@ export default function CreateItemModal(props: Props) {
                     setIngredients(ingredients.filter((_, i) => i !== idx))
                   }
                 >
-                  🗑
+                  <TrashIcon className="w-5 text-red-600" />
                 </button>
               </div>
             ))}
             <button
               type="button"
-              className="mt-2 cursor-pointer text-sm text-blue-600"
+              className="mt-2 flex cursor-pointer text-sm text-blue-600"
               onClick={() => setIngredients([...ingredients, ""])}
             >
-              ➕ إضافة مكون
+              <PlusIcon className="w-5" /> إضافة مكون
             </button>
           </div>
 
@@ -164,18 +173,22 @@ export default function CreateItemModal(props: Props) {
           <div>
             <label className="font-medium">التعليمات</label>
             {instructions.map((ins, idx) => (
-              <div key={idx} className="mt-1 flex items-center gap-2">
+              <div key={idx} className="relative mt-3 flex items-center gap-1">
                 <input
                   type="text"
-                  className="w-full rounded border px-3 py-2"
+                  className="peer w-full rounded border px-3 py-2 focus:outline-none"
                   value={ins}
                   onChange={(e) => {
                     const updated = [...instructions];
                     updated[idx] = e.target.value;
                     setInstructions(updated);
                   }}
-                  placeholder={`خطوة ${idx + 1}`}
                 />
+                <span
+                  className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${ins ? "-translate-y-4 text-sm text-gray-700" : ""} `}
+                >
+                  {`خطوة ${idx + 1}`}
+                </span>
                 <button
                   type="button"
                   className="cursor-pointer text-red-500"
@@ -183,16 +196,16 @@ export default function CreateItemModal(props: Props) {
                     setInstructions(instructions.filter((_, i) => i !== idx))
                   }
                 >
-                  🗑
+                  <TrashIcon className="w-5 text-red-600" />
                 </button>
               </div>
             ))}
             <button
               type="button"
-              className="mt-2 cursor-pointer text-sm text-blue-600"
+              className="mt-2 flex cursor-pointer text-sm text-blue-600"
               onClick={() => setInstructions([...instructions, ""])}
             >
-              ➕ إضافة خطوة
+              <PlusIcon className="w-5" /> إضافة خطوة
             </button>
           </div>
 

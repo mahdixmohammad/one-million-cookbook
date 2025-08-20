@@ -125,7 +125,6 @@ export default function EditTypeModal(props: Props) {
               className="peer w-full rounded border px-3 py-2 focus:outline-none"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder=" "
             />
             <span
               className={`pointer-events-none absolute top-2 right-2 bg-white px-1 text-gray-500 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:text-sm peer-focus:text-gray-700 ${name ? "-translate-y-4 text-sm text-gray-700" : ""} `}
@@ -139,7 +138,6 @@ export default function EditTypeModal(props: Props) {
               min={0}
               value={completions}
               onChange={(e) => setCompletions(Number(e.target.value))}
-              placeholder="العمليات"
               className="w-full rounded border px-3 py-2"
             />
             <span

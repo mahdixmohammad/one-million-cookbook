@@ -216,7 +216,7 @@ function CompletionsCard() {
                       position="start"
                       width={55}
                       height={55}
-                      className="rounded"
+                      className="rounded object-contain"
                     />
                   ) : (
                     <div className="h-10 w-10 rounded bg-gray-300" />

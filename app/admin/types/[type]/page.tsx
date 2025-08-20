@@ -62,6 +62,7 @@ export default async function TypePage(props: Props) {
                 <td className="rounded-r-xl sm:min-w-[150px]">
                   <LoadingImage
                     position="start"
+                    className="object-contain"
                     src={typeData["image"]}
                     alt=""
                     width={90}
