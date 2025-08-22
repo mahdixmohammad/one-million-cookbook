@@ -38,7 +38,7 @@ export default function UserDropdown({ username }: UserDropdownProps) {
       </div>
       <button
         onClick={handleClick}
-        className="cursor-pointer rounded-md bg-red-800 px-5 py-1 whitespace-nowrap text-white hover:opacity-85"
+        className="cursor-pointer rounded-md bg-red-700 px-5 py-1 whitespace-nowrap text-white hover:opacity-85"
       >
         تسجيل الخروج
       </button>

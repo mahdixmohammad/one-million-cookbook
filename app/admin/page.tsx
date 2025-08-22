@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { rtdb } from "@/lib/firebase";
-import { ref, get, onValue } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { CheckIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
 import LoadingImage from "@/components/LoadingImage";
+import { getUsername } from "@/lib/db/users";
+import { getImage } from "@/lib/db/items";
 
 export default function Admin() {
   return (
@@ -149,18 +151,6 @@ function CompletionsCard() {
       username: string;
     }[]
   >([]);
-
-  const getUsername = async (uid: string) => {
-    const usernameRef = ref(rtdb, `/users/${uid}/username`);
-    const snapshot = await get(usernameRef);
-    return snapshot.val();
-  };
-
-  const getImage = async (typeName: string, itemName: string) => {
-    const imageRef = ref(rtdb, `/types/${typeName}/items/${itemName}/image`);
-    const snapshot = await get(imageRef);
-    return snapshot.val();
-  };
 
   useEffect(() => {
     const completionsRef = ref(rtdb, "/completions");

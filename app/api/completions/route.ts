@@ -33,7 +33,11 @@ export async function POST(request: NextRequest) {
       return (currentValue || 0) + 1;
     });
 
-    return NextResponse.json({ success: true, message: "Completion created." });
+    return NextResponse.json({
+      completionId: newCompletionRef.key,
+      success: true,
+      message: "Completion created.",
+    });
   } catch (err) {
     console.error("Error with completion:", err);
     return NextResponse.json(

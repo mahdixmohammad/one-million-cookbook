@@ -81,7 +81,9 @@ export default function Item({ type, item, data }: Props) {
 
       if (!res.ok) throw new Error("Failed to complete");
 
-      router.push("/types");
+      const data = await res.json();
+
+      router.push(`/completions/${data.completionId}`);
     } catch (e: any) {
       alert(e.message);
     }

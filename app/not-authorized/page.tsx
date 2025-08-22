@@ -10,14 +10,14 @@ export default function NotAuthorizedPage() {
     router.push("/login");
   };
   return (
-    <div className="flex h-[80vh] w-screen flex-col items-center justify-center gap-1">
-      <h1 className="text-3xl font-bold text-red-800">وصول غير المصرح به</h1>
-      <p className="mb-1 text-xl">
-        للوصول الى هذه الصفحة، قم بتسجيل الدخول باستخدام حساب معتمد.
+    <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-3 text-center">
+      <h1 className="text-4xl font-bold text-red-700">وصول غير المصرح به</h1>
+      <p className="text-xl">
+        للوصول الى هذه الصفحة،<br></br> قم بتسجيل الدخول باستخدام حساب معتمد.
       </p>
       <button
         onClick={handleClick}
-        className="cursor-pointer rounded-md bg-black px-8 py-1 text-xl text-white transition-all duration-150 hover:opacity-85"
+        className="cursor-pointer rounded-md bg-red-700 px-12 py-1 text-xl text-white transition-all duration-150 hover:opacity-85"
       >
         تسجيل الخروج
       </button>
