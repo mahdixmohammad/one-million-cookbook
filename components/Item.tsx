@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Loading from "./Loading";
 
 type Props = {
   type: string;
@@ -22,6 +23,7 @@ type Props = {
 
 export default function Item({ type, item, data }: Props) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const ingredientList = (data.ingredients || "")
     .split("#")
@@ -70,6 +72,7 @@ export default function Item({ type, item, data }: Props) {
 
   const completeItem = async () => {
     try {
+      setLoading(true);
       const auth = getAuth();
       const uid = auth.currentUser!.uid;
 
@@ -88,6 +91,13 @@ export default function Item({ type, item, data }: Props) {
       alert(e.message);
     }
   };
+
+  if (loading)
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="text-md -mt-4 flex flex-col items-center px-4 pb-6 md:px-10 md:text-lg lg:text-xl">
