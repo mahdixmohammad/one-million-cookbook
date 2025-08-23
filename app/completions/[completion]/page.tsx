@@ -3,6 +3,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
 import Link from "next/link";
+import { formatter } from "@/utils/format-time";
 
 type Props = {
   params: Promise<{ completion: string }>;
@@ -25,7 +26,7 @@ export default async function Page(props: Props) {
           <p dir="ltr">{completion}</p>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-center gap-2 rounded-xl bg-gray-100 px-5 py-1 text-nowrap">
+      <div className="flex flex-row items-center justify-center gap-3 rounded-xl bg-gray-100 px-5 py-1 text-nowrap">
         <LoadingImage
           position="center"
           src={await getImage(data.type, data.item)}
@@ -39,8 +40,9 @@ export default async function Page(props: Props) {
             {data.type}\ {data.item}
           </p>
           <div>
-            <p>{new Date(data.date).toDateString()}</p>{" "}
-            <p>{new Date(data.date).toLocaleTimeString()}</p>
+            <p dir="ltr" className="flex justify-end">
+              {formatter.format(new Date(data.date))}
+            </p>
           </div>
           <p>المستخدم: {getUsername(data.uid)}</p>
         </div>

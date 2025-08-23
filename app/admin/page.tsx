@@ -7,6 +7,7 @@ import { CheckIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
 import LoadingImage from "@/components/LoadingImage";
 import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
+import { formatter } from "@/utils/format-time";
 
 export default function Admin() {
   return (
@@ -17,18 +18,6 @@ export default function Admin() {
     </div>
   );
 }
-
-const formatTime = (isoString: string) => {
-  const date = new Date(isoString);
-
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-
-  return `${month}/${day}/${year} @ ${hours}:${minutes}`;
-};
 
 function ActiveUsersCard() {
   const [users, setUsers] = useState<Array<any>>([]);
@@ -80,7 +69,9 @@ function ActiveUsersCard() {
                   <h3>{user.username}</h3>
                 </td>
                 <td>
-                  <h3>{formatTime(user.lastLogin)}</h3>
+                  <h3 dir="ltr" className="flex justify-end">
+                    {formatter.format(new Date(user.lastLogin))}
+                  </h3>
                 </td>
                 <td className="rounded-l-lg">
                   <h3>{user.role}</h3>
@@ -216,7 +207,9 @@ function CompletionsCard() {
                   <h3>{completion.item}</h3>
                 </td>
                 <td>
-                  <h3>{formatTime(completion.date)}</h3>
+                  <h3 dir="ltr" className="flex justify-end">
+                    {formatter.format(new Date(completion.date))}
+                  </h3>
                 </td>
                 <td className="rounded-l-lg">
                   <h3>{completion.username}</h3>
