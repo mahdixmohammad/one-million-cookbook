@@ -31,7 +31,10 @@ export default function useInactivityLogout(uid: string | null) {
     timeoutRef.current = setTimeout(async () => {
       if (uid) {
         const db = getDatabase();
-        await update(ref(db, `users/${uid}`), { active: false });
+        await update(ref(db, `users/${uid}`), {
+          active: false,
+          disconnected: false,
+        });
         await signOut(auth);
       }
     }, INACTIVITY_LIMIT);

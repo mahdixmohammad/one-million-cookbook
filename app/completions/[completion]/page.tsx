@@ -26,7 +26,7 @@ export default async function Page(props: Props) {
           <p dir="ltr">{completion}</p>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-center gap-3 rounded-xl bg-gray-100 px-5 py-1 text-nowrap">
+      <div className="flex flex-row items-center justify-center gap-4 rounded-xl bg-gray-100 px-5 py-1 text-nowrap">
         <LoadingImage
           position="center"
           src={await getImage(data.type, data.item)}
@@ -39,11 +39,10 @@ export default async function Page(props: Props) {
           <p>
             {data.type}\ {data.item}
           </p>
-          <div>
-            <p dir="ltr" className="flex justify-end">
-              {formatter.format(new Date(data.date))}
-            </p>
-          </div>
+          <p>الكمية: {data.quantity}</p>
+          <p dir="ltr" className="flex justify-end">
+            {formatter.format(new Date(data.date))}
+          </p>
           <p>المستخدم: {getUsername(data.uid)}</p>
         </div>
       </div>

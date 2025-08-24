@@ -137,6 +137,7 @@ function CompletionsCard() {
       image: string;
       type: string;
       item: string;
+      quantity: number;
       date: string;
       uid: string;
       username: string;
@@ -173,11 +174,12 @@ function CompletionsCard() {
         <h3 className="text-lg font-bold">العمليات الأخيرة</h3>
       </div>
       <div className="mt-3 max-h-[290px] overflow-auto rounded-xl">
-        <table className="w-full min-w-[400px] border-separate border-spacing-y-1">
+        <table className="w-full min-w-[520px] border-separate border-spacing-y-1">
           <thead className="sticky top-0 z-10 bg-white text-right text-gray-600">
             <tr>
               <th className="pr-2 font-normal">صورة</th>
-              <th className="pr-2 font-normal">المنتج</th>
+              <th className="font-normal">المنتج</th>
+              <th className="font-normal">الكمية</th>
               <th className="font-normal">التاريخ</th>
               <th className="font-normal">المستخدم</th>
               <th></th>
@@ -190,21 +192,20 @@ function CompletionsCard() {
                 className="h-15 bg-gray-100 transition-all duration-150 hover:opacity-80"
               >
                 <td className="rounded-r-lg pr-2">
-                  {completion.image ? (
-                    <LoadingImage
-                      src={completion.image}
-                      alt={completion.item}
-                      position="start"
-                      width={55}
-                      height={55}
-                      className="rounded object-contain"
-                    />
-                  ) : (
-                    <div className="h-10 w-10 rounded bg-gray-300" />
-                  )}
+                  <LoadingImage
+                    src={completion.image}
+                    alt={completion.item}
+                    position="start"
+                    width={55}
+                    height={55}
+                    className="rounded object-contain"
+                  />
                 </td>
                 <td>
                   <h3>{completion.item}</h3>
+                </td>
+                <td>
+                  <h3>{completion.quantity}</h3>
                 </td>
                 <td>
                   <h3 dir="ltr" className="flex justify-end">

@@ -7,9 +7,6 @@ import {
   CheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { getAuth } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import Loading from "./Loading";
 
 type Props = {
   type: string;
@@ -22,9 +19,6 @@ type Props = {
 };
 
 export default function Item({ type, item, data }: Props) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
   const ingredientList = (data.ingredients || "")
     .split("#")
     .map((s) => s.trim())
@@ -69,35 +63,6 @@ export default function Item({ type, item, data }: Props) {
       Object.fromEntries(instructionList.map((i) => [i.id, true])),
     );
   };
-
-  const completeItem = async () => {
-    try {
-      setLoading(true);
-      const auth = getAuth();
-      const uid = auth.currentUser!.uid;
-
-      const res = await fetch("/api/completions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, item, uid }),
-      });
-
-      if (!res.ok) throw new Error("Failed to complete");
-
-      const data = await res.json();
-
-      router.push(`/completions/${data.completionId}`);
-    } catch (e: any) {
-      alert(e.message);
-    }
-  };
-
-  if (loading)
-    return (
-      <div className="flex h-screen w-screen items-center justify-center">
-        <Loading />
-      </div>
-    );
 
   return (
     <div className="text-md -mt-4 flex flex-col items-center px-4 pb-6 md:px-10 md:text-lg lg:text-xl">
@@ -194,13 +159,13 @@ export default function Item({ type, item, data }: Props) {
           </button>
         )}
         {allIngredientsChecked && allInstructionsChecked && (
-          <button
+          <Link
+            href={`/types/${type}/${item}/confirm`}
             className="xs:w-1/2 flex h-full w-full cursor-pointer items-center justify-center rounded-lg bg-black font-bold text-white transition-all duration-150 hover:opacity-85"
-            onClick={completeItem}
           >
             اكمال
             <CheckIcon className="w-10 text-[rgb(2,205,63)]" />
-          </button>
+          </Link>
         )}
       </div>
     </div>

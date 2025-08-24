@@ -13,7 +13,7 @@ export default async function Home() {
         <h1 className="text-2xl text-black">اختار النوع</h1>
         <div className="bg-gold h-1 w-full"></div>
       </div>
-      <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
+      <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
         {Object.keys(typesData).map((typeName, i) => (
           <FoodCard
             key={i}
