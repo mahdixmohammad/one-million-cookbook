@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 import AdminSideBar from "@/components/AdminSideBar";
 import AdminNavBar from "@/components/AdminNavBar";
-import Loading from "@/components/Loading";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function AdminLayout({
   children,
@@ -45,12 +45,7 @@ export default function AdminLayout({
     return () => unsub();
   }, [router]);
 
-  if (loading)
-    return (
-      <div className="flex h-screen w-screen items-center justify-center">
-        <Loading />
-      </div>
-    );
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="flex h-screen overflow-hidden">

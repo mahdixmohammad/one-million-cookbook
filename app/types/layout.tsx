@@ -5,9 +5,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { onDisconnect, getDatabase, ref, get } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
-import Loading from "@/components/Loading";
 import NavBar from "@/components/NavBar";
 import useInactivityLogout from "@/hooks/useInactivityLogout";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function TypesLayout({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -75,12 +75,7 @@ export default function TypesLayout({ children }: { children: ReactNode }) {
 
   useInactivityLogout(uid);
 
-  if (loading)
-    return (
-      <div className="flex h-screen w-screen items-center justify-center">
-        <Loading />
-      </div>
-    );
+  if (loading) return <LoadingScreen />;
 
   return (
     <>
