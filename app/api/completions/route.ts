@@ -1,12 +1,12 @@
 import { rtdb } from "@/lib/firebase";
 import { ref, set, push, runTransaction } from "firebase/database";
 import { NextRequest, NextResponse } from "next/server";
+import { formatter } from "@/utils/format-time";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { type, item, uid, quantity } = body;
-    const newCompletionRef = push(ref(rtdb, "completions"));
 
     if (!type || typeof type !== "string") {
       return NextResponse.json(
@@ -33,22 +33,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const now = new Date();
+    const isoString = now.toISOString();
+    const dateKey = formatter.format(now).split(",")[0];
+
+    const newCompletionRef = push(ref(rtdb, `completions/${dateKey}`));
+
     await set(newCompletionRef, {
       type,
       item,
       uid,
       quantity,
-      date: new Date().toISOString(),
-    });
-
-    const userCompletionsRef = ref(rtdb, `users/${uid}/completions`);
-    await runTransaction(userCompletionsRef, (currentValue) => {
-      return (currentValue || 0) + 1;
-    });
-
-    const typeCompletionsRef = ref(rtdb, `types/${type}/completions`);
-    await runTransaction(typeCompletionsRef, (currentValue) => {
-      return (currentValue || 0) + 1;
+      date: isoString,
     });
 
     const itemCompletionsRef = ref(
@@ -60,6 +56,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({
+      dateKey,
       completionId: newCompletionRef.key,
       success: true,
       message: "Completion created.",

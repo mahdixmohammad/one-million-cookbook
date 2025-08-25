@@ -11,7 +11,7 @@ import { formatter } from "@/utils/format-time";
 
 export default function Admin() {
   return (
-    <div className="xs:p-4 grid h-full auto-rows-[350px] grid-cols-1 gap-4 p-2 sm:grid-cols-5">
+    <div className="xs:p-4 grid h-full auto-rows-[350px] grid-cols-1 gap-4 p-2 sm:grid-cols-6">
       <ActiveUsersCard />
       <NumberOfCompletionsCard />
       <CompletionsCard />
@@ -44,13 +44,13 @@ function ActiveUsersCard() {
   }, []);
 
   return (
-    <div className="xs:px-3 col-span-1 h-full w-full rounded-lg bg-white py-3 shadow sm:col-span-3">
+    <div className="xs:px-3 col-span-1 h-full w-full rounded-lg bg-white py-3 shadow sm:col-span-4">
       <div className="xs:px-0 flex gap-2 px-3">
         <UsersIcon className="w-6" />
         <h3 className="text-lg font-bold">المستخدمون النشطون</h3>
       </div>
       <div className="mt-3 max-h-[290px] overflow-auto rounded-xl">
-        <table className="w-full min-w-[300px] border-separate border-spacing-y-1">
+        <table className="w-full min-w-[340px] border-separate border-spacing-y-1">
           <thead className="sticky top-0 z-10 bg-white text-right text-gray-600">
             <tr>
               <th className="pr-2 font-normal">الاسم</th>
@@ -89,30 +89,12 @@ function NumberOfCompletionsCard() {
   const [todayCompletionsCount, setTodayCompletionsCount] = useState(0);
 
   useEffect(() => {
-    const completionsRef = ref(rtdb, "/completions");
+    const dateKey = formatter.format(new Date()).split(",")[0];
+    const completionsRef = ref(rtdb, `/completions/${dateKey}`);
 
     const unsub = onValue(completionsRef, (snapshot) => {
       const completionsData = snapshot.val() || {};
-
-      const now = new Date();
-      const startOfToday = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-      ); // today 00:00
-      const startOfTomorrow = new Date(startOfToday);
-      startOfTomorrow.setDate(startOfToday.getDate() + 1); // tomorrow 00:00
-
-      const todaysCompletions = Object.values(completionsData).filter(
-        (completion: any) => {
-          const completionDate = new Date(completion.date);
-          return (
-            completionDate >= startOfToday && completionDate < startOfTomorrow
-          );
-        },
-      );
-
-      setTodayCompletionsCount(todaysCompletions.length);
+      setTodayCompletionsCount(Object.keys(completionsData).length);
     });
 
     return () => unsub();
@@ -145,7 +127,8 @@ function CompletionsCard() {
   >([]);
 
   useEffect(() => {
-    const completionsRef = ref(rtdb, "/completions");
+    const dateKey = formatter.format(new Date()).split(",")[0];
+    const completionsRef = ref(rtdb, `/completions/${dateKey}`);
 
     const unsub = onValue(completionsRef, async (snapshot) => {
       const completionsData = snapshot.val() || {};
@@ -168,10 +151,10 @@ function CompletionsCard() {
   }, []);
 
   return (
-    <div className="xs:px-3 col-span-1 rounded-lg bg-white py-3 shadow sm:col-span-5">
+    <div className="xs:px-3 col-span-1 rounded-lg bg-white py-3 shadow sm:col-span-6">
       <div className="xs:px-0 flex gap-2 px-3">
         <ClockIcon className="w-6" />
-        <h3 className="text-lg font-bold">العمليات الأخيرة</h3>
+        <h3 className="text-lg font-bold">العمليات اليوم</h3>
       </div>
       <div className="mt-3 max-h-[290px] overflow-auto rounded-xl">
         <table className="w-full min-w-[520px] border-separate border-spacing-y-1">

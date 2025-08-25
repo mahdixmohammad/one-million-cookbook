@@ -35,7 +35,7 @@ export default function ConfirmCompletionModal(props: Props) {
 
       const data = await res.json();
 
-      router.push(`/completions/${data.completionId}`);
+      router.push(`/completions/${data.dateKey}/${data.completionId}`);
     } catch (e: any) {
       alert(e.message);
     }

@@ -6,13 +6,13 @@ import Link from "next/link";
 import { formatter } from "@/utils/format-time";
 
 type Props = {
-  params: Promise<{ completion: string }>;
+  params: Promise<{ date: string; completion: string }>;
 };
 
 export default async function Page(props: Props) {
-  const { completion } = await props.params;
+  const { date, completion } = await props.params;
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/completions/${completion}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/completions/${date}/${completion}`,
   );
   const data = await res.json();
 
