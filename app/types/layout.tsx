@@ -1,13 +1,14 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { onDisconnect, getDatabase, ref, get } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 import NavBar from "@/components/NavBar";
 import useInactivityLogout from "@/hooks/useInactivityLogout";
 import LoadingScreen from "@/components/LoadingScreen";
+import { customSignOut } from "@/lib/db/users";
 
 export default function TypesLayout({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ export default function TypesLayout({ children }: { children: ReactNode }) {
         const userSnap = await get(userRef);
         if (!userSnap.exists()) {
           // User not in DB, sign out and redirect
-          await signOut(auth);
+          await customSignOut(auth);
           router.push("/login?from=types");
           return;
         }
@@ -36,12 +37,7 @@ export default function TypesLayout({ children }: { children: ReactNode }) {
         const userData = userSnap.val();
 
         if (userData.disconnected === true) {
-          await fetch("/api/auth/logout", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ uid: user.uid }),
-          });
-          await signOut(auth);
+          await customSignOut(auth);
           router.push("/login?from=types");
           return;
         }
@@ -60,12 +56,7 @@ export default function TypesLayout({ children }: { children: ReactNode }) {
         });
       } catch (error) {
         console.error("Error checking user active status:", error);
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ uid: user.uid }),
-        });
-        await signOut(auth);
+        await customSignOut(auth);
         router.push("/login?from=types");
       }
     });
