@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ completion: string }> },
+  context: { params: Promise<{ date: string; completion: string }> },
 ) {
   try {
-    const { completion } = await context.params;
-    const completionRef = ref(rtdb, `completions/${completion}`);
+    const { date, completion } = await context.params;
+    const completionRef = ref(rtdb, `completions/${date}/${completion}`);
     const snapshot = await get(completionRef);
 
     if (!snapshot.exists()) {

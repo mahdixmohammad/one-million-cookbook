@@ -51,7 +51,7 @@ export default async function Type(props: Props) {
         <p className="translate-x-2">العودة</p>
       </Link>
       {typeData["items"] ? (
-        <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
+        <div className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           {Object.keys(typeData["items"]).map((itemName, i) => (
             <FoodCard
               key={i}
