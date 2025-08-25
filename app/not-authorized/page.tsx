@@ -1,14 +1,16 @@
 "use client";
-import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import { customSignOut } from "@/lib/db/users";
 
 export default function NotAuthorizedPage() {
   const router = useRouter();
-  const handleClick = () => {
-    signOut(auth);
+
+  const handleClick = async () => {
+    await customSignOut(auth);
     router.push("/login");
   };
+
   return (
     <div className="flex h-[90vh] w-screen flex-col items-center justify-center gap-3 text-center">
       <h1 className="text-4xl font-bold text-red-700">وصول غير المصرح به</h1>

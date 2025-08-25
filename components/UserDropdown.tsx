@@ -1,6 +1,6 @@
-import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import Image from "next/image";
+import { customSignOut } from "@/lib/db/users";
 
 type UserDropdownProps = {
   username: string;
@@ -9,16 +9,7 @@ type UserDropdownProps = {
 export default function UserDropdown({ username }: UserDropdownProps) {
   const handleClick = async () => {
     if (!auth.currentUser) return;
-
-    // Call logout API
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ uid: auth.currentUser.uid }),
-    });
-
-    // Then sign out locally
-    await signOut(auth);
+    await customSignOut(auth);
   };
 
   return (

@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { getDatabase, ref, update } from "firebase/database";
+import { customSignOut } from "@/lib/db/users";
 
 const INACTIVITY_LIMIT = 30 * 60 * 1000; // 30 mins
 
@@ -30,12 +29,7 @@ export default function useInactivityLogout(uid: string | null) {
 
     timeoutRef.current = setTimeout(async () => {
       if (uid) {
-        const db = getDatabase();
-        await update(ref(db, `users/${uid}`), {
-          active: false,
-          disconnected: false,
-        });
-        await signOut(auth);
+        await customSignOut(auth);
       }
     }, INACTIVITY_LIMIT);
   }, [uid]);
