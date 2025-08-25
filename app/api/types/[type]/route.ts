@@ -60,6 +60,7 @@ export async function POST(
 
     await set(itemRef, {
       image,
+      completions: 0,
       ingredients: ingredients || "",
       instructions: instructions || "",
     });

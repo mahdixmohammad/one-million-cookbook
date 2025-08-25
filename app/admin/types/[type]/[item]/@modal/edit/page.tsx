@@ -10,6 +10,7 @@ import {
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type Props = {
   params: Promise<{ type: string; item: string }>;
@@ -22,6 +23,7 @@ export default function EditItemModal(props: Props) {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState(item);
   const [initialCompletions, setInitialCompletions] = useState(0);
   const [completions, setCompletions] = useState(0);
@@ -103,6 +105,8 @@ export default function EditItemModal(props: Props) {
       return;
     }
 
+    setLoading(true);
+
     try {
       let imageUrl: string | null = null;
 
@@ -140,16 +144,20 @@ export default function EditItemModal(props: Props) {
 
       const data = await res.json();
       if (!res.ok) {
+        setLoading(false);
         alert(data.error || "Failed to update item");
         return;
       }
 
       router.push(`/admin/types/${type}/${isNameChanged ? name : item}`);
     } catch (err) {
+      setLoading(false);
       console.error("Error:", err);
       alert("Something went wrong");
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/30 p-4 backdrop-blur-sm">

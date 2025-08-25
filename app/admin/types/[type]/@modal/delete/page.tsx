@@ -1,6 +1,7 @@
 "use client";
+import LoadingScreen from "@/components/LoadingScreen";
 import { useRouter } from "next/navigation";
-import { use } from "react";
+import { use, useState } from "react";
 
 type Props = {
   params: Promise<{ type: string }>;
@@ -12,27 +13,35 @@ export default function EditTypeModal(props: Props) {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
-      const response = await fetch(`/api/types/${type}`, {
+      const res = await fetch(`/api/types/${type}`, {
         method: "DELETE",
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
+      if (!res.ok) {
+        setLoading(false);
         alert(data.error || "Failed to delete type");
         return;
       }
 
       router.push(`/admin/types/`);
     } catch (err) {
+      setLoading(false);
       console.error("Error:", err);
       alert("Something went wrong");
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">

@@ -9,10 +9,12 @@ import {
 } from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function EditTypeModal() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -24,30 +26,36 @@ export default function EditTypeModal() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const storage = getStorage(app);
       const fileRef = storageRef(storage, `${file.name}`);
       await uploadBytes(fileRef, file);
       const imageUrl = await getDownloadURL(fileRef);
 
-      const response = await fetch(`/api/types`, {
+      const res = await fetch(`/api/types`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: name, image: imageUrl }),
       });
 
-      const data = await response.json();
-      if (!response.ok) {
+      const data = await res.json();
+      if (!res.ok) {
+        setLoading(false);
         alert(data.error || "Failed to create type");
         return;
       }
 
       router.push(`/admin/types`);
     } catch (err) {
+      setLoading(false);
       console.error("Error:", err);
       alert("Something went wrong");
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">

@@ -9,6 +9,7 @@ import {
 } from "firebase/storage";
 import { app } from "@/lib/firebase";
 import Image from "next/image";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type Props = {
   params: Promise<{ type: string }>;
@@ -20,6 +21,7 @@ export default function EditTypeModal(props: Props) {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState(type);
   const [initialCompletions, setInitialCompletions] = useState(0);
   const [completions, setCompletions] = useState(0);
@@ -74,6 +76,8 @@ export default function EditTypeModal(props: Props) {
       return;
     }
 
+    setLoading(true);
+
     try {
       let imageUrl: string | null = null;
 
@@ -93,7 +97,7 @@ export default function EditTypeModal(props: Props) {
       if (isCompletionsChanged) payload.completions = completions;
       if (imageUrl) payload.image = imageUrl;
 
-      const response = await fetch(`/api/types/${type}`, {
+      const res = await fetch(`/api/types/${type}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -101,19 +105,23 @@ export default function EditTypeModal(props: Props) {
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
+      if (!res.ok) {
+        setLoading(false);
         alert(data.error || "Failed to update type");
         return;
       }
 
       router.push(`/admin/types/${isNameChanged ? name : type}`);
     } catch (err) {
+      setLoading(false);
       console.error("Error:", err);
       alert("Something went wrong");
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">

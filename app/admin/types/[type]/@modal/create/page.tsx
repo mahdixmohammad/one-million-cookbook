@@ -10,6 +10,7 @@ import {
 import { app } from "@/lib/firebase";
 import Image from "next/image";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type Props = {
   params: Promise<{ type: string }>;
@@ -21,6 +22,7 @@ export default function CreateItemModal(props: Props) {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState<string[]>([""]);
@@ -38,13 +40,15 @@ export default function CreateItemModal(props: Props) {
       return;
     }
 
+    if (!file) {
+      alert("Please upload an image.");
+      return;
+    }
+
+    setLoading(true);
+
     try {
       let imageUrl: string | null = null;
-
-      if (!file) {
-        alert("Please upload an image.");
-        return;
-      }
 
       const storage = getStorage(app);
       const fileRef = storageRef(storage, file.name);
@@ -71,16 +75,20 @@ export default function CreateItemModal(props: Props) {
 
       const data = await res.json();
       if (!res.ok) {
+        setLoading(false);
         alert(data.error || "Failed to create item");
         return;
       }
 
       router.push(`/admin/types/${type}`);
     } catch (err) {
+      setLoading(false);
       console.error("Error:", err);
       alert("Something went wrong");
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/30 p-4 backdrop-blur-sm">

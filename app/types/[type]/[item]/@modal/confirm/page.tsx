@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation";
 import { useState, use } from "react";
 import Link from "next/link";
-import Loading from "@/components/Loading";
 import { getAuth } from "firebase/auth";
+import LoadingScreen from "@/components/LoadingScreen";
 
 type Props = {
   params: Promise<{ type: string; item: string }>;
@@ -31,22 +31,21 @@ export default function ConfirmCompletionModal(props: Props) {
         body: JSON.stringify({ type, item, uid, quantity }),
       });
 
-      if (!res.ok) throw new Error("Failed to complete");
-
       const data = await res.json();
+
+      if (!res.ok) {
+        setLoading(false);
+        alert(data.error || "Failed to complete");
+      }
 
       router.push(`/completions/${data.dateKey}/${data.completionId}`);
     } catch (e: any) {
+      setLoading(false);
       alert(e.message);
     }
   };
 
-  if (loading)
-    return (
-      <div className="fixed inset-0 z-50 flex h-screen w-screen items-center justify-center overflow-hidden bg-white">
-        <Loading />
-      </div>
-    );
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
