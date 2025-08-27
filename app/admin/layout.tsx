@@ -55,7 +55,7 @@ export default function AdminLayout({
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
-        {children}
+        <div className="xs:p-4 p-2">{children}</div>
       </div>
     </div>
   );

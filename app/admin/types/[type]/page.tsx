@@ -18,9 +18,6 @@ export default async function TypePage(props: Props) {
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}`,
-    {
-      cache: "no-store",
-    },
   );
 
   const typeData = await res.json();
@@ -29,7 +26,7 @@ export default async function TypePage(props: Props) {
 
   return (
     <>
-      <div className="xs:px-3 mx-auto mt-4 w-[98%] rounded-lg bg-white py-3 shadow">
+      <section className="xs:px-3 rounded-lg bg-white py-3 shadow">
         <div className="flex items-center gap-2 px-3">
           <h3 className="text-lg font-bold">النوع</h3>
           <Link
@@ -86,8 +83,8 @@ export default async function TypePage(props: Props) {
             </tbody>
           </table>
         </div>
-      </div>
-      <div className="xs:px-3 mx-auto mt-4 w-[98%] rounded-lg bg-white py-3 shadow">
+      </section>
+      <section className="xs:px-3 mt-3 rounded-lg bg-white py-3 shadow">
         <div className="flex items-center gap-2 px-3">
           <h3 className="text-lg font-bold">المنتجات</h3>
           <Link
@@ -151,7 +148,7 @@ export default async function TypePage(props: Props) {
           {typeData?.["items"] ? Object.keys(typeData["items"]).length : 0}{" "}
           نتائج
         </div>
-      </div>
+      </section>
     </>
   );
 }

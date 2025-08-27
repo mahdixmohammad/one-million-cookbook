@@ -12,7 +12,10 @@ export async function GET(
     const snapshot = await get(completionRef);
 
     if (!snapshot.exists()) {
-      return NextResponse.json([], { status: 200 });
+      return NextResponse.json(
+        { error: "Completion not found" },
+        { status: 404 },
+      );
     }
 
     const data = snapshot.val();

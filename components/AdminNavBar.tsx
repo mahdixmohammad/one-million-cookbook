@@ -21,8 +21,11 @@ export default function AdminNavBar({
   const handleClick = () => {
     const splitPath = path.split("/");
     if (splitPath.length === 3) return router.push("/admin");
-    if (splitPath.length === 4) return router.push("/admin/types");
-    if (splitPath.length === 5) {
+    else if (splitPath.length === 4 && splitPath[2] === "types")
+      return router.push("/admin/types");
+    else if (splitPath.length === 4 && splitPath[2] === "completions")
+      return router.push("/admin/completions");
+    else if (splitPath.length === 5) {
       const type = splitPath[3];
       return router.push(`/admin/types/${type}`);
     }

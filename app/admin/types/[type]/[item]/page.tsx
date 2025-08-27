@@ -14,9 +14,6 @@ export default async function Type(props: Props) {
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}/${item}`,
-    {
-      cache: "no-store",
-    },
   );
 
   const itemData = await res.json();
@@ -27,7 +24,7 @@ export default async function Type(props: Props) {
   const instructionsList = itemData.instructions.split("#");
 
   return (
-    <div className="mx-auto mt-4 w-[98%] rounded-lg bg-white px-3 py-3 shadow">
+    <section className="xs:px-3 rounded-lg bg-white py-3 shadow">
       <div className="flex items-center gap-2 px-2">
         <h3 className="text-lg font-bold">المنتج</h3>
         <Link
@@ -102,6 +99,6 @@ export default async function Type(props: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
