@@ -4,6 +4,7 @@ import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
 import Link from "next/link";
 import { formatter } from "@/utils/format-time";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ date: string; completion: string }>;
@@ -15,6 +16,8 @@ export default async function Page(props: Props) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/completions/${date}/${completion}`,
   );
   const data = await res.json();
+
+  if (data.error) notFound();
 
   return (
     <div className="mx-auto flex h-screen w-fit flex-col items-center justify-center gap-2">

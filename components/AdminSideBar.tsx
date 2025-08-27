@@ -3,7 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpenIcon, HomeIcon } from "@heroicons/react/24/outline";
+import {
+  BookOpenIcon,
+  CalendarDaysIcon,
+  HomeIcon,
+} from "@heroicons/react/24/outline";
 
 type SidebarProps = {
   sidebarOpen: boolean;
@@ -57,6 +61,12 @@ export default function AdminSideBar({
             name="الأنواع"
             href="/types"
             icon={<BookOpenIcon />}
+            setSidebarOpen={setSidebarOpen}
+          />
+          <SideBarLink
+            name="العمليات"
+            href="/completions"
+            icon={<CalendarDaysIcon />}
             setSidebarOpen={setSidebarOpen}
           />
         </div>

@@ -8,10 +8,11 @@ import LoadingImage from "@/components/LoadingImage";
 import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
 import { formatter } from "@/utils/format-time";
+import Link from "next/link";
 
 export default function Admin() {
   return (
-    <div className="xs:p-4 grid h-full auto-rows-[350px] grid-cols-1 gap-4 p-2 sm:grid-cols-6">
+    <div className="grid auto-rows-[350px] grid-cols-1 gap-4 sm:grid-cols-6">
       <ActiveUsersCard />
       <NumberOfCompletionsCard />
       <CompletionsCard />
@@ -172,31 +173,64 @@ function CompletionsCard() {
             {completions.map((completion, i) => (
               <tr
                 key={i}
-                className="h-15 bg-gray-100 transition-all duration-150 hover:opacity-80"
+                className="h-13 bg-gray-100 transition-all duration-150 hover:opacity-80"
               >
                 <td className="rounded-r-lg pr-2">
-                  <LoadingImage
-                    src={completion.image}
-                    alt={completion.item}
-                    position="start"
-                    width={55}
-                    height={55}
-                    className="rounded object-contain"
-                  />
+                  <Link
+                    href={`/admin/types/${completion.type}/${completion.item}`}
+                    className="flex h-13 items-center"
+                  >
+                    <LoadingImage
+                      src={completion.image}
+                      alt={completion.item}
+                      position="start"
+                      width={50}
+                      height={50}
+                      className="rounded object-contain"
+                      loadingSize="small"
+                    />
+                  </Link>
                 </td>
                 <td>
-                  <h3>{completion.item}</h3>
+                  <Link
+                    href={`/admin/types/${completion.type}/${completion.item}`}
+                    className="flex h-13 items-center"
+                  >
+                    {completion.item}
+                  </Link>
                 </td>
                 <td>
-                  <h3>{completion.quantity}</h3>
+                  <Link
+                    href={`/admin/types/${completion.type}/${completion.item}`}
+                    className="flex h-13 items-center"
+                  >
+                    {completion.quantity}
+                  </Link>
                 </td>
                 <td>
-                  <h3 dir="ltr" className="flex justify-end">
-                    {formatter.format(new Date(completion.date))}
-                  </h3>
+                  <Link
+                    href={`/admin/types/${completion.type}/${completion.item}`}
+                    dir="ltr"
+                    className="flex h-13 flex-col items-end justify-end text-sm sm:flex-row sm:items-center"
+                  >
+                    {formatter
+                      .format(new Date(completion.date))
+                      .split(", ")
+                      .map((part, i) => (
+                        <span key={i}>
+                          {part}
+                          {i === 0 && ","}
+                        </span>
+                      ))}
+                  </Link>
                 </td>
                 <td className="rounded-l-lg">
-                  <h3>{completion.username}</h3>
+                  <Link
+                    href={`/admin/types/${completion.type}/${completion.item}`}
+                    className="flex h-13 items-center"
+                  >
+                    {completion.username}
+                  </Link>
                 </td>
               </tr>
             ))}

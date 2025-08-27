@@ -6,6 +6,7 @@ import Loading from "./Loading";
 
 type LoadingImageProps = {
   className?: string;
+  loadingSize?: "small" | "medium";
   position: "start" | "center";
   width: number;
   height: number;
@@ -15,6 +16,7 @@ type LoadingImageProps = {
 
 export default function LoadingImage({
   className = "",
+  loadingSize = "medium",
   position,
   width,
   height,
@@ -42,7 +44,7 @@ export default function LoadingImage({
         <span
           className={`pointer-events-none absolute inset-0 z-10 flex ${positionClass}`}
         >
-          <Loading />
+          <Loading size={loadingSize} />
         </span>
       )}
       {!src && <div style={{ width: width, height: height }}></div>}

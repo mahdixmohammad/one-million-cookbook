@@ -1,7 +1,28 @@
 import { rtdb } from "@/lib/firebase";
-import { ref, set, push, runTransaction } from "firebase/database";
+import { ref, get, set, push, runTransaction } from "firebase/database";
 import { NextRequest, NextResponse } from "next/server";
 import { formatter } from "@/utils/format-time";
+
+export async function GET() {
+  try {
+    const completionsRef = ref(rtdb, "completions");
+    const snapshot = await get(completionsRef);
+
+    if (!snapshot.exists()) {
+      return NextResponse.json([]);
+    }
+
+    const data = snapshot.val();
+
+    return NextResponse.json(data);
+  } catch (err) {
+    console.error("Error with getting completions:", err);
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 },
+    );
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
