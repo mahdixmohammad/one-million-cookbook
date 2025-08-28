@@ -4,6 +4,9 @@ import Link from "next/link";
 export default async function Page() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/completions`,
+    {
+      cache: "no-store",
+    },
   );
 
   const completionsData = await res.json();

@@ -1,7 +1,9 @@
 import FoodCard from "@/components/FoodCard";
 
 export default async function Home() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`, {
+    cache: "no-store",
+  });
 
   const typesData = await res.json();
 

@@ -11,6 +11,9 @@ export default async function Page(props: Props) {
   const { date } = await props.params;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/completions/${date}`,
+    {
+      cache: "no-store",
+    },
   );
   const data = await res.json();
 
