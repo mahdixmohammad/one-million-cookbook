@@ -23,7 +23,7 @@ export default function AdminSideBar({
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-20 block bg-black/20 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-30 block bg-black/20 backdrop-blur-xs lg:hidden"
         />
       )}
       <div
