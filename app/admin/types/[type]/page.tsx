@@ -18,6 +18,9 @@ export default async function TypePage(props: Props) {
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/types/${type}`,
+    {
+      cache: "no-store",
+    },
   );
 
   const typeData = await res.json();

@@ -3,7 +3,9 @@ import { EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default async function Types() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/types`, {
+    cache: "no-store",
+  });
 
   const typesData = await res.json();
 
