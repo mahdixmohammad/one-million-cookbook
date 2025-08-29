@@ -37,7 +37,8 @@ jobs:
           port: 22
           script: |
             cd one-million-cookbook
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
             echo "NODE_ENV=production" > .env
             echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env
             echo "NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}" >> .env
@@ -47,4 +48,7 @@ jobs:
             echo "MESSAGING_SENDER_ID=${{ secrets.MESSAGING_SENDER_ID }}" >> .env
             echo "APP_ID=${{ secrets.APP_ID }}" >> .env
             echo "NEXT_PUBLIC_DATABASE_URL=${{ secrets.NEXT_PUBLIC_DATABASE_URL }}" >> .env
+            echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env
+            echo "FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }}" >> .env
+            echo "FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }}" >> .env
             docker compose up --build -d
