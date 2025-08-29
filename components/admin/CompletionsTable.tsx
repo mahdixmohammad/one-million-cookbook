@@ -4,7 +4,7 @@ import { useState } from "react";
 import Filter from "./Filter";
 import Link from "next/link";
 import LoadingImage from "../LoadingImage";
-import { formatter } from "@/utils/format-time";
+import { formatISOTime } from "@/utils/format-time";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type Props = {
@@ -103,7 +103,6 @@ export default function CompletionsTable({
               <th className="font-normal">الكمية</th>
               <th className="font-normal">التاريخ</th>
               <th className="font-normal">المستخدم</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -157,8 +156,7 @@ export default function CompletionsTable({
                     dir="ltr"
                     className="flex h-13 flex-col items-end justify-end text-sm sm:flex-row sm:items-center"
                   >
-                    {formatter
-                      .format(new Date(completion.date))
+                    {formatISOTime(completion.date)
                       .split(", ")
                       .map((part, i) => (
                         <span key={i}>

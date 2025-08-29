@@ -52,6 +52,7 @@ export default function Filter({
           <div className="mb-2">
             <label className="block text-sm text-gray-500">النوع</label>
             <CustomSelect
+              size="small"
               options={toOptions(types)}
               value={
                 filters.type

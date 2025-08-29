@@ -23,7 +23,6 @@ export default async function Page() {
           <thead className="sticky top-0 z-10 bg-white text-right text-gray-600">
             <tr>
               <th className="pr-2 font-normal">التاريخ</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>

@@ -3,7 +3,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
 import Link from "next/link";
-import { formatter } from "@/utils/format-time";
+import { formatISOTime } from "@/utils/format-time";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -47,7 +47,7 @@ export default async function Page(props: Props) {
           </p>
           <p>الكمية: {data.quantity}</p>
           <p dir="ltr" className="flex justify-end">
-            {formatter.format(new Date(data.date))}
+            {formatISOTime(data.date)}
           </p>
           <p>المستخدم: {getUsername(data.uid)}</p>
         </div>

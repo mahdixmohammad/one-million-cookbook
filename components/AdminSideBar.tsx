@@ -7,6 +7,7 @@ import {
   BookOpenIcon,
   CalendarDaysIcon,
   HomeIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
 type SidebarProps = {
@@ -67,6 +68,12 @@ export default function AdminSideBar({
             name="العمليات"
             href="/completions"
             icon={<CalendarDaysIcon />}
+            setSidebarOpen={setSidebarOpen}
+          />
+          <SideBarLink
+            name="المستخدمين"
+            href="/users"
+            icon={<UserGroupIcon />}
             setSidebarOpen={setSidebarOpen}
           />
         </div>

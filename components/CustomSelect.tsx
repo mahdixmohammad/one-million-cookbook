@@ -7,56 +7,13 @@ import Select, {
 } from "react-select";
 import React from "react";
 
-// Type for each option
 export type Option = {
   value: string;
   label: string;
 };
 
-// Custom styles for all selects
-const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
-  control: (provided: CSSObjectWithLabel, state) => ({
-    ...provided,
-    minHeight: "32px",
-    height: "32px",
-    borderColor: state.isFocused ? "black" : "rgb(120,120,120)",
-    boxShadow: state.isFocused ? "0 0 0 1px black" : "none",
-    "&:hover": {
-      borderColor: state.isFocused ? "black" : "black",
-    },
-  }),
-  valueContainer: (provided: CSSObjectWithLabel) => ({
-    ...provided,
-    padding: "0 3px",
-  }),
-  indicatorsContainer: (provided: CSSObjectWithLabel) => ({
-    ...provided,
-    height: "32px",
-  }),
-  menu: (provided: CSSObjectWithLabel) => ({
-    ...provided,
-    marginTop: 4,
-    overflow: "hidden",
-    borderRadius: 8, // rounded menu
-  }),
-  menuList: (provided: CSSObjectWithLabel) => ({
-    ...provided,
-    padding: 0,
-    borderRadius: 8,
-  }),
-  option: (provided: CSSObjectWithLabel, state) => ({
-    ...provided,
-    margin: 0,
-    fontSize: "0.9rem",
-    padding: "6px 6px",
-    backgroundColor: state.isFocused ? "rgb(240,240,240)" : "white",
-    color: "black",
-    cursor: "pointer",
-  }),
-};
-
-// Props for our wrapper
 type CustomSelectProps = {
+  size?: "small" | "medium";
   options: Option[];
   value?: Option | null;
   onChange: (option: Option | null) => void;
@@ -65,8 +22,8 @@ type CustomSelectProps = {
   isClearable?: boolean;
 };
 
-// Wrapper component
 export default function CustomSelect({
+  size = "medium",
   options,
   value,
   onChange,
@@ -74,6 +31,54 @@ export default function CustomSelect({
   isRtl = false,
   isClearable = true,
 }: CustomSelectProps) {
+  let height: string;
+  if (size === "small") {
+    height = "32px";
+  } else if (size === "medium") {
+    height = "42px";
+  }
+
+  const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
+    control: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      minHeight: height,
+      height,
+      borderColor: "black",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "black",
+      },
+    }),
+    valueContainer: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      padding: "0 3px",
+    }),
+    indicatorsContainer: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      height,
+    }),
+    menu: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      marginTop: 4,
+      overflow: "hidden",
+      borderRadius: 8,
+    }),
+    menuList: (provided: CSSObjectWithLabel) => ({
+      ...provided,
+      padding: 0,
+      borderRadius: 8,
+    }),
+    option: (provided: CSSObjectWithLabel, state) => ({
+      ...provided,
+      margin: 0,
+      fontSize: "0.9rem",
+      padding: "6px 6px",
+      backgroundColor: state.isFocused ? "rgb(240,240,240)" : "white",
+      color: "black",
+      cursor: "pointer",
+    }),
+  };
+
   return (
     <Select
       options={options}
@@ -83,6 +88,7 @@ export default function CustomSelect({
       isRtl={isRtl}
       isClearable={isClearable}
       styles={customStyles}
+      noOptionsMessage={() => "لا يوجد خيارات"}
     />
   );
 }
