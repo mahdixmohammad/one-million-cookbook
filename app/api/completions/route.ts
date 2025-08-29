@@ -1,7 +1,7 @@
 import { rtdb } from "@/lib/firebase";
 import { ref, get, set, push, runTransaction } from "firebase/database";
 import { NextRequest, NextResponse } from "next/server";
-import { formatter } from "@/utils/format-time";
+import { formatISOTime } from "@/utils/format-time";
 
 export async function GET() {
   try {
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const now = new Date();
     const isoString = now.toISOString();
-    const dateKey = formatter.format(now).split(",")[0];
+    const dateKey = formatISOTime(isoString).split(",")[0];
 
     const newCompletionRef = push(ref(rtdb, `completions/${dateKey}`));
 

@@ -43,7 +43,7 @@ export default function TypesLayout({ children }: { children: ReactNode }) {
         }
 
         // Check role
-        if (userData.role !== "employee" && userData.role !== "admin") {
+        if (userData.role !== "موظف" && userData.role !== "مسؤل") {
           router.push("/not-authorized");
           return;
         }

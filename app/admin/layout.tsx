@@ -35,7 +35,7 @@ export default function AdminLayout({
       const snap = await get(roleRef);
       const role = snap.val();
 
-      if (role !== "admin") {
+      if (role !== "مسؤل") {
         router.push("/not-authorized");
       } else {
         setLoading(false);

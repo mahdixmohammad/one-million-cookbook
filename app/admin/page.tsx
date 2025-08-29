@@ -7,7 +7,7 @@ import { CheckIcon, ClockIcon, UsersIcon } from "@heroicons/react/24/outline";
 import LoadingImage from "@/components/LoadingImage";
 import { getUsername } from "@/lib/db/users";
 import { getImage } from "@/lib/db/items";
-import { formatter } from "@/utils/format-time";
+import { formatISOTime } from "@/utils/format-time";
 import Link from "next/link";
 
 export default function Admin() {
@@ -57,7 +57,6 @@ function ActiveUsersCard() {
               <th className="pr-2 font-normal">الاسم</th>
               <th className="font-normal">تاريخ تسجيل</th>
               <th className="font-normal">الدور</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +70,7 @@ function ActiveUsersCard() {
                 </td>
                 <td>
                   <h3 dir="ltr" className="flex justify-end">
-                    {formatter.format(new Date(user.lastLogin))}
+                    {formatISOTime(user.lastLogin)}
                   </h3>
                 </td>
                 <td className="rounded-l-lg">
@@ -90,7 +89,7 @@ function NumberOfCompletionsCard() {
   const [todayCompletionsCount, setTodayCompletionsCount] = useState(0);
 
   useEffect(() => {
-    const dateKey = formatter.format(new Date()).split(",")[0];
+    const dateKey = formatISOTime(new Date().toISOString()).split(",")[0];
     const completionsRef = ref(rtdb, `/completions/${dateKey}`);
 
     const unsub = onValue(completionsRef, (snapshot) => {
@@ -128,7 +127,7 @@ function CompletionsCard() {
   >([]);
 
   useEffect(() => {
-    const dateKey = formatter.format(new Date()).split(",")[0];
+    const dateKey = formatISOTime(new Date().toISOString()).split(",")[0];
     const completionsRef = ref(rtdb, `/completions/${dateKey}`);
 
     const unsub = onValue(completionsRef, async (snapshot) => {
@@ -166,7 +165,6 @@ function CompletionsCard() {
               <th className="font-normal">الكمية</th>
               <th className="font-normal">التاريخ</th>
               <th className="font-normal">المستخدم</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -211,10 +209,9 @@ function CompletionsCard() {
                   <Link
                     href={`/admin/types/${completion.type}/${completion.item}`}
                     dir="ltr"
-                    className="flex h-13 flex-col items-end justify-end text-sm sm:flex-row sm:items-center"
+                    className="flex h-13 flex-col items-end justify-center text-sm sm:flex-row sm:items-center sm:justify-end"
                   >
-                    {formatter
-                      .format(new Date(completion.date))
+                    {formatISOTime(completion.date)
                       .split(", ")
                       .map((part, i) => (
                         <span key={i}>
