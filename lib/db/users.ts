@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 export async function getUsername(uid: string) {
   const usernameRef = ref(rtdb, `/users/${uid}/username`);
   const snapshot = await get(usernameRef);
+  if (!snapshot.exists()) return "غير متوفر";
   return snapshot.val();
 }
 
