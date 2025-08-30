@@ -1,7 +1,8 @@
-"use server";
 import {
   CheckIcon,
+  PencilSquareIcon,
   PlusIcon,
+  TrashIcon,
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -14,7 +15,8 @@ export default async function Page() {
   });
 
   const usersData = await res.json();
-  const users: {
+
+  type UserData = {
     active: boolean;
     completions: number;
     disconnected: boolean;
@@ -22,7 +24,10 @@ export default async function Page() {
     lastLogin: string;
     role: string;
     username: string;
-  }[] = Object.values(usersData);
+  };
+
+  type UserTuple = [string, UserData];
+  const users: UserTuple[] = Object.entries(usersData);
 
   return (
     <section className="xs:px-3 rounded-lg bg-white py-3 shadow">
@@ -37,7 +42,7 @@ export default async function Page() {
           انشاء
         </Link>
       </div>
-      <div className="mt-3 max-h-[290px] overflow-auto rounded-xl">
+      <div className="mt-3 overflow-x-auto rounded-xl">
         <table className="w-full min-w-[500px] border-separate border-spacing-y-1">
           <thead className="sticky top-0 z-10 bg-white text-right text-gray-600">
             <tr>
@@ -54,15 +59,15 @@ export default async function Page() {
                 key={i}
                 className="h-11 bg-gray-100 transition-all duration-150 hover:opacity-80"
               >
-                <td className="rounded-r-lg pr-2">{user.username}</td>
-                <td>{user.role}</td>
-                <td>{user.completions}</td>
+                <td className="rounded-r-lg pr-2">{user[1].username}</td>
+                <td>{user[1].role}</td>
+                <td>{user[1].completions}</td>
                 <td>
                   <div
                     dir="ltr"
                     className="flex h-13 flex-col items-end justify-center text-sm sm:flex-row sm:items-center sm:justify-end"
                   >
-                    {formatISOTime(user.lastLogin)
+                    {formatISOTime(user[1].lastLogin)
                       .split(", ")
                       .map((part, i) => (
                         <span key={i}>
@@ -73,11 +78,27 @@ export default async function Page() {
                   </div>
                 </td>
                 <td>
-                  {user.active ? (
+                  {user[1].active ? (
                     <CheckIcon className="w-6 text-green-500" />
                   ) : (
                     <XMarkIcon className="w-6 text-red-500" />
                   )}
+                </td>
+                <td className="rounded-l-xl pl-5">
+                  <Link
+                    href={`/admin/users/${user[0]}/edit`}
+                    className="flex cursor-pointer items-center justify-end"
+                  >
+                    <PencilSquareIcon className="w-5 text-gray-600" />
+                  </Link>
+                </td>
+                <td className="w-8 bg-white">
+                  <Link
+                    href={`/admin/users/${user[0]}/delete`}
+                    className="flex cursor-pointer items-center justify-end"
+                  >
+                    <TrashIcon className="w-5 text-red-600" />
+                  </Link>
                 </td>
               </tr>
             ))}
