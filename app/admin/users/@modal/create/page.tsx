@@ -71,6 +71,7 @@ export default function ConfirmCompletionModal() {
           <div className="relative">
             <input
               className="peer w-full rounded border px-3 py-2 focus:outline-none"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
