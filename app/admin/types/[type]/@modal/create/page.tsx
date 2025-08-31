@@ -51,7 +51,7 @@ export default function CreateItemModal(props: Props) {
       let imageUrl: string | null = null;
 
       const storage = getStorage(app);
-      const fileRef = storageRef(storage, file.name);
+      const fileRef = storageRef(storage, Date.now() + "-" + file.name);
       await uploadBytes(fileRef, file);
       imageUrl = await getDownloadURL(fileRef);
 
