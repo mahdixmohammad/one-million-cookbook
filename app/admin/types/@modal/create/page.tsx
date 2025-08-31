@@ -30,7 +30,7 @@ export default function EditTypeModal() {
 
     try {
       const storage = getStorage(app);
-      const fileRef = storageRef(storage, `${file.name}`);
+      const fileRef = storageRef(storage, Date.now() + "-" + file.name);
       await uploadBytes(fileRef, file);
       const imageUrl = await getDownloadURL(fileRef);
 

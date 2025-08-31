@@ -112,7 +112,7 @@ export default function EditItemModal(props: Props) {
 
       if (file) {
         const storage = getStorage(app);
-        const fileRef = storageRef(storage, `${file.name}`);
+        const fileRef = storageRef(storage, Date.now() + "-" + file.name);
         await uploadBytes(fileRef, file);
         imageUrl = await getDownloadURL(fileRef);
       }
