@@ -4,7 +4,7 @@ import { ref as dbRef, get, set, remove } from "firebase/database";
 import { ref as storageRef, deleteObject } from "firebase/storage";
 
 export async function GET(
-  _: Request,
+  _: NextRequest,
   context: { params: Promise<{ type: string }> },
 ) {
   const { type } = await context.params;
@@ -181,7 +181,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _: Request,
+  _: NextRequest,
   context: { params: Promise<{ type: string }> },
 ) {
   const { type } = await context.params;
@@ -196,16 +196,31 @@ export async function DELETE(
     }
 
     const typeData = snapshot.val();
-    const imageUrl: string | undefined = typeData?.image;
+    const typeImageUrl: string | undefined = typeData?.image;
 
-    // Delete image from Firebase Storage if it exists
-    if (imageUrl) {
+    // Delete the type's main image from Firebase Storage if it exists
+    if (typeImageUrl) {
       try {
-        const storagePath = extractStoragePathFromUrl(imageUrl);
+        const storagePath = extractStoragePathFromUrl(typeImageUrl);
         const imgRef = storageRef(storage, storagePath);
         await deleteObject(imgRef);
       } catch (error) {
-        console.warn("Image deletion failed:", error);
+        console.warn("Type image deletion failed:", error);
+      }
+    }
+
+    // Delete each item's image from Firebase Storage
+    const items = typeData.items || {};
+    for (const itemKey in items) {
+      const itemImageUrl: string | undefined = items[itemKey]?.image;
+      if (itemImageUrl) {
+        try {
+          const storagePath = extractStoragePathFromUrl(itemImageUrl);
+          const imgRef = storageRef(storage, storagePath);
+          await deleteObject(imgRef);
+        } catch (error) {
+          console.warn(`Image deletion failed for item '${itemKey}':`, error);
+        }
       }
     }
 
@@ -214,7 +229,7 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      message: `Type '${type}' and its image (if any) have been deleted.`,
+      message: `Type '${type}' and all associated images have been deleted.`,
     });
   } catch (err) {
     console.error("Error deleting type:", err);

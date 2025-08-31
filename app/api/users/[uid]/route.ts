@@ -30,7 +30,7 @@ export async function GET(_: NextRequest, context: Context) {
   }
 }
 
-export async function PATCH(request: Request, context: Context) {
+export async function PATCH(request: NextRequest, context: Context) {
   const { uid } = await context.params;
 
   try {

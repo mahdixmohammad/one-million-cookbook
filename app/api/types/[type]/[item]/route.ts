@@ -4,7 +4,7 @@ import { ref as dbRef, get, update, set, remove } from "firebase/database";
 import { ref as storageRef, deleteObject } from "firebase/storage";
 
 export async function GET(
-  _: Request,
+  _: NextRequest,
   context: { params: Promise<{ type: string; item: string }> },
 ) {
   const { type, item } = await context.params;
