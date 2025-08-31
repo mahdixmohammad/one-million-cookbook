@@ -1,6 +1,6 @@
 import { rtdb } from "@/lib/firebase";
 import { ref, get, set } from "firebase/database";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -23,7 +23,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { type, image } = body;
