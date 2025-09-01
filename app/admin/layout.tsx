@@ -5,8 +5,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, update } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
-import AdminSideBar from "@/components/AdminSideBar";
-import AdminNavBar from "@/components/AdminNavBar";
+import AdminSideBar from "@/components/admin/AdminSideBar";
+import AdminNavBar from "@/components/admin/AdminNavBar";
 import LoadingScreen from "@/components/LoadingScreen";
 
 export default function AdminLayout({

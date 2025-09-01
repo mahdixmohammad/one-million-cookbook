@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import LoadingImage from "./LoadingImage";
+import LoadingImage from "../LoadingImage";
 import {
   ArrowLeftIcon,
   CheckIcon,

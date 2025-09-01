@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import UserButton from "./UserButton";
-import NotificationButton from "./NotificationButton";
-import HomeButton from "./HomeButton";
+import UserButton from "../navbar/UserButton";
+import NotificationButton from "../navbar/NotificationButton";
+import HomeButton from "../navbar/HomeButton";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 type AdminNavbarProps = {

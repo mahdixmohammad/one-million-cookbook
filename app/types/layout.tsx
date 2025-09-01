@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { onDisconnect, getDatabase, ref, get } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/employee/NavBar";
 import useInactivityLogout from "@/hooks/useInactivityLogout";
 import LoadingScreen from "@/components/LoadingScreen";
 import { customSignOut } from "@/lib/db/users";

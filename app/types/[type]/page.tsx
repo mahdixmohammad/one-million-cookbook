@@ -1,4 +1,4 @@
-import FoodCard from "@/components/FoodCard";
+import FoodCard from "@/components/employee/FoodCard";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 

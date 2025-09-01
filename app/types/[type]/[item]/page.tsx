@@ -1,4 +1,4 @@
-import Item from "@/components/Item";
+import Item from "@/components/employee/Item";
 import { notFound } from "next/navigation";
 
 type Props = {

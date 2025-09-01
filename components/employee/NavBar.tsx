@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import UserButton from "./UserButton";
-import HomeIcon from "./HomeButton";
+import UserButton from "../navbar/UserButton";
+import HomeIcon from "../navbar/HomeButton";
 
 export default function NavBar() {
   return (
